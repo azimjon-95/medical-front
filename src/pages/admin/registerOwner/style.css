@@ -1,0 +1,141 @@
+.FormApply {
+    margin: 15px;
+}
+
+.Row {
+    gap: 15px;
+    display: flex;
+
+    align-items: center;
+}
+
+.Col-Form {
+    width: 32%;
+}
+
+
+
+.btn {
+    width: 100%;
+    height: 35px;
+}
+
+.NonePro {
+    display: none;
+}
+
+.OpenPro {
+    display: block;
+}
+
+@media screen and (max-width: 750px) {
+    .Row {
+        gap: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .Col-Form {
+        width: 100%;
+    }
+
+    .wrapperRadio {
+        width: 100%;
+    }
+}
+
+
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+
+
+.wrapperRadio {
+    display: flex;
+    height: 30px;
+    width: 32%;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 5px;
+    /* box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2); */
+}
+
+.RBox {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.docORrecep {
+    width: 100%;
+}
+
+.wrapperRadio .option {
+    background: #fff;
+    height: 100%;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 0 15 px;
+    border: 1.2px solid lightgrey;
+    transition: all 0.3s ease;
+}
+
+.wrapperRadio .option .dot {
+    height: 20px;
+    width: 20px;
+    background: #d9d9d9;
+    border-radius: 50%;
+    position: relative;
+    margin-right: 5px;
+}
+
+.wrapperRadio .option .dot::before {
+    position: absolute;
+    content: "";
+    top: 4px;
+    left: 4px;
+    width: 12px;
+    height: 12px;
+    background: #0069d9;
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale(1.5);
+    transition: all 0.3s ease;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+#option-1:checked:checked~.option-1,
+#option-2:checked:checked~.option-2 {
+    border-color: #0069d9;
+    background: #0069d9;
+}
+
+#option-1:checked:checked~.option-1 .dot,
+#option-2:checked:checked~.option-2 .dot {
+    background: #fff;
+}
+
+#option-1:checked:checked~.option-1 .dot::before,
+#option-2:checked:checked~.option-2 .dot::before {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.wrapperRadio .option span {
+    font-size: 18px;
+    color: #979797;
+}
+
+#option-1:checked:checked~.option-1 span,
+#option-2:checked:checked~.option-2 span {
+    color: #fff;
+}

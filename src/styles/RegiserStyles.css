@@ -1,0 +1,20 @@
+.form-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.spiner {
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.235);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 15;
+}
+
+.register-form {
+  border: 1px solid gray;
+  padding: 30px;
+}

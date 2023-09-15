@@ -1,0 +1,62 @@
+.FormApply {
+    margin: 15px;
+}
+
+.Row {
+    gap: 15px;
+    display: flex;
+
+    align-items: center;
+}
+
+.Col-Form {
+    width: 32%;
+}
+
+
+
+.btn {
+    width: 100%;
+    height: 35px;
+}
+
+.NonePro {
+    display: none;
+}
+
+.OpenPro {
+    display: block;
+}
+
+@media screen and (max-width: 750px) {
+    .Row {
+        gap: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
+
+    }
+
+    .Col-Form {
+        width: 100%;
+    }
+
+    /* .wrapperRadio {
+        width: 200px;
+    } */
+}
+
+
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+
+
+.docORrecep {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 30px;
+    border: 1px solid rgb(209, 209, 209);
+    border-radius: 5px;
+    padding: 0 10px;
+}
