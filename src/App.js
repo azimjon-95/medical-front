@@ -10,6 +10,7 @@ import Profile from "./pages/admin/profile/Profile";
 import AddDoctors from "./pages/admin/addDoctors/AddDoctors";
 import RegisterOwner from "./pages/admin/registerOwner/AddOwner";
 import Cabins from "./pages/receptionPage/Cabins/Cabins";
+import Register from "./pages/receptionPage/register/Register";
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
             <Route path="/admin/doctors" element={<Doctor />} />
             <Route path="/setting" element={<RegisterOwner />} />
             <Route path="/cabins" element={<Cabins />} />
+            <Route path="/receptionHome" element={<Register />} />
 
             <Route path="/doctor/profilr/:id" element={<Profile />} />
           </Routes>

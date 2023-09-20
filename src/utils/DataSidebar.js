@@ -33,7 +33,7 @@ export const onerMenu = [
 export const adminMenu = [
     {
         name: "Ro'yhatga olish",
-        path: "/",
+        path: "/receptionHome",
         icon: "fa fa-address-card-o"
     },
     {
