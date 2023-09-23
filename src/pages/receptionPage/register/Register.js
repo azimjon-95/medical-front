@@ -13,25 +13,49 @@ const Register = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
+  const [firstname, setFirstName] = useState("")
+  const [lastname, setLastName] = useState("")
   const [phone, setPhone] = useState("")
-  const [paySumm] = useState(0)
-  const [paid, setPaid] = useState("")
+  const [paySum, setPaySum] = useState(0)
+  const [payState, setPaid] = useState("")
   const [choseDoctor, setChoseDoctor] = useState("")
 
+  const [allDoctor, setChAllDoctor] = useState([])
 
-  const AllInfo = {
-    firstName,
-    lastName,
-    phone,
-    paySumm,
-    paid,
-    choseDoctor
+  useEffect(() => {
+    axios.get("/user/getAllDoctors")
+      .then((res) => setChAllDoctor(res?.data.data))
+      .catch((err) => console.log(err));
+  }, [])
+
+  let sortedData = allDoctor.filter(i => i.specialization.length > 3)
+
+  useEffect(() => {
+    let doctor_price = allDoctor?.find(d => d._id === choseDoctor)
+    setPaySum(doctor_price?.feesPerCunsaltation)
+  }, [choseDoctor])
+
+  const data = []
+  for (const item of sortedData) {
+    data.push(
+      {
+        value: item._id,
+        label: item.specialization,
+      }
+    )
   }
-  const handleFinish = async (values) => {
-    console.log(values);
 
+
+  const handleFinish = async (values) => {
+    let doctor_price = allDoctor.find(d => d._id === choseDoctor)
+    const AllInfo = {
+      firstname,
+      lastname,
+      phone,
+      payState,
+      choseDoctor: doctor_price.specialization,
+      paySumm: doctor_price.feesPerCunsaltation
+    }
     try {
       dispatch(showLoading())
       const res = await axios.post("/client", AllInfo);
@@ -50,23 +74,6 @@ const Register = () => {
   }
 
 
-  const [allDoctor, setChAllDoctor] = useState([])
-
-  useEffect(() => {
-    axios.get("/user/getAllDoctors")
-      .then((res) => setChAllDoctor(res?.data.data))
-      .catch((err) => console.log(err));
-  }, [])
-
-  console.log(allDoctor);
-
-  const data = [
-    {
-      value: allDoctor.length,
-      label: allDoctor?.specialization,
-    }
-  ]
-
   return (
 
     <Layout>
@@ -82,7 +89,7 @@ const Register = () => {
               rules={[{ required: true }]}
             >
               <Input
-                value={firstName}
+                value={firstname}
                 onChange={(e) => setFirstName(e.target.value)}
                 type="text"
                 placeholder="firstname" />
@@ -96,7 +103,7 @@ const Register = () => {
               rules={[{ required: true }]}
             >
               <Input
-                value={lastName}
+                value={lastname}
                 onChange={(e) => setLastName(e.target.value)}
                 type="text"
                 placeholder="lastname" />
@@ -121,8 +128,8 @@ const Register = () => {
         <Row className="Row">
           <Col className="Col-Form">
             <Form.Item
-              label="Phone number"
-              name="number"
+              label="Doctor"
+              name="doctor"
               required
               rules={[{ required: true }]}
             >
@@ -135,8 +142,7 @@ const Register = () => {
                 filterSort={(optionA, optionB) =>
                   (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
                 }
-                onChange={(e) => setChoseDoctor(e.target.value)}
-
+                onChange={(e) => setChoseDoctor(e)}
                 options={data}
               />
             </Form.Item>
@@ -150,7 +156,7 @@ const Register = () => {
               rules={[{ required: true }]}
             >
               <div className="docORrecep">
-                <label className="containerChe">paid
+                <label className="containerChe"><b>{paySum ? paySum : 0}</b> so'm  to'landi
                   <input value='Reception' onChange={(e) => setPaid(e.target.checked)} name='o' id='chi' type="radio" />
                   <span className="checkmark"></span>
                 </label>
