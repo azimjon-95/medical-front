@@ -1,0 +1,144 @@
+.queue_Container {
+    min-width: 58px;
+    width: 58px;
+    /* height: 20mm; */
+    /* min-height: 20mm; */
+    margin: 5px auto;
+    padding: 2px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgb(255, 255, 255);
+    border: .6px solid grey;
+}
+
+.queue_Img-box {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: .1px solid rgba(55, 195, 255, 0.267);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1px;
+
+}
+
+.queue_Img-box>img {
+    width: 100%;
+    height: 100%;
+}
+
+.textQueue {
+    width: 90%;
+    height: 11.5px;
+    font-size: 5px;
+    position: relative;
+}
+
+.textQueue>p {
+    border-bottom: .3px solid rgba(55, 195, 255, 0.267);
+    display: flex;
+    justify-content: center;
+}
+
+.textQueue>i {
+    text-align: end;
+    font-size: 2.5px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    color: rgba(55, 195, 255, 0.603);
+
+}
+
+.queue_Box {
+    width: 95%;
+    border-top: .3px dashed rgba(0, 0, 0, 0.267);
+    /* border-bottom: .3px dashed rgba(0, 0, 0, 0.267); */
+    height: 9px;
+    margin-top: 2px;
+
+}
+
+.queue_Box>p {
+    font-size: 3px;
+    text-align: center;
+}
+
+.queue_pay {
+    width: 95%;
+    height: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: .3px dashed rgba(0, 0, 0, 0.267);
+    border-bottom: .3px dashed rgba(0, 0, 0, 0.267);
+
+}
+
+#queNone {
+    border-top: none;
+}
+
+.queue_pay>p {
+    font-size: 2.5px;
+    margin-top: 2.3px;
+}
+
+.queue_pay>i {
+    font-size: 2.5px;
+
+}
+
+.queue {
+    width: 95%;
+    height: 8px;
+    margin-top: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.queue>b {
+    font-size: 7px;
+    line-height: 4px;
+}
+
+.queue>i {
+    font-size: 2.5px;
+}
+
+.queue_address {
+    width: 95%;
+    height: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2px;
+    border-top: .3px dashed rgba(0, 0, 0, 0.267);
+}
+
+.queue_address>p {
+    font-size: 3px;
+    line-height: 1px;
+}
+
+.queue_address>i {
+    font-size: 2.5px;
+    line-height: 1px;
+
+}
+
+.pdf_controllers {
+    padding: 5px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: dodgerblue;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}

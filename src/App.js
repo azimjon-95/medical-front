@@ -11,12 +11,14 @@ import AddDoctors from "./pages/admin/addDoctors/AddDoctors";
 import RegisterOwner from "./pages/admin/registerOwner/AddOwner";
 import Cabins from "./pages/receptionPage/Cabins/Cabins";
 import Register from "./pages/receptionPage/register/Register";
+import QueueList from "./components/checkLists/queue/QueueLisit";
 
 
 function App() {
   const { loading } = useSelector(state => state.alerts)
   return (
     <>
+      {/* <QueueList /> */}
       <BrowserRouter>
         {loading ? <Loading /> :
           <Routes>

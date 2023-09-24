@@ -7,14 +7,9 @@ const Doctor = () => {
     const [doctor, setDoctors] = useState([])
     const getDoctor = async () => {
         try {
-            const res = await axios?.get('/admin/getAllDoctors', {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            })
-            if (res.data.success) {
+            const res = await axios?.get('/user/getAllDoctors')
+            if (res.data.data) {
                 setDoctors(res.data.data)
-
             }
         } catch (error) {
             console.log(error);
@@ -24,25 +19,7 @@ const Doctor = () => {
     useEffect(() => {
         getDoctor()
     }, [])
-    const hendleAccounState = async (record, status) => {
-        try {
-            const res = await axios?.get('/admin/changeAccountStatus',
-                { doctorId: record._id, userId: record.userId, status: status },
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
-                    }
-                })
-            if (res.data.success) {
-                message.success(res.data.message)
 
-            }
-        } catch (error) {
-            console.log(error);
-            message.error("Something Went Wrong")
-            window.location.reload()
-        }
-    }
     const columns = [
         {
             title: "Name",
@@ -55,32 +32,29 @@ const Doctor = () => {
         },
         {
             title: "Status",
-            dataIndex: "status"
+            dataIndex: "specialization"
+
         },
         {
             title: "phone",
             dataIndex: "phone"
         },
         {
-            title: "Doctor",
-            dataIndex: "createdAt",
-            render: (text, record) => (
-                <span className="d-flex">
-                    {record.isDoctor ? "Yes" : "No"}
-                </span>
-            )
+            title: "Konsultatsiya to'lovi",
+            dataIndex: "feesPerCunsaltation"
         },
+        {
+            title: "Tajriba",
+            dataIndex: "experience"
+        },
+
         {
             title: "Actions",
             dataIndex: "actions",
             render: (text, record) => (
                 <div className="d-flex">
-                    {record.status === 'pending'
-                        ?
-                        <button onClick={() => hendleAccounState(record, "approved")} className='btn btn-success'>Approve</button>
-                        :
-                        <button className='btn btn-danger'>Reject</button>}
-                </div>
+                    <button button className='btn btn-danger'>Reject</button>
+                </div >
             )
         }
     ]

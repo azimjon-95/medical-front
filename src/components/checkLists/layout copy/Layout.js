@@ -18,7 +18,6 @@ const Layout = ({ children }) => {
         localStorage.clear()
         message.success("Logout Successfully")
         navigate("/login")
-        console.log('Ok');
     }
 
     // const SidebarMenu = onerMenu
@@ -48,9 +47,9 @@ const Layout = ({ children }) => {
                                 )
                             })
                         }
-                        <div className={`menu-item `}>
+                        <div className={`menu-item `} onDoubleClick={handleLogout}>
                             <i className='fa fa-sign-out'></i>
-                            <Link onClick={handleLogout} to="/login">
+                            <Link to="/login">
                                 Tizimdan chiqish
                             </Link>
                         </div>

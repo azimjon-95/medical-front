@@ -1,59 +1,65 @@
-import axios from '../../../api'
-import React, { useEffect, useState } from 'react'
-import Layout from '../../../components/layout/Layout'
+import React, { useState, useEffect } from 'react'
+import './style.css';
+import Layout from '../../../components/layout/Layout';
+import axios from '../../../api';
+import { Tabs, Table } from 'antd';
 
-import { Table } from 'antd'
 
 const Patients = () => {
-    const [users, setUsers] = useState([])
-    const getUsers = async () => {
-        try {
-            const res = await axios.get('/admin/getAllUsers')
-            if (res.data.success) {
-                setUsers(res.data.data)
-            }
-        } catch (error) {
-            console.log(error);
-        }
+  const [users, setUsers] = useState([])
+  const getUsers = async () => {
+    try {
+      const res = await axios.get('/client/all')
+      if (res.data.innerData) {
+        setUsers(res.data.innerData)
+      }
+    } catch (error) {
+      console.log(error);
     }
+  }
 
-    useEffect(() => {
-        getUsers()
-    }, [])
+  useEffect(() => {
+    getUsers()
+  }, [])
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      render: (record) => (
+        <span className="d-flex">
+          {record.firstname} {record.lastname}
+        </span>
+      )
+    },
+    {
+      title: "Phone",
+      dataIndex: "phone"
+    },
+    {
+      title: "Actions",
+      dataIndex: "isDoctor",
+      render: (text, record) => (
+        <div className="d-flex">
+          <button className='btn btn-danger' >Block</button>
+        </div >
+      )
+    }
+  ]
+  return (
+    <Layout>
+      <h4 className="text-center">Barcha bemorlar</h4>
+      <Tabs>
 
-    const columns = [
-        {
-            title: "Name",
-            dataIndex: "name"
-        },
-        {
-            title: "Email",
-            dataIndex: "email"
-        },
-        {
-            title: "Doctor",
-            dataIndex: "createdAt",
-            render: (text, record) => (
-                <span className="d-flex">
-                    {record?.isDoctor ? "Yes" : "No"}
-                </span>
-            )
-        },
-        {
-            title: "Actions",
-            dataIndex: "isDoctor",
-            render: (text, record) => (
-                <div className="d-flex">
-                    <button className='btn btn-danger' >Block</button>
-                </div >
-            )
-        }
-    ]
-    return (
-        <Layout>
-            <h3 className="text-center">All Users</h3>
-            <Table key={users} columns={columns} dataSource={users} />
-        </Layout>
-    )
+        <Tabs.TabPane tab="Yangi bemorlar" key={0}>
+          <Table key={users} columns={columns} dataSource={users} />
+        </Tabs.TabPane>
+
+        <Tabs.TabPane tab="Eskilari" key={1}>
+          <Table key={users} columns={columns} dataSource={users} />
+        </Tabs.TabPane>
+      </Tabs>
+    </Layout >
+  )
 }
+
 export default Patients

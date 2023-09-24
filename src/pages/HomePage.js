@@ -8,18 +8,14 @@ const HomePage = () => {
   const [doctor, setDoctors] = useState([])
 
   const getUserPage = () => {
-    try {
-      const res = axios?.post(`/user/getUserData`, {}, {
-        headers: {
-          Authorization: "Bearer" + localStorage.getItem('token')
-        }
-      })
-      if (res?.data.success) {
-        setDoctors(res?.data.data)
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   const res = axios?.get(`/user/getUserData`)
+    //   if (res?.data.data) {
+    //     setDoctors(res?.data.data)
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
   }
   useEffect(() => {
     getUserPage()
@@ -30,7 +26,7 @@ const HomePage = () => {
     <Layout>
       <h3 className="text-center">Home Page</h3>
       <Row>
-        {doctor && !doctor?.map((doctor) => <DoctorList doctor={doctor} />)}
+        {/* {doctor && !doctor?.map((doctor) => <DoctorList doctor={doctor} />)} */}
       </Row>
     </Layout>
 
