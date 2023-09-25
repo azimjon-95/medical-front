@@ -10,7 +10,7 @@ import Profile from "./pages/admin/profile/Profile";
 import AddDoctors from "./pages/admin/addDoctors/AddDoctors";
 import RegisterOwner from "./pages/admin/registerOwner/AddOwner";
 import Cabins from "./pages/receptionPage/Cabins/Cabins";
-import Register from "./pages/receptionPage/register/Register";
+import Register from "./pages/receptionPage/register/Registers";
 import QueueList from "./components/checkLists/queue/QueueLisit";
 
 
