@@ -8,8 +8,13 @@ const Doctor = () => {
     const [doctor, setDoctors] = useState([])
     const getDoctor = async () => {
         try {
-            const res = await axios?.get('/user/getAllDoctors')
-            if (res.data.data) {
+            const res = await axios?.get('/admin/getAllDoctors', {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+
+                }
+            })
+            if (res.data.success) {
                 setDoctors(res.data.data)
             }
         } catch (error) {

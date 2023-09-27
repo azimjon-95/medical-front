@@ -13,26 +13,57 @@ import QueueList from "../../../components/checkLists/queue/QueueLisit";
 const Register = () => {
   const { user } = useSelector(state => state.user)
   const dispatch = useDispatch()
+<<<<<<< HEAD
   const componentRef = useRef()
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
+=======
+  const navigate = useNavigate()
+
+  const [firstname, setFirstName] = useState("")
+  const [lastname, setLastName] = useState("")
+>>>>>>> origin/bahromjon
   const [phone, setPhone] = useState("")
-  const [paySumm] = useState(0)
-  const [paid, setPaid] = useState("")
+  const [paySum, setPaySum] = useState(0)
+  const [payState, setPaid] = useState("")
   const [choseDoctor, setChoseDoctor] = useState("")
 
+  const [allDoctor, setChAllDoctor] = useState([])
 
-  const AllInfo = {
-    firstName,
-    lastName,
-    phone,
-    paySumm,
-    paid,
-    choseDoctor
+  useEffect(() => {
+    axios.get("/user/getAllDoctors")
+      .then((res) => setChAllDoctor(res?.data.data))
+      .catch((err) => console.log(err));
+  }, [])
+
+  let sortedData = allDoctor.filter(i => i.specialization.length > 3)
+
+  useEffect(() => {
+    let doctor_price = allDoctor?.find(d => d._id === choseDoctor)
+    setPaySum(doctor_price?.feesPerCunsaltation)
+  }, [choseDoctor])
+
+  const data = []
+  for (const item of sortedData) {
+    data.push(
+      {
+        value: item._id,
+        label: item.specialization,
+      }
+    )
   }
-  const handleFinish = async (values) => {
-    console.log(values);
 
+
+  const handleFinish = async (values) => {
+    let doctor_price = allDoctor.find(d => d._id === choseDoctor)
+    const AllInfo = {
+      firstname,
+      lastname,
+      phone,
+      payState,
+      choseDoctor: doctor_price.specialization,
+      paySumm: doctor_price.feesPerCunsaltation
+    }
     try {
       dispatch(showLoading())
       const res = await axios.post("/client", AllInfo);
@@ -50,6 +81,7 @@ const Register = () => {
   }
 
 
+<<<<<<< HEAD
   const [allDoctor, setChAllDoctor] = useState([])
 
   useEffect(() => {
@@ -91,6 +123,8 @@ const Register = () => {
   ]
 
 
+=======
+>>>>>>> origin/bahromjon
   return (
     <>
       <Layout>
@@ -183,11 +217,74 @@ const Register = () => {
             </Col>
           </Row >
 
+<<<<<<< HEAD
           <Col className="Col-Form" >
             {paid && firstName ?
               <ReactToPrint
                 trigger={() => <button className="btn btn-primary"> Yuborishss</button>}
                 content={() => componentRef.current}
+=======
+              name="text"
+              required
+              rules={[{ required: true }]}
+            >
+              <Input
+                value={firstname}
+                onChange={(e) => setFirstName(e.target.value)}
+                type="text"
+                placeholder="firstname" />
+            </Form.Item>
+          </Col >
+          <Col className="Col-Form" >
+            <Form.Item
+              label="Last Name"
+              name="text"
+              required
+              rules={[{ required: true }]}
+            >
+              <Input
+                value={lastname}
+                onChange={(e) => setLastName(e.target.value)}
+                type="text"
+                placeholder="lastname" />
+            </Form.Item>
+          </Col>
+          <Col className="Col-Form">
+            <Form.Item
+              label="Phone number"
+              name="number"
+              required
+              rules={[{ required: true }]}
+            >
+              <Input
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                type="number"
+                placeholder="number" />
+            </Form.Item>
+          </Col>
+
+        </Row >
+        <Row className="Row">
+          <Col className="Col-Form">
+            <Form.Item
+              label="Doctor"
+              name="doctor"
+              required
+              rules={[{ required: true }]}
+            >
+              <Select
+                showSearch
+                // style={{ width: 200 }}
+                placeholder="Search to Select"
+                optionFilterProp="children"
+                filterOption={(input, option) => (option?.label ?? '').includes(input)}
+                filterSort={(optionA, optionB) =>
+                  (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                }
+                onChange={(e) => setChoseDoctor(e)}
+                options={data}
+>>>>>>> origin/bahromjon
               />
               :
               <button className="btn btn-primary" type="submit">
@@ -195,11 +292,41 @@ const Register = () => {
               </button>
             }
           </Col>
+<<<<<<< HEAD
         </Form >
       </Layout >
       
       <QueueList ref={componentRef} />
     </>
+=======
+          <Col className="Col-Form" >
+
+            <Form.Item
+              label="To'landi"
+              name="paid"
+              required
+              rules={[{ required: true }]}
+            >
+              <div className="docORrecep">
+                <label className="containerChe"><b>{paySum ? paySum : 0}</b> so'm  to'landi
+                  <input value='Reception' onChange={(e) => setPaid(e.target.checked)} name='o' id='chi' type="radio" />
+                  <span className="checkmark"></span>
+                </label>
+              </div>
+            </Form.Item>
+          </Col>
+        </Row >
+
+        <Col className="Col-Form" >
+          <button className="btn btn-primary" type="submit">
+            Yuborish
+          </button>
+        </Col>
+      </Form >
+    </Layout >
+
+
+>>>>>>> origin/bahromjon
   );
 };
 
