@@ -6,6 +6,7 @@ import './style.css'
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { showLoading, hideLoading } from '../../../redux/features/indexSlice';
+import { NumberFormat } from "../../../hook/NumberFormat";
 
 
 const Register = () => {
@@ -56,6 +57,8 @@ const Register = () => {
       choseDoctor: doctor_price.specialization,
       paySumm: doctor_price.feesPerCunsaltation
     }
+
+    console.log(AllInfo);
     try {
       dispatch(showLoading())
       const res = await axios.post("/client", AllInfo);
@@ -73,6 +76,24 @@ const Register = () => {
   }
 
 
+  // const number = paySum;
+  // const USformatter = new Intl.NumberFormat("en-US");
+  // const PriceNumber = USformatter.format(number);
+
+
+
+
+  // function FormatNumberApp() {
+  //   const numberToFormat = 1234567890;
+
+  //   return (
+  //     <div className='container'>
+  //       <h3>React js format number - hypen seperated</h3>
+  //       <p>Original number: {numberToFormat}</p>
+  //       <p>Formatted number: {formatNumberWithHyphen(numberToFormat)}</p>
+  //     </div>
+  //   );
+  // }
   return (
 
     <Layout>
@@ -136,7 +157,7 @@ const Register = () => {
               <Select
                 showSearch
                 // style={{ width: 200 }}
-                placeholder="Search to Select"
+                placeholder="Doctorni tanlang..."
                 optionFilterProp="children"
                 filterOption={(input, option) => (option?.label ?? '').includes(input)}
                 filterSort={(optionA, optionB) =>
@@ -155,8 +176,14 @@ const Register = () => {
               required
               rules={[{ required: true }]}
             >
-              <div className="docORrecep">
-                <label className="containerChe"><b>{paySum ? paySum : 0}</b> so'm  to'landi
+              <div onClick={() => setPaid()} className="docORrecep">
+                <label className="containerChe Che">
+                  <b> {NumberFormat(paySum)} </b>
+                  <p>{payState
+                    ? `${paySum
+                      ? "so'm  to'landi"
+                      : "Doctorni tanlang "}`
+                    : ""}</p>
                   <input value='Reception' onChange={(e) => setPaid(e.target.checked)} name='o' id='chi' type="radio" />
                   <span className="checkmark"></span>
                 </label>
@@ -171,6 +198,7 @@ const Register = () => {
           </button>
         </Col>
       </Form >
+
     </Layout >
 
 
@@ -178,3 +206,4 @@ const Register = () => {
 };
 
 export default Register;
+

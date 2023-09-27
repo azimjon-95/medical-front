@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Layout from '../../../components/layout/Layout'
 import axios from '../../../api'
 import { message, Table } from 'antd'
+import { NumberFormat, PhoneNumberFormat } from '../../../hook/NumberFormat'
 
 const Doctor = () => {
     const [doctor, setDoctors] = useState([])
@@ -20,48 +21,35 @@ const Doctor = () => {
         getDoctor()
     }, [])
 
-    const columns = [
-        {
-            title: "Name",
-            dataIndex: "name",
-            render: (text, record) => (
-                <span className="d-flex">
-                    {record.firstName} {record.lastName}
-                </span>
-            )
-        },
-        {
-            title: "Status",
-            dataIndex: "specialization"
 
-        },
-        {
-            title: "phone",
-            dataIndex: "phone"
-        },
-        {
-            title: "Konsultatsiya to'lovi",
-            dataIndex: "feesPerCunsaltation"
-        },
-        {
-            title: "Tajriba",
-            dataIndex: "experience"
-        },
-
-        {
-            title: "Actions",
-            dataIndex: "actions",
-            render: (text, record) => (
-                <div className="d-flex">
-                    <button button className='btn btn-danger'>Reject</button>
-                </div >
-            )
-        }
-    ]
     return (
         <Layout>
             <h3 className="text-center">All Doctors</h3>
-            <Table columns={columns} dataSource={doctor} />
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th>Full name</th>
+                        <th>Category</th>
+                        <th>Phone</th>
+                        <th>Konsultatsiya to'lovi</th>
+                        <th>O'chirish</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {doctor?.map((item, inx) => (
+                        <tr key={inx}>
+                            <td data-label="Fullname">{item.firstName} {item.lastName}</td>
+                            <td data-label="Category">{item.specialization}</td>
+                            <td data-label="phone">{PhoneNumberFormat(item.phone)}</td>
+                            <td data-label="feesPerCunsaltation">{NumberFormat(item.feesPerCunsaltation)}</td>
+                            <td data-label="experience">{item.experience}</td>
+                            <td data-label="experience">
+                                <button button="true" className='btn btn-danger'>Reject</button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </Layout>
     )
 }

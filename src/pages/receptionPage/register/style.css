@@ -60,3 +60,15 @@
     border-radius: 5px;
     padding: 0 10px;
 }
+
+.Che {
+    display: flex;
+    height: 25px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.Che>p {
+    margin: 0 0 0 4px;
+}
