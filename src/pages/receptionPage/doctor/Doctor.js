@@ -11,6 +11,7 @@ const Doctor = () => {
             const res = await axios?.get('/admin/getAllDoctors', {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
+                    
 
                 }
             })
