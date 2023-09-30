@@ -4,11 +4,13 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { onerMenu, adminMenu, doctorMenu } from '../../utils/DataSidebar';
 import './style.css';
 import { Badge, message } from 'antd';
+import { AiFillLeftCircle } from 'react-icons/ai'
 
 const Layout = ({ children }) => {
     const location = useLocation()
     const navigate = useNavigate()
     const { user } = useSelector(state => state.user)
+    const [sideOpen, setSideOpen] = useState(false)
 
     let admin = localStorage.getItem('admin') || {}
 
@@ -21,54 +23,59 @@ const Layout = ({ children }) => {
         console.log('Ok');
     }
 
-    // const SidebarMenu = onerMenu
+    const OpenSID = () => {
+        setSideOpen(i => !i)
+    }
 
     return (
         <div className='Main-Lay'>
             <div className="Layout">
-                <div className="Sidebar">
-                    <div className="login">
-                        <h6>DOC APP</h6>
-                        <hr />
-                    </div>
-                    <div className="menu">
-                        {/* {adminMenu.map((menu, inx) => { */}
-                        {
-                            SidebarMenu?.map((menu, inx) => {
-                                const isActive = location.pathname === menu.path
-                                return (
+                <div className="SidCont">
+                    <div className={`Sidebar ${sideOpen ? "sideOpen" : "Sidebar"}`}>
+                        <div className="SidebarHeader">
+                            <h6 className={` ${sideOpen ? "LinkNone" : "noneText"}`}>DOC APP</h6>
+                            <button className={`OpenWindowSid ${sideOpen ? "OpenWindowRight" : ""}`} ><AiFillLeftCircle onClick={() => OpenSID()} /></button>
+                            <p className='MobileSidText'>DOC APP</p>
+                        </div>
+                        <div className="menu">
+                            {
+                                SidebarMenu?.map((menu, inx) => {
+                                    const isActive = location.pathname === menu.path
+                                    return (
 
-                                    <div key={inx} className={`menu-item ${isActive && "active"}`}>
-                                        <i className={menu.icon}></i>
-                                        <Link to={menu.path}>
-                                            {menu.name}
+                                        // <Link to={menu.path} key={inx} className={`menu-item `}>
+                                        <Link to={menu.path} key={inx} className={`menu-item ${isActive && "active"}`}>
+
+                                            <i className={menu.icon}></i>
+
+                                            <Link className={` ${sideOpen ? "LinkNone" : "noneText"}`} to={menu.path}>
+                                                {menu.name}
+                                            </Link>
+
+                                            <p className='MobileSidText'>{menu.name}</p>
                                         </Link>
-                                    </div>
 
-                                )
-                            })
-                        }
-                        <div className={`menu-item `}>
-                            <i className='fa fa-sign-out'></i>
-                            <Link onClick={handleLogout} to="/login">
-                                Tizimdan chiqish
+                                    )
+                                })
+                            }
+
+                            <Link className={`menu-item `} onDoubleClickCapture={handleLogout} to="/login">
+                                <i className='fa fa-sign-out'></i>
+
+                                <Link className={`${sideOpen ? "LinkNone" : "noneText"}`} onClick={handleLogout} to="/login">
+                                    Tizimdan chiqish
+                                </Link>
+                                <p className='MobileSidText'>Chiqish</p>
+
                             </Link>
                         </div>
                     </div>
                 </div>
                 <div className="content">
-                    <div className="header">
-                        <div className="header-content">
-                            <Badge count={user && user.notifcation.length} onClick={() => { navigate("/notification") }}>
-                                <i style={{ cursor: 'pointer' }} className="fa fa-bell" aria-hidden="true"></i>
-                            </Badge>
-                            <Link to="/profilr">{user?.name}</Link>
-                        </div>
-                    </div>
                     <div className="body">{children}</div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 export default Layout

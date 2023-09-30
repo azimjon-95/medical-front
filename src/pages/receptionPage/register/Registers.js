@@ -1,5 +1,5 @@
 import axios from "../../../api";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Layout from "../../../components/layout/Layout";
 import { Col, Form, Input, message, Row, Select } from 'antd';
 import './style.css'
@@ -7,24 +7,29 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { showLoading, hideLoading } from '../../../redux/features/indexSlice';
 import { NumberFormat } from "../../../hook/NumberFormat";
+import ReactToPrint from "react-to-print";
+import QueueList from "../../../components/checkLists/queue/QueueLisit";
 
 
 const Register = () => {
   const { user } = useSelector(state => state.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
+  const componentRef = useRef();
   const [firstname, setFirstName] = useState("")
   const [lastname, setLastName] = useState("")
   const [phone, setPhone] = useState("")
   const [paySum, setPaySum] = useState(0)
   const [payState, setPaid] = useState("")
   const [choseDoctor, setChoseDoctor] = useState("")
-
+  const [doctorFirstName, setDoctorFirstName] = useState("")
+  const [doctorLastName, setDoctorLastName] = useState("")
+  const [doctorSpecialization, setDoctorSpecialization] = useState("")
+  const [queueNumber, setQueueNumber] = useState(23)
   const [allDoctor, setChAllDoctor] = useState([])
 
   useEffect(() => {
-    axios.get("/user/getAllDoctors")
+    axios.get("/admin/getAllDoctors")
       .then((res) => setChAllDoctor(res?.data.data))
       .catch((err) => console.log(err));
   }, [])
@@ -32,8 +37,11 @@ const Register = () => {
   let sortedData = allDoctor.filter(i => i.specialization.length > 3)
 
   useEffect(() => {
-    let doctor_price = allDoctor?.find(d => d._id === choseDoctor)
-    setPaySum(doctor_price?.feesPerCunsaltation)
+    let doctor_info = allDoctor?.find(d => d._id === choseDoctor)
+    setPaySum(doctor_info?.feesPerCunsaltation)
+    setDoctorFirstName(doctor_info?.firstName)
+    setDoctorLastName(doctor_info?.lastName)
+    setDoctorSpecialization(doctor_info?.specialization)
   }, [choseDoctor])
 
   const data = []
@@ -47,21 +55,24 @@ const Register = () => {
   }
 
 
-  const handleFinish = async (values) => {
+  const handleFinish = async () => {
     let doctor_price = allDoctor.find(d => d._id === choseDoctor)
+
     const AllInfo = {
       firstname,
       lastname,
       phone,
       payState,
       choseDoctor: doctor_price.specialization,
-      paySumm: doctor_price.feesPerCunsaltation
+      paySumm: doctor_price.feesPerCunsaltation,
+      doctorFirstName,
+      doctorLastName
     }
-
     console.log(AllInfo);
+
     try {
       dispatch(showLoading())
-      const res = await axios.post("/client", AllInfo);
+      const res = await axios.post("/client/add", AllInfo);
       dispatch(hideLoading())
       if (res.data.success) {
         message.success("Register Successfully!");
@@ -76,24 +87,6 @@ const Register = () => {
   }
 
 
-  // const number = paySum;
-  // const USformatter = new Intl.NumberFormat("en-US");
-  // const PriceNumber = USformatter.format(number);
-
-
-
-
-  // function FormatNumberApp() {
-  //   const numberToFormat = 1234567890;
-
-  //   return (
-  //     <div className='container'>
-  //       <h3>React js format number - hypen seperated</h3>
-  //       <p>Original number: {numberToFormat}</p>
-  //       <p>Formatted number: {formatNumberWithHyphen(numberToFormat)}</p>
-  //     </div>
-  //   );
-  // }
   return (
 
     <Layout>
@@ -104,7 +97,7 @@ const Register = () => {
             <Form.Item
               label="First name"
 
-              name="text"
+              name="firstname"
               required
               rules={[{ required: true }]}
             >
@@ -118,7 +111,7 @@ const Register = () => {
           <Col className="Col-Form" >
             <Form.Item
               label="Last Name"
-              name="text"
+              name="lastname"
               required
               rules={[{ required: true }]}
             >
@@ -168,6 +161,17 @@ const Register = () => {
               />
             </Form.Item>
           </Col>
+
+          <Col className="Col-Form" >
+            <Form.Item
+              label="Do'ktor FIO"
+              name="Do'ktor FIO"
+            >
+              <div className="doctorName">
+                <p>{doctorLastName} {doctorFirstName}</p>
+              </div>
+            </Form.Item>
+          </Col>
           <Col className="Col-Form" >
 
             <Form.Item
@@ -190,14 +194,35 @@ const Register = () => {
               </div>
             </Form.Item>
           </Col>
+
+
         </Row >
 
-        <Col className="Col-Form" >
-          <button className="btn btn-primary" type="submit">
-            Yuborish
-          </button>
+        <Col className="Col-Form">
+          {payState && payState
+            ?
+            <ReactToPrint trigger={() =>
+              <button className="btn btn-primary" type="submit"> Yuborish</button>}
+              content={() => componentRef.current}
+            >
+            </ReactToPrint>
+            :
+            <button className="btn btn-primary" type="submit"> Yuborish</button>
+          }
         </Col>
+
       </Form >
+      <div style={{ display: "none" }}>
+        <QueueList componentRef={componentRef}
+          firstname={firstname}
+          lastname={lastname}
+          payState={paySum}
+          doctorFirstName={doctorFirstName}
+          doctorLastName={doctorLastName}
+          doctorSpecialization={doctorSpecialization}
+          queueNumber={queueNumber}
+        />
+      </div>
 
     </Layout >
 

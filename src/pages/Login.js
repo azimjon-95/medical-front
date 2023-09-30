@@ -15,7 +15,7 @@ const Login = () => {
   const onfinishHandler = async (values) => {
     try {
       dispatch(showLoading())
-      const res = await axios.post("/user/login", values);
+      const res = await axios.post("/admin/login", values);
       dispatch(hideLoading())
       if (res.data.success) {
         // dispatch(setUser(res.data.innerData))
