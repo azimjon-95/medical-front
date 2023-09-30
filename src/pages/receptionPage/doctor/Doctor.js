@@ -15,7 +15,6 @@ const Doctor = () => {
             })
             if (res.data.success) {
                 setDoctors(res.data.data)
-
             }
         } catch (error) {
             console.log(error);
