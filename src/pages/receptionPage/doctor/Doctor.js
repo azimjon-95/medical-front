@@ -11,7 +11,7 @@ const Doctor = () => {
             const res = await axios?.get('/admin/getAllDoctors', {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
-                    
+
 
                 }
             })
@@ -26,32 +26,26 @@ const Doctor = () => {
     useEffect(() => {
         getDoctor()
     }, [])
-
-
+    let data = doctor.filter(i => i.docORrecep === "doctor")
     return (
         <Layout>
             <h3 className="text-center">All Doctors</h3>
             <table className="table">
                 <thead>
                     <tr>
-                        <th>Full name</th>
-                        <th>Category</th>
-                        <th>Phone</th>
+                        <th>Doktor</th>
+                        <th>Darajasi</th>
+                        <th>Tel No</th>
                         <th>Konsultatsiya to'lovi</th>
-                        <th>O'chirish</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {doctor?.map((item, inx) => (
+                    {data?.map((item, inx) => (
                         <tr key={inx}>
-                            <td data-label="Fullname">{item.firstName} {item.lastName}</td>
-                            <td data-label="Category">{item.specialization}</td>
-                            <td data-label="phone">{PhoneNumberFormat(item.phone)}</td>
-                            <td data-label="feesPerCunsaltation">{NumberFormat(item.feesPerCunsaltation)}</td>
-                            <td data-label="experience">{item.experience}</td>
-                            <td data-label="experience">
-                                <button button="true" className='btn btn-danger'>Reject</button>
-                            </td>
+                            <td data-label="Doktor">{item.firstName} {item.lastName}</td>
+                            <td data-label="Darajasi">{item.specialization}</td>
+                            <td data-label="Tel No">{PhoneNumberFormat(item.phone)}</td>
+                            <td data-label="Konsultatsiya">{NumberFormat(item.feesPerCunsaltation)} so'm</td>
                         </tr>
                     ))}
                 </tbody>

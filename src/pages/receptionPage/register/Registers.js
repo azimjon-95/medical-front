@@ -65,8 +65,8 @@ const Register = () => {
       payState,
       choseDoctor: doctor_price.specialization,
       paySumm: doctor_price.feesPerCunsaltation,
-      doctorFirstName,
-      doctorLastName
+      doctorFirstName: doctor_price.firstName,
+      doctorLastName: doctor_price.lastName
     }
     console.log(AllInfo);
 

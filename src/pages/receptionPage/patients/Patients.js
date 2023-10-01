@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import './style.css';
 import Layout from '../../../components/layout/Layout';
 import axios from '../../../api';
-import { Tabs, Table } from 'antd';
+import { NumberFormat, PhoneNumberFormat } from '../../../hook/NumberFormat'
+
 
 
 const Patients = () => {
@@ -10,8 +11,8 @@ const Patients = () => {
   const getUsers = async () => {
     try {
       const res = await axios.get('/client/all')
-      if (res.data.innerData) {
-        setUsers(res.data.innerData)
+      if (res.data.data) {
+        setUsers(res.data.data)
       }
     } catch (error) {
       console.log(error);
@@ -21,43 +22,36 @@ const Patients = () => {
   useEffect(() => {
     getUsers()
   }, [])
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      render: (record) => (
-        <span className="d-flex">
-          {record.firstname} {record.lastname}
-        </span>
-      )
-    },
-    {
-      title: "Phone",
-      dataIndex: "phone"
-    },
-    {
-      title: "Actions",
-      dataIndex: "isDoctor",
-      render: (text, record) => (
-        <div className="d-flex">
-          <button className='btn btn-danger' >Block</button>
-        </div >
-      )
-    }
-  ]
+
   return (
     <Layout>
       <h4 className="text-center">Barcha bemorlar</h4>
-      <Tabs>
-
-        <Tabs.TabPane tab="Yangi bemorlar" key={0}>
-          <Table key={users} columns={columns} dataSource={users} />
-        </Tabs.TabPane>
-
-        <Tabs.TabPane tab="Eskilari" key={1}>
-          <Table key={users} columns={columns} dataSource={users} />
-        </Tabs.TabPane>
-      </Tabs>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Bemor</th>
+            <th>Tel No</th>
+            <th>Yo'naltirildi</th>
+            <th>Doktor</th>
+            <th>To'landi</th>
+            <th>O'chirish</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users?.map((item, inx) => (
+            <tr key={inx}>
+              <td data-label="Bemor">{item.lastname} {item.firstname}</td>
+              <td data-label="Tel No">{PhoneNumberFormat(item.phone)}</td>
+              <td data-label="Yo'naltirildi">{item.choseDoctor}</td>
+              <td data-label="Doktor">{item.doctorLastName} {item.doctorFirstName}</td>
+              <td data-label="To'landi">{NumberFormat(item.paySumm)} so'm</td>
+              <td data-label="O'chirish">
+                <button button="true" className='btn btn-danger'>Del</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </Layout >
   )
 }
