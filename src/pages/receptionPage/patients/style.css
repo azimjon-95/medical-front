@@ -1,0 +1,70 @@
+.PayContainer {
+    position: relative;
+}
+
+
+
+
+.Tolanmadi {
+    position: absolute;
+    bottom: -17px;
+    left: 0;
+    font-size: 12px;
+}
+
+.lee {
+    color: green;
+}
+
+.lii {
+    color: red;
+}
+
+.PayPatients {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 30px;
+    border: 1px solid rgb(209, 209, 209);
+    border-radius: 5px;
+    padding: 0 5px;
+}
+
+
+.PayCHe {
+    display: flex;
+    height: 25px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.PayCHe>svg {
+    margin-bottom: 15px;
+}
+
+.Ai {
+    color: red;
+}
+
+.Md {
+    color: green;
+}
+
+@media screen and (max-width: 890px) {
+    .PayContainer {
+        padding: 10px 0;
+    }
+
+    .PayPatients {
+        margin-top: -10px;
+    }
+
+    .Tolanmadi {
+        bottom: -7px;
+    }
+
+    .PayCHe>svg {
+        margin-bottom: 12px;
+    }
+}

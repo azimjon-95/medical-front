@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react'
 import './style.css';
 import Layout from '../../../components/layout/Layout';
 import { useDispatch, useSelector } from 'react-redux';
-import { hideLoading, showLoading } from '../../../redux/features/indexSlice';
 import axios from '../../../api';
 import { useNavigate } from 'react-router-dom';
 import { Col, Form, Input, message, Row, Tabs } from 'antd';
 import Door from '../../../assets/door.png'
+import { showLoading, hideLoading } from "../../../redux/features/lineIoad";
+
+
 
 const Cabins = () => {
   const navigate = useNavigate()
@@ -21,13 +23,22 @@ const Cabins = () => {
   const [data, setData] = useState([])
   // ---------------------------
 
+  const getRooms = async () => {
+    try {
+      dispatch(showLoading())
+      const res = await axios?.get('/rooms/getAllRoom')
+      dispatch(hideLoading())
+      if (res.data.success) {
+        setData(res.data.innerData)
+      }
+    } catch (error) {
+      dispatch(hideLoading())
+      console.log(error);
+    }
+  }
   useEffect(() => {
-    axios.get("/rooms/getAllRoom")
-      .then((res) => setData(res?.data.innerData))
-      .catch((err) => console.log(err));
+    getRooms()
   }, [])
-
-
 
   // const deleteAllRead = async () => {
   //   try {

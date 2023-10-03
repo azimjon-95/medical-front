@@ -16,6 +16,7 @@
     box-shadow: 0 0 2px gray;
     margin-right: 15px;
     color: #fff;
+
 }
 
 .sideOpen {
@@ -29,8 +30,21 @@
 
 .content {
     width: 100%;
-    height: 100%;
+    height: 98vh;
+    position: relative;
+}
 
+.BoxLine {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
 }
 
 .header {

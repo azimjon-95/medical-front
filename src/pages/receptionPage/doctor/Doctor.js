@@ -3,22 +3,23 @@ import Layout from '../../../components/layout/Layout'
 import axios from '../../../api'
 import { message, Table } from 'antd'
 import { NumberFormat, PhoneNumberFormat } from '../../../hook/NumberFormat'
+import { showLoading, hideLoading } from "../../../redux/features/lineIoad";
+import { useDispatch } from "react-redux";
+
 
 const Doctor = () => {
     const [doctor, setDoctors] = useState([])
+    const dispatch = useDispatch()
     const getDoctor = async () => {
         try {
-            const res = await axios?.get('/admin/getAllDoctors', {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-
-
-                }
-            })
+            dispatch(showLoading())
+            const res = await axios?.get('/admin/getAllDoctors')
+            dispatch(hideLoading())
             if (res.data.success) {
                 setDoctors(res.data.data)
             }
         } catch (error) {
+            dispatch(hideLoading())
             console.log(error);
         }
     }

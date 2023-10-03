@@ -6,6 +6,8 @@ import './style.css';
 import { Badge, message } from 'antd';
 import { AiFillLeftCircle } from 'react-icons/ai'
 
+import HeartLine from '../loading/HeartLine';
+
 const Layout = ({ children }) => {
     const location = useLocation()
     const navigate = useNavigate()
@@ -26,6 +28,7 @@ const Layout = ({ children }) => {
     const OpenSID = () => {
         setSideOpen(i => !i)
     }
+    const { LineLoad } = useSelector(state => state.lines)
 
     return (
         <div className='Main-Lay'>
@@ -72,7 +75,15 @@ const Layout = ({ children }) => {
                     </div>
                 </div>
                 <div className="content">
-                    <div className="body">{children}</div>
+                    {LineLoad ?
+                        <div className="BoxLine">
+                            <div>
+                                <HeartLine />
+                            </div>
+                        </div>
+                        :
+                        <div className="body">{children}</div>
+                    }
                 </div>
             </div>
         </div >

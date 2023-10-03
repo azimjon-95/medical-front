@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
 import { useSelector } from 'react-redux';
-import { Loading } from "./components/Loading";
+import { Loading } from "./components/loading/Loading";
 import PublicRoute from "./hook/PublicRoute";
 import Patients from "./pages/receptionPage/patients/Patients";
 import Doctor from "./pages/receptionPage/doctor/Doctor";
@@ -11,7 +11,7 @@ import AddDoctors from "./pages/admin/addDoctors/AddDoctors";
 import RegisterOwner from "./pages/admin/registerOwner/AddOwner";
 import Cabins from "./pages/receptionPage/Cabins/Cabins";
 import Register from "./pages/receptionPage/register/Registers";
-import QueueList from "./components/checkLists/queue/QueueLisit";
+
 
 
 function App() {
@@ -44,6 +44,7 @@ function App() {
           </Routes>
         }
       </BrowserRouter>
+
     </>
   );
 }
