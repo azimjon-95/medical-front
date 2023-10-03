@@ -1,0 +1,49 @@
+.appointmentSinglePage {
+    padding: 20px;
+}
+
+.appointmentSinglePage .appointmentSinglePage_info {
+    background-color: #33010123;
+    padding: 20px 10px 5px 10px;
+}
+
+.extraInfo {
+    height: 535px;
+    width: 100%;
+    padding: 20px;
+    background-color: #33010114;
+    margin-top: 20px;
+}
+
+.extraInfo form {
+    display: flex;
+    flex-direction: column;
+}
+
+.extraInfo .label {
+    margin-top: 20px;
+}
+
+.extraInfo form input,
+.extraInfo form textarea {
+    border: 1px solid #444;
+    height: 30px;
+    border-radius: 3px;
+    width: 70%;
+    outline: none;
+    text-indent: 10px;
+}
+
+.extraInfo form textarea {
+    height: 120px;
+}
+
+.extraInfo form button {
+    background-color: #330101;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    width: 150px;
+    margin-top: 30px;
+    padding: 5px 15px;
+}

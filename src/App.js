@@ -12,7 +12,8 @@ import RegisterOwner from "./pages/admin/registerOwner/AddOwner";
 import Cabins from "./pages/receptionPage/Cabins/Cabins";
 import Register from "./pages/receptionPage/register/Registers";
 import QueueList from "./components/checkLists/queue/QueueLisit";
-
+import Appointments from './pages/appointments/Appointments'
+import AppointmentSinglePage from "./pages/appointment-single-page/AppointmentSinglePage";
 
 function App() {
   const { loading } = useSelector(state => state.alerts)
@@ -41,6 +42,10 @@ function App() {
             <Route path="/receptionHome" element={<Register />} />
 
             <Route path="/doctor/profilr/:id" element={<Profile />} />
+
+            <Route path="/appointments" element={<Appointments />} />
+            <Route path="/appointments/:id" element={<AppointmentSinglePage />} />
+
           </Routes>
         }
       </BrowserRouter>
