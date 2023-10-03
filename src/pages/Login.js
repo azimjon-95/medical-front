@@ -21,6 +21,7 @@ const Login = () => {
         // dispatch(setUser(res.data.innerData))
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("admin", res.data.exactAdmin.docORrecep);
+        localStorage.setItem("category", res.data.exactAdmin.specialization);
         message.success("Login Successfully");
         navigate("/");
 

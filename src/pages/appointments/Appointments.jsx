@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Layout from '../../components/layout/Layout'
 import axios from '../../api/'
 import './Appointments.css'
+import { Link } from 'react-router-dom'
+import { NumberFormat } from '../../hook/NumberFormat'
 
 function Appointments() {
     const [data, setData] = useState([])
@@ -12,7 +14,7 @@ function Appointments() {
             .catch(err => console.log(err))
     }, [])
     let category = localStorage.getItem('category')
-    let clients = data.filter(client => client.choseDoctor.toLowerCase() === category.toLowerCase())
+    let clients = data.filter(client => client.choseDoctor.toLowerCase() === category?.toLowerCase() && client.payState)
 
     return (
         <Layout>
@@ -24,7 +26,6 @@ function Appointments() {
                         <th>Ismi</th>
                         <th>Fmailiya</th>
                         <th>phone</th>
-                        <th>to'lov holati</th>
                         <th>to'lov</th>
                     </tr>
                 </thead>
@@ -33,13 +34,16 @@ function Appointments() {
                         clients?.map((client, index) =>
                             <tr>
                                 <td>{index + 1}</td>
-                                <td>{client.firstname}</td>
+                                <td>
+                                    <Link to={`/appointments/${client._id}`} >
+                                        {client.firstname}
+                                    </Link>
+                                </td>
                                 <td>{client.lastname}</td>
                                 <td>{client.phone}</td>
-                                <td style={{ background: client.payState ? "greenyellow" : "red" }}></td>
-                                <td>{client.paySumm}</td>
+                                {/* <td style={{ background: client.payState ? "greenyellow" : "red" }}></td> */}
+                                <td>{NumberFormat(client.paySumm)}</td>
                             </tr>
-
                         )
                     }
                 </tbody>
