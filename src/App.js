@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages/admin/home/HomePage";
 import Login from "./pages/Login";
 import { useSelector } from 'react-redux';
 import { Loading } from "./components/loading/Loading";
@@ -11,8 +11,10 @@ import AddDoctors from "./pages/admin/addDoctors/AddDoctors";
 import RegisterOwner from "./pages/admin/registerOwner/AddOwner";
 import Cabins from "./pages/receptionPage/Cabins/Cabins";
 import Register from "./pages/receptionPage/register/Registers";
-import Appointments from './pages/appointments/Appointments'
-import AppointmentSinglePage from "./pages/appointment-single-page/AppointmentSinglePage";
+import Appointments from './pages/doctorPage/appointments/Appointments'
+import AppointmentSinglePage from "./pages/doctorPage/appointment-single-page/AppointmentSinglePage";
+import PatientsHistory from "./pages/doctorPage/patientsHistory/PatientsHistory";
+import RecordList from "./components/checkLists/patientRecordList/RecordList";
 
 function App() {
   const { loading } = useSelector(state => state.alerts)
@@ -43,12 +45,13 @@ function App() {
             <Route path="/doctor/profilr/:id" element={<Profile />} />
 
             <Route path="/appointments" element={<Appointments />} />
+            <Route path="/doctor/patients_history" element={<PatientsHistory />} />
             <Route path="/appointments/:id" element={<AppointmentSinglePage />} />
+            <Route path="/AppointmentSinglePage/:id" element={<RecordList />} />
 
           </Routes>
         }
       </BrowserRouter>
-
     </>
   );
 }

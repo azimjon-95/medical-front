@@ -37,7 +37,6 @@ const Profile = () => {
             dispatch(hideLoading())
             if (res?.data.success) {
                 message.success(res.data.message)
-                navigate("/")
             } else {
                 message.error(res.data.success)
             }

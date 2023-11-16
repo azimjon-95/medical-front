@@ -1,8 +1,8 @@
-import axios from "../api";
+import axios from "../../../api";
 import React, { useEffect, useState } from 'react'
-import Layout from "../components/layout/Layout";
+import Layout from "../../../components/layout/Layout";
 import { Row } from "antd";
-import DoctorList from "../components/doctorList/DoctorList";
+
 
 const HomePage = () => {
   const [doctor, setDoctors] = useState([])

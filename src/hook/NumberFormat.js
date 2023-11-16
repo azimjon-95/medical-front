@@ -16,8 +16,6 @@ export function NumberFormat(number) {
 
 
 
-
-
 export function PhoneNumberFormat(input) {
 
     if (!input) return input;

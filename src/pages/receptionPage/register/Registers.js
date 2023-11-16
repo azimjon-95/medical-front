@@ -1,7 +1,7 @@
 import axios from "../../../api";
 import React, { useState, useEffect, useRef } from "react";
 import Layout from "../../../components/layout/Layout";
-import { Col, Form, Input, message, Row, Select } from 'antd';
+import { Col, Form, Input, message, Row, Select, DatePicker, Space } from 'antd';
 import './style.css'
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,10 @@ const Register = () => {
   const componentRef = useRef();
   const [firstname, setFirstName] = useState("")
   const [lastname, setLastName] = useState("")
+  const [address, setAddress] = useState("")
+  const [year, setYear] = useState("")
   const [phone, setPhone] = useState("")
+  const [doctorPhone, setDoctorPhone] = useState("")
   const [paySum, setPaySum] = useState(0)
   const [payState, setPaid] = useState("")
   const [choseDoctor, setChoseDoctor] = useState("")
@@ -27,6 +30,7 @@ const Register = () => {
   const [doctorSpecialization, setDoctorSpecialization] = useState("")
   const [queueNumber, setQueueNumber] = useState(23)
   const [allDoctor, setChAllDoctor] = useState([])
+
 
   useEffect(() => {
     axios.get("/admin/getAllDoctors")
@@ -42,6 +46,7 @@ const Register = () => {
     setDoctorFirstName(doctor_info?.firstName)
     setDoctorLastName(doctor_info?.lastName)
     setDoctorSpecialization(doctor_info?.specialization)
+    setDoctorPhone(doctor_info?.phone)
   }, [choseDoctor])
 
   const data = []
@@ -54,7 +59,7 @@ const Register = () => {
     )
   }
 
-
+  let time = new Date()
   const handleFinish = async () => {
     let doctor_price = allDoctor.find(d => d._id === choseDoctor)
 
@@ -62,17 +67,23 @@ const Register = () => {
       firstname,
       lastname,
       phone,
+      address,
+      year,
       payState,
       choseDoctor: doctor_price.specialization,
       paySumm: doctor_price.feesPerCunsaltation,
       doctorFirstName: doctor_price.firstName,
-      doctorLastName: doctor_price.lastName
+      doctorLastName: doctor_price.lastName,
+      doctorPhone: doctor_price.phone,
+      day: time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear(),
+
     }
     console.log(AllInfo);
 
+
     try {
       dispatch(showLoading())
-      const res = await axios.post("/client/add", AllInfo);
+      const res = await axios.post("/client", AllInfo);
       dispatch(hideLoading())
       if (res.data.success) {
         message.success("Register Successfully!");
@@ -82,10 +93,14 @@ const Register = () => {
     } catch (error) {
       dispatch(hideLoading())
       console.log(error);
-      message.error("Something Went Wrrong")
+      message.error(error?.response?.data.slice(5))
     }
   }
 
+  const onChange = (date, dateString) => {
+    setYear(dateString);
+
+  };
 
   return (
 
@@ -105,7 +120,7 @@ const Register = () => {
                 value={firstname}
                 onChange={(e) => setFirstName(e.target.value)}
                 type="text"
-                placeholder="firstname" />
+                placeholder="Ismi" />
             </Form.Item>
           </Col >
           <Col className="Col-Form" >
@@ -119,7 +134,7 @@ const Register = () => {
                 value={lastname}
                 onChange={(e) => setLastName(e.target.value)}
                 type="text"
-                placeholder="lastname" />
+                placeholder="Familyasi" />
             </Form.Item>
           </Col>
           <Col className="Col-Form">
@@ -133,13 +148,41 @@ const Register = () => {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 type="number"
-                placeholder="number" />
+                placeholder="Tel No" />
+            </Form.Item>
+          </Col>
+        </Row >
+        <Row className="Row">
+          <Col className="Col-Form">
+            <Form.Item
+              label="Address"
+              name="Address"
+              required
+              rules={[{ required: true }]}
+            >
+              <Input
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                type="text"
+                placeholder="Manzili" />
+            </Form.Item>
+          </Col >
+
+          <Col className="Col-Form" >
+            <Form.Item
+              label="Year"
+              name="year"
+              required
+              rules={[{ required: true }]}
+              direction="vertical">
+              <DatePicker
+                style={{ width: "100%" }}
+                value={year}
+                onChange={onChange}
+              />
             </Form.Item>
           </Col>
 
-
-        </Row >
-        <Row className="Row">
           <Col className="Col-Form">
             <Form.Item
               label="Doctor"
@@ -161,6 +204,9 @@ const Register = () => {
               />
             </Form.Item>
           </Col>
+        </Row >
+        <Row className="Row">
+
 
           <Col className="Col-Form" >
             <Form.Item
@@ -231,4 +277,7 @@ const Register = () => {
 };
 
 export default Register;
+
+
+
 

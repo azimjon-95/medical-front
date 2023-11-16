@@ -18,3 +18,18 @@
 .appointmentsTable tbody tr td:first-child {
     padding-left: 10px;
 }
+
+.Bem {
+    position: relative;
+}
+
+/* .newMsg {
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    font-size: 14px;
+    background-color: #330101;
+    color: #fff;
+    padding: 1px 4px;
+    border-radius: 40px;
+} */

@@ -1,5 +1,5 @@
 .appointmentSinglePage {
-    padding: 20px;
+    padding: 5px;
 }
 
 .appointmentSinglePage .appointmentSinglePage_info {
@@ -7,8 +7,12 @@
     padding: 20px 10px 5px 10px;
 }
 
+.appointmentSinglePage_info>span>h3 {
+    font-size: 22px;
+}
+
 .extraInfo {
-    height: 535px;
+    height: 100%;
     width: 100%;
     padding: 20px;
     background-color: #33010114;

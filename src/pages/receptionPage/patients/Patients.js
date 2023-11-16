@@ -31,6 +31,8 @@ const Patients = () => {
 
   const dataFalse = users.filter(i => i.payState === false)
   const dataTrue = users.filter(i => i.payState === true)
+  localStorage.setItem("dataFalse", dataFalse.length);
+
   console.log(dataFalse);
   const [doctors, setDoctors] = useState([])
   const paySumUpdate = async () => {
@@ -49,7 +51,20 @@ const Patients = () => {
     getUsers()
     paySumUpdate()
   }, [])
+  const deletePatients = (_id) => {
+    axios
+      .delete(`/client/${_id}`)
+      .then((res) => {
+        if (res.data.success) {
+          message.success("Bemor o'chirildi!");
+          window.location.reload()
+        } else {
+          message.error(res.data.message);
+        }
 
+      })
+      .catch((err) => console.log(err));
+  };
 
 
   function updatePayState(e, id) {
@@ -142,7 +157,7 @@ const Patients = () => {
                   <td data-label="Doktor">{item.doctorLastName} {item.doctorFirstName}</td>
                   <td data-label="To'landi">{NumberFormat(item.paySumm)} so'm</td>
                   <td data-label="O'chirish">
-                    <button button="true" className='btn btn-danger'>Del</button>
+                    <button onClick={() => deletePatients(item?._id)} button="true" className='btn btn-danger'>Del</button>
                   </td>
                 </tr>
               ))}

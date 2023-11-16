@@ -51,7 +51,7 @@ const RegisterOwner = () => {
       dispatch(hideLoading())
       if (res.data.success) {
         message.success("Register Successfully!");
-        navigate("/");
+
       } else {
         message.error(res.data.message);
       }
