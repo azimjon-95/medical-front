@@ -1,13 +1,13 @@
 import React from 'react'
 import './AppointmentSinglePage.css'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import Layout from '../../../components/layout/Layout';
 import { useEffect, useState } from 'react';
 import axios from '../../../api/index';
 import { message } from 'antd';
-import { Link } from 'react-router-dom';
 
 function AppointmentSinglePage() {
+    const navigate = useNavigate()
     const { id } = useParams()
     const [user, setUser] = useState(null)
     const [sickname, setSickname] = useState('')
@@ -31,12 +31,13 @@ function AppointmentSinglePage() {
 
         axios.put('/client/' + id, user)
             .then(res => {
+                console.log(res);
                 if (res.data.success) {
                     message.success("malumotlar saqlandi")
+                    navigate(`/AppointmentSinglePage/${user?._id}`)
                 }
             })
             .catch(err => console.log(err))
-
     }
 
 
@@ -56,14 +57,12 @@ function AppointmentSinglePage() {
                 </div>
 
                 <div className="extraInfo">
-                    <form >
+                    <form onSubmit={updateUserInfo} >
                         <label htmlFor="" >kasallik nomi*</label>
                         <input type="text" value={sickname} onChange={(e) => setSickname(e.target.value)} />
                         <label htmlFor="" className='label'>Retsept(dorilar)*</label>
                         <textarea name="" cols="30" rows="10" value={retsept} onChange={(e) => setRetsept(e.target.value)}></textarea>
-                        <Link to={`/AppointmentSinglePage/${user?._id}`} >
-                            <button onClick={() => updateUserInfo()} button="true" className='btn btn-secondary'>Saqlash</button>
-                        </Link>
+                        <button button="true" className='btn btn-secondary'>Saqlash</button>
                     </form>
                 </div>
             </div>
