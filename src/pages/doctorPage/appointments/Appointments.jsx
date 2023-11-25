@@ -7,6 +7,7 @@ import { NumberFormat, PhoneNumberFormat } from '../../../hook/NumberFormat'
 import NotificationSound from "../../../assets/ayfon-sms.mp3";
 import { showLoading, hideLoading } from "../../../redux/features/lineIoad";
 import { useDispatch } from "react-redux";
+import imgNoData from '../../../assets/nodata.png'
 
 function Appointments() {
     const [data, setData] = useState([])
@@ -21,6 +22,7 @@ function Appointments() {
             if (res.data.success) {
                 setData(res.data.data)
             }
+            return `${<audio controls ref={audioPlayer} src={NotificationSound} />}`
         } catch (error) {
             dispatch(hideLoading())
             console.log(error);
@@ -45,35 +47,45 @@ function Appointments() {
     return (
         <Layout>
             <h3 className="text-center">Bemorlar</h3>
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th>№</th>
-                        <th>Bemor</th>
-                        <th>Tel No</th>
-                        <th>Ko'rish</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {clients?.map((item, inx) => (
-                        <tr key={inx}>
-                            <td>{inx + 1}</td>
-                            <td className='Bem' data-label="Bemor">
-                                <p className='newMsg'>new</p>
-                                {item.lastname} {item.firstname}
-                            </td>
-                            <td data-label="Tel No">{PhoneNumberFormat(item.phone)}</td>
-                            <td>
-                                <Link to={`/appointments/${item._id}`} >
-                                    <button button="true" className='btn btn-secondary'>Qabul qilish</button>
-                                </Link>
-                            </td>
+            {
+                clients == 0 ?
+                    <div className='NoData'>
+                        <div className="NoDataImg">
+                            <img src={imgNoData} alt="No Data" />
+                        </div>
+                    </div>
+                    :
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>Bemor</th>
+                                <th>Tel No</th>
+                                <th>Ko'rish</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {clients?.map((item, inx) => (
+                                <tr key={inx}>
+                                    <td>{inx + 1}</td>
+                                    <td className='Bem' data-label="Bemor">
+                                        <p className='newMsg'>new</p>
+                                        {item.lastname} {item.firstname}
+                                    </td>
+                                    <td data-label="Tel No">{PhoneNumberFormat(item.phone)}</td>
+                                    <td>
+                                        <Link to={`/appointments/${item._id}`} >
+                                            <button button="true" className='btn btn-secondary'>Qabul qilish</button>
+                                        </Link>
+                                    </td>
 
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            <audio ref={audioPlayer} src={NotificationSound} />
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+            }
+            {/* <audio controls ref={audioPlayer} src={NotificationSound} />
+            <audio src={NotificationSound}></audio> */}
         </Layout>
     )
 }

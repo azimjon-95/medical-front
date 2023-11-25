@@ -42,7 +42,7 @@ const Login = () => {
 
 
         if (res.data.exactAdmin.docORrecep === "owner") {
-          window.location = "/"
+          window.location = "/reports"
         } else if (res.data.exactAdmin.docORrecep === "Reception") {
           window.location = "/receptionHome"
         } else if (res.data.exactAdmin.docORrecep === "doctor") {

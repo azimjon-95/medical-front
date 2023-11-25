@@ -5,7 +5,7 @@
 }
 
 .appointmentsTable thead {
-    background-color: #330101;
+    background-color: dodgerblue;
     color: #fff;
 }
 
@@ -19,8 +19,22 @@
     padding-left: 10px;
 }
 
+.btn-secondary_eye {
+    font-size: 18px;
+    color: dodgerblue;
+}
+
 .Bem {
     position: relative;
+}
+
+
+@media screen and (max-width: 420px) {
+    .btn-secondary_eye {
+        /* width: 100%; */
+        font-size: 22px;
+        color: dodgerblue;
+    }
 }
 
 /* .newMsg {

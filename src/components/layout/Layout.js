@@ -90,7 +90,7 @@ const Layout = ({ children }) => {
                 </div>
                 <div className="content">
                     <div className="MainNavbar">
-                        <b>{Catigory()}: <i style={{ color: 'blue' }}>{doctorName}</i></b>
+                        <b>{Catigory()}: <i style={{ color: 'dodgerblue' }}>{doctorName}</i></b>
                         {admin === "owner"
                             ? "" :
                             <button>

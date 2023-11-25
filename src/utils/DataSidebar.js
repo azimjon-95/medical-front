@@ -6,7 +6,7 @@ export const onerMenu = [
     // },
     {
         name: "Hisobotlar",
-        path: "/appointments",
+        path: "/reports",
         icon: "fa fa-university"
     },
     {
@@ -48,7 +48,7 @@ export const adminMenu = [
         icon: "fa fa-home"
     },
     {
-        name: "Doctors",
+        name: "Doktorlar",
         path: "/admin/doctors",
         icon: "fa fa-user-md"
     }
@@ -62,7 +62,7 @@ export const doctorMenu = [
     //     icon: "fa fa-home"
     // },
     {
-        name: "Appointments",
+        name: "Bemorlar",
         path: "/appointments",
         icon: "fa fa-bars"
     },

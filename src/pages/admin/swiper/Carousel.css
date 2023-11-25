@@ -1,0 +1,109 @@
+.carousel {
+    width: 100%;
+    padding: 1% 10px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #2962ff;
+}
+
+.card-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.card_icon {
+    font-size: 25px;
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+.doctorname {
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18px;
+    letter-spacing: 2px;
+    text-align: center;
+    color: #cbcbcb;
+}
+
+.card-inner>b {
+color: #ffffff;
+    font-size: 15px;
+}
+
+
+
+
+.allInfoTotal {
+    height: 50px;
+    background-color: blueviolet;
+}
+
+.swiper {
+    width: 100%;
+    height: 150px;
+}
+
+.swiper-slide {
+    font-size: 18px;
+    position: relative;
+    border-radius: 10px 10px 0 0;
+}
+
+
+
+
+
+@media screen and (max-width:790px) {
+    .swiper {
+        height: 150px;
+    }
+}
+
+@media screen and (max-width:590px) {
+    .swiper {
+        height: 320px;
+    }
+
+    .swiper-slide .swiper_titles {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width:455px) {
+    .swiper-slide .swiper_titles {
+        font-size: 14px;
+    }
+
+    .swiper-slide .swiper_titles b {
+        font-size: 12px;
+    }
+
+    .carousel {
+        width: 100%;
+
+        padding: 4% 15px;
+
+    }
+
+    .carousel>h3 {
+
+        font-size: 21px;
+    }
+
+}
+
+@media screen and (max-width:410px) {
+    .swiper {
+        padding: 0 15%;
+    }
+
+}

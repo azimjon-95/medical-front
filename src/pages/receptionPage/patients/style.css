@@ -51,6 +51,26 @@
     color: green;
 }
 
+.NoData {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+}
+
+.NoDataImg {
+    width: 200px;
+    height: 180px;
+
+}
+
+.NoDataImg>img {
+    width: 100%;
+    height: 100%;
+}
+
+
 @media screen and (max-width: 890px) {
     .PayContainer {
         padding: 10px 0;
@@ -66,5 +86,13 @@
 
     .PayCHe>svg {
         margin-bottom: 12px;
+    }
+}
+
+@media screen and (max-width: 370px) {
+    .NoDataImg {
+        width: 150px;
+        height: 130px;
+
     }
 }
