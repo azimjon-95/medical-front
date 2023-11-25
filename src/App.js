@@ -24,7 +24,7 @@ function App() {
       <BrowserRouter>
         {loading ? <Loading /> :
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="reports/" element={<HomePage />} />
 
             <Route path="/login"
               element={
