@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import "../styles/login.css";
 import { message } from "antd";
-import { Link, useNavigate } from "react-router-dom";
 import axios from "../api";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../redux/features/indexSlice";
-// import { setUser } from "../redux/features/userSlice";
+
 import wave from '../assets/img/wave.png'
 import avatar from '../assets/img/avatar.svg'
 import bg from '../assets/img/bg.svg'
@@ -14,7 +13,6 @@ import { PiLockKeyFill } from 'react-icons/pi'
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai'
 
 const Login = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch()
   const [eye, setEye] = useState(false)
   const [login, setUsername] = useState("")
@@ -32,7 +30,6 @@ const Login = () => {
       const res = await axios.post("/admin/login", values);
       dispatch(hideLoading())
       if (res.data.success) {
-        // dispatch(setUser(res.data.innerData))
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("admin", res.data.exactAdmin.docORrecep);
         localStorage.setItem("category", res.data.exactAdmin.specialization);
@@ -106,27 +103,3 @@ const Login = () => {
 };
 
 export default Login;
-
-
-{/* <div className="form-container ">
-      <Form
-        layout="vertical"
-        onFinish={onfinishHandler}
-        className="register-form"
-      >
-        <h3 className="text-center">Login From</h3>
-
-        <Form.Item label="login" name="login">
-          <Input type="text" required />
-        </Form.Item>
-        <Form.Item label="Password" name="password">
-          <Input type="password" required />
-        </Form.Item>
-        <Link to="/add-doctor" className="m-2">
-          Not a user Register here
-        </Link>
-        <button className="btn btn-primary" type="submit">
-          Login
-        </button>
-      </Form>
-    </div> */}

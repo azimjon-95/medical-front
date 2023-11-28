@@ -21,7 +21,7 @@ const Layout = ({ children }) => {
     const handleLogout = () => {
         localStorage.clear()
         message.success("Logout Successfully")
-        navigate("/login")
+        navigate("/")
         console.log('Ok');
     }
 

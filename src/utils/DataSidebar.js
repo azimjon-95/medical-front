@@ -16,7 +16,7 @@ export const onerMenu = [
     },
 
     {
-        name: "Statistika",
+        name: "Xarajatlar",
         path: "/statistika",
         icon: "fa fa-line-chart"
     },

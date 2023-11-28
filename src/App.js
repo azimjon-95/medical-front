@@ -24,18 +24,19 @@ function App() {
       <BrowserRouter>
         {loading ? <Loading /> :
           <Routes>
-            <Route path="reports/" element={<HomePage />} />
 
-            <Route path="/login"
+
+            <Route path="/"
               element={
-                <PublicRoute>
                   <Login />
-                </PublicRoute>
+                // <PublicRoute>
+                // </PublicRoute>
               } />
 
             <Route path="/add-doctor" element={<AddDoctors />} />
 
             <Route path="/admin/users" element={<Patients />} />
+            <Route path="reports/" element={<HomePage />} />
 
             <Route path="/admin/doctors" element={<Doctor />} />
             <Route path="/setting" element={<RegisterOwner />} />

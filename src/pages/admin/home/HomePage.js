@@ -4,7 +4,7 @@ import { BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, BsFillBellFill }
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
 import axios from "../../../api";
 import './App.css'
-import Cards from '../Cards/Cards'
+import Balans from '../balans/Balans'
 import { useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../../../redux/features/lineIoad";
 import DoctorsSlite from '../swiper/Carousel';
@@ -123,7 +123,7 @@ const HomePage = () => {
           </LineChart>
         </ResponsiveContainer>
 
-        <Cards dataTrue={dataTrue} />
+        <Balans dataTrue={dataTrue} />
 
       </div>
     </Layout>
