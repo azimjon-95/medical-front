@@ -46,6 +46,7 @@ const HomePage = () => {
   const findData = users.filter(i => i.choseDoctor == doctor.specialization)
 
   console.log(findData);
+  console.log(doctor);
 
   const data = [
     {
@@ -98,7 +99,7 @@ const HomePage = () => {
 
     <Layout>
       <div className="HomeOwner">
-        <DoctorsSlite doctor={doctor} />
+        <DoctorsSlite doctor={doctor} users={users} />
       </div>
       <div className='charts'>
         <ResponsiveContainer width="100%" height="100%">
