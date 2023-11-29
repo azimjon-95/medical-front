@@ -85,7 +85,6 @@ const Cabins = () => {
     <Layout>
       <h4 className="text-center">Lecheniya</h4>
       <Tabs>
-
         <Tabs.TabPane tab="Not busy" key={0}>
           <div className="All-Read">
             <h4 style={{ cursor: 'pointer' }} >Bosh honalar</h4>
@@ -106,7 +105,6 @@ const Cabins = () => {
             })
           }
         </Tabs.TabPane>
-
         <Tabs.TabPane tab="Busy" key={1}>
           <div className="All-Read">
             <h4 style={{ cursor: 'pointer' }} >Bant honalar</h4>
@@ -126,7 +124,6 @@ const Cabins = () => {
             })
           }
         </Tabs.TabPane>
-
         <Tabs.TabPane tab="Add rooms" key={2}>
           <div className="All-Read">
             <h4 style={{ cursor: 'pointer' }} >Hona qo'shish</h4>
@@ -197,7 +194,6 @@ const Cabins = () => {
 
           </Form >
         </Tabs.TabPane>
-
       </Tabs>
     </Layout >
   )
