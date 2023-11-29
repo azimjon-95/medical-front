@@ -52,7 +52,7 @@ function DoctorsSlite({ doctor, users }) {
                                                 )
                                             }
                                         </b>
-                                    </div>
+                                    </div>k
                                 </div>
                             </SwiperSlide>
                         )
