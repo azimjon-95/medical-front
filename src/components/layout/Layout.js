@@ -65,9 +65,9 @@ const Layout = ({ children }) => {
 
                                             <i className={menu.icon}></i>
 
-                                            <Link className={` ${sideOpen ? "LinkNone" : "noneText"}`} to={menu.path}>
+                                            <div className={` ${sideOpen ? "LinkNone" : "noneText"}`} >
                                                 {menu.name}
-                                            </Link>
+                                            </div>
 
                                             <p className='MobileSidText'>{menu.name}</p>
                                         </Link>
@@ -76,15 +76,15 @@ const Layout = ({ children }) => {
                                 })
                             }
 
-                            <Link className={`menu-item `} onDoubleClickCapture={handleLogout} to="/login">
+                            <div className={`menu-item `} onDoubleClick={handleLogout} >
                                 <i className='fa fa-sign-out'></i>
 
-                                <Link className={`${sideOpen ? "LinkNone" : "noneText"}`} onClick={handleLogout} to="/login">
+                                <div className={`${sideOpen ? "LinkNone" : "noneText"}`} onClick={handleLogout} >
                                     Tizimdan chiqish
-                                </Link>
+                                </div>
                                 <p className='MobileSidText'>Chiqish</p>
 
-                            </Link>
+                            </div>
                         </div>
                     </div>
                 </div>

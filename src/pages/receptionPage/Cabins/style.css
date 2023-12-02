@@ -97,6 +97,7 @@
     position: relative;
     align-items: center;
     border-top: 1px solid rgb(217, 217, 217);
+    gap: 25px;
     /* border-bottom: 1px solid rgb(197, 197, 197); */
 }
 
@@ -124,4 +125,40 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.room_Box-length {
+    /* width: 150px; */
+    height: 50px;
+    padding-left: 5px;
+    display: flex;
+    flex-direction: column;
+    /* background-color: aqua; */
+}
+
+.room_Box-length>div {
+    font-size: 14px;
+    color: rgb(109, 109, 109);
+    display: flex;
+    align-items: center;
+}
+
+.room_Box-length>div>svg {
+    color: rgb(109, 109, 109);
+    margin-right: 3px;
+}
+
+.emptyRoom {
+    font-size: 13px;
+    color: green;
+}
+
+.busyRoom {
+    font-size: 13px;
+    text-align: start;
+    color: rgba(255, 0, 0, 0.689);
+}
+
+#cabins{
+    margin-top: 10px;
 }

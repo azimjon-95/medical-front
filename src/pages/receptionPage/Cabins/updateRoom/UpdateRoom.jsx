@@ -2,14 +2,18 @@ import React, { useEffect, useState } from 'react'
 import './UpdateRoom.css'
 import { NumberFormat, PhoneNumberFormat } from '../../../../hook/NumberFormat';
 import axios from '../../../../api';
-import { message } from 'antd';
 import { FiX } from 'react-icons/fi'
+import { Col, Form, message, DatePicker } from 'antd';
+
 
 function UpdateRoom({ setOpenUpdate, room }) {
     const [phone, setPhone] = useState("")
-    const [dayOfTreatment, setDayOfTreatment] = useState("")
+    const [dayOfTreatment, setDayOfTreatment] = useState()
     const [clients, setClients] = useState([])
     const [roomFull, setRoomFull] = useState(false)
+
+
+
 
 
     useEffect(() => {
@@ -34,12 +38,17 @@ function UpdateRoom({ setOpenUpdate, room }) {
 
         console.log(changedRoom);
 
+
         axios.put('/rooms/update/' + room._id, changedRoom)
             .then((res) => message.success(res.data.message))
             .catch((err) => { console.log(err) })
-
     }
 
+
+    const getDate = (date, dateString) => {
+        setDayOfTreatment(dateString);
+
+    };
     return (
         <div className='updateRoom'>
             <FiX className='updateRoomCloseBtn' onClick={() => setOpenUpdate(false)} />
@@ -63,20 +72,26 @@ function UpdateRoom({ setOpenUpdate, room }) {
                     <label><h5>Bemorni xonaga biriktitish</h5></label>
 
                     <input
+                        className='InputForm'
                         type="number"
                         placeholder={PhoneNumberFormat("998939119572")}
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         disabled={roomFull}
                     />
-
-                    <input
-                        type="number"
-                        placeholder="Davolanish muddati"
-                        value={dayOfTreatment}
-                        onChange={(e) => setDayOfTreatment(e.target.value)}
-                        disabled={roomFull}
-                    />
+                    <Col >
+                        <Form.Item
+                            name=""
+                            required
+                            rules={[{ required: true }]}
+                        >
+                            <DatePicker className='InputForm'
+                                value={dayOfTreatment}
+                                onChange={getDate}
+                                type="text"
+                                placeholder="Bugungi sana" />
+                        </Form.Item>
+                    </Col>
 
                     <input type='button' value={"Kiritish"} onClick={updateRoom} disabled={roomFull} />
                 </div>

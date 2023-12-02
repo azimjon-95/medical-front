@@ -8,6 +8,12 @@ import { useNavigate } from 'react-router-dom';
 import { Col, Form, Input, message, Row, Tabs } from 'antd';
 import Door from '../../../assets/door.png'
 import UpdateRoom from './updateRoom/UpdateRoom';
+import { FaUsers } from 'react-icons/fa'
+import { MdOutlineBedroomChild } from "react-icons/md";
+import { FiUserPlus, FiEye } from "react-icons/fi";
+import { GiMoneyStack } from "react-icons/gi";
+import { NumberFormat, PhoneNumberFormat } from '../../../hook/NumberFormat'
+import EnterRoom from './enterRoom/EnterRoom';
 
 const Cabins = () => {
   const navigate = useNavigate()
@@ -15,6 +21,7 @@ const Cabins = () => {
   const dispatch = useDispatch()
 
   const [openUpdate, setOpenUpdate] = useState(false)
+  const [openRoom, setOpenRoom] = useState(false)
   // ---------------------------
   const [roomNumber, setRoomNumber] = useState(0)
   const [pricePerDay, setPricePerDay] = useState(0)
@@ -77,55 +84,69 @@ const Cabins = () => {
       message.error(error?.response?.data?.slice(5))
     }
   }
+  console.log(data);
   return (
     <Layout>
       {openUpdate && <UpdateRoom room={openUpdate} setOpenUpdate={setOpenUpdate} />}
+      {openRoom && <EnterRoom room={openRoom} setOpenRoom={setOpenRoom} />}
       <h4 className="text-center">Lecheniya</h4>
       <Tabs>
-        <Tabs.TabPane tab="Not busy" key={0}>
-          <div className="All-Read">
-            <h4 style={{ cursor: 'pointer' }} >Bosh honalar</h4>
-          </div>
-          {
-            data?.map((value, inx) => {
-              return (
-                <div key={inx} className="cardRooms" onClick={() => setOpenUpdate(value)} >
-                  <div className="imgRoor">
-                    <img src={Door} alt="" />
-                    <div className="roomN">
-                      <b className='roomNumber'>{value.roomNumber}</b>
+        <Tabs.TabPane tab="Xonalar" key={0}>
+          <table className="table">
+            <tbody>
+              {data?.map((item, inx) => (
+                <tr key={inx}>
+                  <td data-label="Bemor">
+                    <div className="imgRoor">
+                      <img src={Door} alt="" />
+                      <div className="roomN">
+                        <b className='roomNumber'>{item.roomNumber}</b>
+                      </div>
                     </div>
-                  </div>
+                  </td>
+                  <td data-label="Tel No">
+                    <div className="room_Box-length">
+                      <div>Xona sig'imi</div>
+                      <div><MdOutlineBedroomChild /> - {item.usersNumber}</div>
 
-                </div>
-              )
-            })
-          }
+                    </div>
+                  </td>
+                  <td data-label="Yo'naltirildi">
+                    <div className="room_Box-length"><div>Bemorlar soni</div>
+                      {
+                        item.capacity.length == item.usersNumber
+                        &&
+                        <p className="busyRoom">Xonada joy yo'q</p>
+                        ||
+                        <div>
+                          {item.capacity.length === 0
+                            ? <div className='emptyRoom'>Bo'sh xona</div>
+                            :
+                            <div> <FaUsers /> - {item.capacity.length}</div>
+                          }
+                        </div>
+                      }
+                    </div>
+                  </td>
+                  <td data-label="1 kunlik to'lov">
+                    <div className="room_Box-length">
+                      <div>1 kunlik to'lov</div>
+                      <div><GiMoneyStack />  {NumberFormat(item.pricePerDay)} so'm</div>
+                    </div>
+                  </td>
+                  <td data-label="Honaga kirish">
+                    <button disabled={item.capacity.length === 0 && "disabled"} id='cabins' button="true" onClick={() => setOpenRoom(item)} className='btn btn-primary'><FiEye /></button>
+                  </td>
+                  <td data-label="Bemor qo'shish">
+                    <button disabled={item.capacity.length == item.usersNumber && "disabled"} id='cabins' onClick={() => setOpenUpdate(item)} button="true" className='btn btn-success'><FiUserPlus /></button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
         </Tabs.TabPane>
-        <Tabs.TabPane tab="Busy" key={1}>
-          <div className="All-Read">
-            <h4 style={{ cursor: 'pointer' }} >Bant honalar</h4>
-          </div>
-          {
-            user?.seennotification?.map((notificationMSG) => {
-              return (
-                <div className="cardNotif" style={{ cursor: 'pointer' }}>
-                  <div className="card-task" onClick={navigate(notificationMSG?.onClickPath)}>
-                    {
-                      notificationMSG.message
-                    }
-                  </div>
-
-                </div>
-              )
-            })
-          }
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Add rooms" key={2}>
-          <div className="All-Read">
-            <h4 style={{ cursor: 'pointer' }} >Hona qo'shish</h4>
-          </div>
-
+        <Tabs.TabPane tab="Xona qo'shish" key={1}>
           <Form layout="vertical" onFinish={handleFinish} className="FormApply">
             <h4>Shaxsiy ma'lumotlar:</h4>
             <Row className="Row">
@@ -213,10 +234,6 @@ const Cabins = () => {
                 </button>
               </Col>
             </Row >
-
-
-
-
           </Form >
         </Tabs.TabPane>
       </Tabs>

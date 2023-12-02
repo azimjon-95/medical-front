@@ -55,8 +55,9 @@
 }
 
 .body {
-    height: 98vh;
-    /* margin-bottom: 20px; */
+    height: calc(100vh - 72px);
+    border-radius: 5px;
+
     box-shadow: 0 0 2px gray;
     background: #fff;
     overflow: auto;
@@ -110,6 +111,7 @@
     display: flex;
     align-items: center;
 
+
 }
 
 
@@ -119,11 +121,19 @@
     font-size: 1.2rem;
 }
 
+.menu-item>div {
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
 .menu-item>i {
     color: #fff;
     font-size: 1.2rem;
     margin: 0 12px;
     width: 22px;
+    cursor: pointer;
+
 
 }
 
@@ -132,7 +142,7 @@
 }
 
 .active i,
-.active a {
+.active div {
     color: dodgerblue;
 }
 

@@ -23,8 +23,7 @@ const RecordList = () => {
     let date = time.getFullYear() + "" + (time.getMonth() + 1) + "" + time.getDate()
     let resDate = user?.year.slice(0, 4) + user?.year.slice(5, 7) + user?.year.slice(8, 10);
     let res = date - resDate;
-    // let result = +res
-    console.log(res, +date);
+
 
     return (
         <div className='List_Container'>

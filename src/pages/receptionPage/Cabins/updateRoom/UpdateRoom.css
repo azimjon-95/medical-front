@@ -68,7 +68,7 @@
     margin: 0 auto;
 }
 
-.updateRoom .updateRoom_wrapper .updateRoom_main input {
+.updateRoom .updateRoom_wrapper .updateRoom_main .InputForm {
     width: 250px;
     height: 30px;
     margin-bottom: 20px;
@@ -77,6 +77,10 @@
     outline: none;
     border: 1px solid dodgerblue;
     border-radius: 4px;
+}
+
+.updateRoom .updateRoom_wrapper .updateRoom_main .InputForm::placeholder {
+    color: rgb(185, 185, 185);
 }
 
 .updateRoom .updateRoom_wrapper .updateRoom_main input[type="number"]::-webkit-outer-spin-button,
@@ -90,6 +94,9 @@
     border: none;
     color: #fff;
     letter-spacing: 1.2px;
+    width: 250px;
+    height: 30px;
+    border-radius: 5px;
 }
 
 .updateRoom .updateRoom_wrapper .updateRoom_main input:disabled {
