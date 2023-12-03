@@ -17,8 +17,8 @@ const Balans = ({ dataTrue }) => {
             return "disabled"
         }
     }
-    console.log(dataTrue);
-    console.log(dataTrue.filter((i) => i.view === true));
+    // console.log(dataTrue);
+    // console.log(dataTrue.filter((i) => i.view === true));
 
     let base = dataTrue.filter((i) => i.day === date && i.view === true)
     let result = base?.reduce(function (prev, cur) {

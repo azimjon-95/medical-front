@@ -1,10 +1,6 @@
-
-import React, { useState } from "react";
-
+import React from "react";
 
 export function Loading() {
-
-
     return (
         <div className="spiner">
             <div className="spinner-border " role="status" >
