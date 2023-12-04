@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/admin/home/HomePage";
 import Login from "./pages/Login";
 import { useSelector } from 'react-redux';
-import { Loading } from "./components/loading/Loading";
 import PublicRoute from "./hook/PublicRoute";
 import Patients from "./pages/receptionPage/patients/Patients";
 import Doctor from "./pages/receptionPage/doctor/Doctor";
@@ -15,20 +14,21 @@ import Appointments from './pages/doctorPage/appointments/Appointments'
 import AppointmentSinglePage from "./pages/doctorPage/appointment-single-page/AppointmentSinglePage";
 import PatientsHistory from "./pages/doctorPage/patientsHistory/PatientsHistory";
 import RecordList from "./components/checkLists/patientRecordList/RecordList";
+import HeartLine from "./components/loading/HeartLine";
 
 function App() {
   const { loading } = useSelector(state => state.alerts)
   return (
-    <>
+    <div className="app">
       {/* <QueueList /> */}
       <BrowserRouter>
-        {loading ? <Loading /> :
+        {loading ? <HeartLine /> :
           <Routes>
 
 
             <Route path="/"
               element={
-                  <Login />
+                <Login />
                 // <PublicRoute>
                 // </PublicRoute>
               } />
@@ -53,7 +53,7 @@ function App() {
           </Routes>
         }
       </BrowserRouter>
-    </>
+    </div>
   );
 }
 

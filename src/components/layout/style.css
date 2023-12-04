@@ -1,4 +1,5 @@
 .Main-Lay {
+    width: 100%;
     padding: 5px;
     height: 100vh;
 }
@@ -6,7 +7,6 @@
 .Layout {
     display: flex;
 }
-
 
 .Sidebar {
     min-height: 100%;
@@ -16,7 +16,6 @@
     box-shadow: 0 0 2px gray;
     margin-right: 15px;
     color: #fff;
-
 }
 
 .sideOpen {
@@ -55,11 +54,15 @@
 }
 
 .body {
+<<<<<<< HEAD
     height: calc(100vh - 72px);
     border-radius: 5px;
 
+=======
+    height: 100%;
+    /* margin-bottom: 20px; */
+>>>>>>> origin/bahromjon
     box-shadow: 0 0 2px gray;
-    background: #fff;
     overflow: auto;
 }
 

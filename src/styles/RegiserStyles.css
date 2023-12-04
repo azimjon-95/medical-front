@@ -6,6 +6,7 @@
 }
 
 .spiner {
+  width: 100%;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.235);
   display: flex;

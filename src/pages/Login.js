@@ -12,70 +12,63 @@ import { FaUser } from 'react-icons/fa'
 import { PiLockKeyFill } from 'react-icons/pi'
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai'
 
+import { Link } from 'react-router-dom'
+
 const Login = () => {
   const dispatch = useDispatch()
   const [eye, setEye] = useState(false)
   const [login, setUsername] = useState("")
   const [password, setPassword] = useState("")
 
-
-  const onfinishHandler = async () => {
-    const values = {
-      login,
-      password
-    }
-
+  const onfinishHandler = async (e) => {
+    e.preventDefault()
+    if (!login || !password) return message.warning("Please enter your username and password")
     try {
       dispatch(showLoading())
-      const res = await axios.post("/admin/login", values);
+      const res = await axios.post("/admin/login", { login, password });
       dispatch(hideLoading())
+
       if (res.data.success) {
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("admin", res.data.exactAdmin.docORrecep);
-        localStorage.setItem("category", res.data.exactAdmin.specialization);
-        localStorage.setItem("doctorPhone", res.data.exactAdmin.phone);
-        localStorage.setItem("doctorName", res.data.exactAdmin.lastName + " " + res.data.exactAdmin.firstName);
-        message.success("Login Successfully");
+        let exactAdmin = res?.data?.exactAdmin
 
-
-        if (res.data.exactAdmin.docORrecep === "owner") {
-          window.location = "/reports"
-        } else if (res.data.exactAdmin.docORrecep === "Reception") {
-          window.location = "/receptionHome"
-        } else if (res.data.exactAdmin.docORrecep === "doctor") {
-          window.location = "/appointments"
-        }
-
-
-        console.log(res.data);
-      } else {
-        message.error(res.data.message);
+        localStorage.setItem("token", res?.data?.token);
+        localStorage.setItem("admin", exactAdmin?.docORrecep);
+        localStorage.setItem("category", exactAdmin?.specialization);
+        localStorage.setItem("doctorPhone", exactAdmin?.phone);
+        localStorage.setItem("doctorName", exactAdmin?.lastName + " " + exactAdmin?.firstName);
+        message.success(res?.data?.message);
       }
-    } catch (error) {
+    }
+    catch (error) {
       dispatch(hideLoading())
-      console.log(error);
-      message.error("something went wrong");
+      message.error(error?.response?.data?.msg);
     }
   };
+
+  let admin = localStorage.getItem('admin')
+
+  if (admin === "owner") window.location = "/reports"
+  if (admin === "Reception") window.location = "/receptionHome"
+  if (admin === "doctor") window.location = "/appointments"
+
+
   return (
     <div className="Loginbodylog">
-      <img className="wave" src={wave} />
+      <img className="wave" src={wave} alt="login" />
       <div className="containerlog">
         <div className="imgLog">
-          <img src={bg} />
+          <img src={bg} alt="login" />
         </div>
         <div className="login-content">
-          <form
-            className="FormLogin"
-          >
-            <img src={avatar} />
+          <form className="FormLogin" onSubmit={onfinishHandler}>
+            <img src={avatar} alt="login LOGO" />
             <h2 className="title">Welcome</h2>
             <div className="input-div one">
               <div className="iconCont">
                 <FaUser />
               </div>
               <div className="Inputdiv">
-                <input value={login} onChange={(e) => setUsername(e.target.value)} type="text" className="input" placeholder="Username..." />
+                <input value={login} onChange={(e) => setUsername(e.target.value)} type="text" className="input" placeholder="Username" />
               </div>
             </div>
             <div className="input-div pass">
@@ -83,18 +76,18 @@ const Login = () => {
                 < PiLockKeyFill />
               </div>
               <div className="Inputdiv">
-                <input value={password} onChange={(e) => setPassword(e.target.value)} type={eye ? "password" : "text"} className="input" placeholder="Password..." />
-                <button onClick={() => setEye(!eye)}>
+                <input value={password} onChange={(e) => setPassword(e.target.value)} type={eye ? "password" : "text"} className="input" placeholder="Password" />
+                <button type="button" onClick={() => setEye(!eye)}>
                   {eye ?
-                    <AiFillEyeInvisible />
+                    <AiFillEyeInvisible onClick={() => setEye(!eye)} />
                     :
-                    <AiFillEye />
+                    <AiFillEye onClick={() => setEye(!eye)} />
                   }
                 </button>
               </div>
             </div>
-            <a href="#">Forgot Password?</a>
-            <input onClick={() => onfinishHandler()} type="submit" className="btnIN" value="Login" />
+            <Link href="#">Forgot Password?</Link>
+            <input type="submit" className="btnIN" value="Login" />
           </form>
         </div>
       </div>

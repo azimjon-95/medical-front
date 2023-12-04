@@ -43,53 +43,50 @@ const HomePage = () => {
     getUsers()
   }, [])
 
-  const findData = users.filter(i => i.choseDoctor == doctor.specialization)
+  // const findData = users.filter(i => i.choseDoctor == doctor.specialization)
+  let currentMonth = new Date().getMonth() + 1
+  let allUserForChart = users.filter(i => i.view)
+    .filter(i => i.day.split('.')[1] == currentMonth)
+    .sort((a, b) => a.day.split('.')[2] < b.day.split('.')[2])
 
-  console.log(findData);
-  console.log(doctor);
+  let week1 = allUserForChart.filter(i => i.day.split('.')[0] >= 1 && i.day.split('.')[0] <= 7).reduce((a, b) => a + b.paySumm, 0)
+  let week2 = allUserForChart.filter(i => i.day.split('.')[0] >= 8 && i.day.split('.')[0] <= 14).reduce((a, b) => a + b.paySumm, 0)
+  let week3 = allUserForChart.filter(i => i.day.split('.')[0] >= 15 && i.day.split('.')[0] <= 21).reduce((a, b) => a + b.paySumm, 0)
+  let week4 = allUserForChart.filter(i => i.day.split('.')[0] >= 22 && i.day.split('.')[0] <= 31).reduce((a, b) => a + b.paySumm, 0)
+
+  // let totalPriceSort = [week1, week2, week3, week4].sort()
+
+  // const monthNames = [
+  //   'Yanvar',
+  //   'Fevral',
+  //   'Mart',
+  //   'Aprel',
+  //   'May',
+  //   'Iyun',
+  //   'Iyul',
+  //   'Avgust',
+  //   'Sentabr',
+  //   'Oktabr',
+  //   'Noyabr',
+  //   'Dekabr',
+  // ];
 
   const data = [
     {
-      name: 'Page A',
-      uv: 4000,
-      Tushum: 2400,
-      amt: 2400,
+      name: '1-hafta',
+      Kirim: week1,
     },
     {
-      name: 'Page B',
-      uv: 3000,
-      Tushum: 1398,
-      amt: 2210,
+      name: '2-hafta',
+      Kirim: week2,
     },
     {
-      name: 'Page C',
-      uv: 2000,
-      Tushum: 9800,
-      amt: 2290,
+      name: '3-hafta',
+      Kirim: week3,
     },
     {
-      name: 'Page D',
-      uv: 2780,
-      Tushum: 3908,
-      amt: 2000,
-    },
-    {
-      name: 'Page E',
-      uv: 1890,
-      Tushum: 4800,
-      amt: 2181,
-    },
-    {
-      name: 'Page F',
-      uv: 2390,
-      Tushum: 3800,
-      amt: 2500,
-    },
-    {
-      name: 'Page G',
-      uv: 3490,
-      Tushum: 4300,
-      amt: 2100,
+      name: '4-hafta',
+      Kirim: week4,
     },
   ];
 
@@ -107,20 +104,14 @@ const HomePage = () => {
             width={500}
             height={300}
             data={data}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
+            margin={{ top: 5, right: 30, left: 20, bottom: 5, }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="Tushum" stroke="dodgerblue" activeDot={{ r: 8 }} />
-            <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+            <Line type="monotone" dataKey={"Kirim"} stroke="dodgerblue" activeDot={{ r: 8 }} />
+            {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" /> */}
           </LineChart>
         </ResponsiveContainer>
 

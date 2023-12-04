@@ -10,9 +10,10 @@ import { PiPrinterFill } from "react-icons/pi";
 function EnterRoom({ setOpenRoom, room }) {
 
     const [clients, setClients] = useState([])
+    const [clientsRoom, setClientsRoom] = useState()
     const [list, setList] = useState(false)
 
-    console.log(room);
+
 
     useEffect(() => {
         axios.get('/client/all')
@@ -34,6 +35,7 @@ function EnterRoom({ setOpenRoom, room }) {
         }
     }
     const CountingMoney = (value) => {
+        // setClientsRoom(dayCountingMoney)
         let date1 = new Date(value);
         let date2 = new Date();
         if (date1.getTime() && date2.getTime()) {
@@ -56,8 +58,7 @@ function EnterRoom({ setOpenRoom, room }) {
             .finally(() => { window.location.reload() })
     }
 
-     // let id = clients.find(client => client.id)
-        // updatePatients(id)
+
     return (
 
         <div className='updateRoom'>
@@ -87,8 +88,10 @@ function EnterRoom({ setOpenRoom, room }) {
                                         <td data-label="Kun">{CountingDay(item.dayOfTreatment)}</td>
                                         <td data-label="To'lov"> {NumberFormat(CountingMoney(item.dayOfTreatment))} so'm</td>
                                         <td data-label="Chiqish">
-                                            <button onClick={() =>
+                                            <button onClick={() => {
                                                 setList(true)
+                                                updatePatients(time.id)
+                                            }
                                             } button="true" className='btn btn-primary'><GiEntryDoor id='EntryDoor' /></button>
                                         </td>
                                     </tr>
@@ -111,7 +114,7 @@ function EnterRoom({ setOpenRoom, room }) {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
