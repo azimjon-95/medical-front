@@ -53,7 +53,7 @@ const RegisterOwner = () => {
 
     try {
       dispatch(showLoading())
-      const res = await axios.post("/user/register", AllInfo);
+      const res = await axios.post("/admin/register", AllInfo);
       dispatch(hideLoading())
       if (res.data.success) {
         message.success("Register Successfully!");
