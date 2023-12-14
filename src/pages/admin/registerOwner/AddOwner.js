@@ -22,8 +22,11 @@ const RegisterOwner = () => {
   const [password, setPassword] = useState("")
   const [specialization] = useState("ooo")
   const [experience] = useState("ooo")
-  const [feesPerCunsaltation] = useState('000')
+  const [feesPerCunsaltation] = useState(0)
   const [docORrecep] = useState("owner")
+  const [checkList] = useState("000")
+  const [percent] = useState(0)
+  const [salary] = useState(0)
 
 
   const AllInfo = {
@@ -37,10 +40,13 @@ const RegisterOwner = () => {
     specialization,
     experience,
     feesPerCunsaltation,
-    docORrecep
+    docORrecep,
+    checkList,
+    percent: +percent,
+    salary: +salary,
   }
 
-  console.log(AllInfo);
+  
 
   const handleFinish = async (values) => {
     console.log(values);

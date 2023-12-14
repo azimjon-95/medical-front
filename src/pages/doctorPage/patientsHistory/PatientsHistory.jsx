@@ -8,13 +8,19 @@ import NotificationSound from "../../../assets/ayfon-sms.mp3";
 import { showLoading, hideLoading } from "../../../redux/features/lineIoad";
 import { useDispatch } from "react-redux";
 import { LuEye } from "react-icons/lu"
-import { message, Tabs } from 'antd';
+import {Button , Tabs } from 'antd';
 import imgNoData from '../../../assets/nodata.png'
+import { PiPrinterFill } from "react-icons/pi";
+import ReactToPrint from "react-to-print";
+import RecordList from '../../../components/checkLists/patientRecordList/RecordList';
+
 
 function PatientsHistory() {
+    const componentRef = useRef();
     const [data, setData] = useState([])
     const audioPlayer = useRef(null);
     const dispatch = useDispatch()
+    const [id, setID] = useState('');
 
     const getUsers = async () => {
         try {
@@ -33,6 +39,9 @@ function PatientsHistory() {
     useEffect(() => {
         getUsers()
     }, [])
+    const showModal = (id) => {
+        setID(id);
+    };
     let category = localStorage.getItem('category')
 
     let clients = data.filter(client => client.choseDoctor
@@ -105,7 +114,7 @@ function PatientsHistory() {
                                         <th>Bemor</th>
                                         <th>Tashxis</th>
                                         <th>Tel</th>
-                                        <th>Ko'rish</th>
+                                        <th>Chop etish </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -117,11 +126,22 @@ function PatientsHistory() {
                                             </td>
                                             <td data-label="Tashxis">{item.sickname}</td>
                                             <td data-label="Tel No">+998{item.phone}</td>
-                                            <td>
-                                                <Link to={`/AppointmentSinglePage/${item._id}`} >
-                                                    <LuEye className='btn-secondary_eye' />
-                                                </Link>
+
+                                            <td type="primary" onClick={() => showModal(item._id)}>
+                                                <Button className='LuEyeBtn'>
+                                                    <ReactToPrint
+                                                        trigger={() => <button style={{ border: "none", background: "transparent", fontSize: "14px" }}>< PiPrinterFill className='Printer' /></button>}
+                                                        content={() => componentRef.current}
+                                                    />
+                                                </Button>
                                             </td>
+
+                                            <div style={{ display: "none" }}>
+                                                <RecordList
+                                                    id={id}
+                                                    componentRef={componentRef}
+                                                />
+                                            </div>
 
                                         </tr>
                                     ))}

@@ -17,11 +17,15 @@ const HomePage = () => {
 
   const getDoctor = async () => {
     try {
+      dispatch(showLoading())
       const res = await axios?.get('/admin/getAllDoctors')
+      dispatch(hideLoading())
+
       if (res.data.success) {
         setDoctors(res.data.data)
       }
     } catch (error) {
+      dispatch(hideLoading())
       console.log(error);
     }
   }

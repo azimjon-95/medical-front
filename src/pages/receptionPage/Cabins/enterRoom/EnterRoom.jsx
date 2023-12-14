@@ -8,12 +8,9 @@ import { GiEntryDoor } from "react-icons/gi";
 import { PiPrinterFill } from "react-icons/pi";
 
 function EnterRoom({ setOpenRoom, room }) {
-
     const [clients, setClients] = useState([])
     const [clientsRoom, setClientsRoom] = useState()
     const [list, setList] = useState(false)
-
-
 
     useEffect(() => {
         axios.get('/client/all')

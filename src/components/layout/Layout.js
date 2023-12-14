@@ -3,10 +3,12 @@ import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { onerMenu, adminMenu, doctorMenu } from '../../utils/DataSidebar';
 import './style.css';
-import { Badge, message } from 'antd';
+import { Badge, message, Button, Modal, Space } from 'antd';
 import { AiFillLeftCircle } from 'react-icons/ai'
 import { IoMdNotifications } from 'react-icons/io'
 import HeartLine from '../loading/HeartLine';
+import { ExclamationCircleFilled } from '@ant-design/icons';
+
 
 const Layout = ({ children }) => {
     const location = useLocation()
@@ -18,12 +20,7 @@ const Layout = ({ children }) => {
 
     const SidebarMenu = admin === "doctor" ? doctorMenu : admin === "Reception" ? adminMenu : onerMenu
 
-    const handleLogout = () => {
-        localStorage.clear()
-        message.success("Logout Successfully")
-        navigate("/")
-        console.log('Ok');
-    }
+
 
     const OpenSID = () => {
         setSideOpen(i => !i)
@@ -44,15 +41,47 @@ const Layout = ({ children }) => {
             return "Derktor"
         }
     }
+
+
+
+
+
+    // --------------------Log out--------------
+
+    const { confirm } = Modal;
+    const showDeleteConfirm = () => {
+        confirm({
+            title: 'Tizimdan chiqmoqchimisiz?',
+            icon: <ExclamationCircleFilled />,
+            okText: 'Ha',
+            okType: 'danger',
+            cancelText: "Yo'q",
+            onOk() {
+                return new Promise((resolve, reject) => {
+                    setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+                    setTimeout(() => {
+                        localStorage.clear()
+                        message.success("Logout Successfully")
+                        navigate("/")
+                    }, 1000);
+                }).catch(() => console.log('Oops errors!'));
+
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
+    };
+
     return (
         <div className='Main-Lay'>
             <div className="Layout">
                 <div className="SidCont">
                     <div className={`Sidebar ${sideOpen ? "sideOpen" : "Sidebar"}`}>
                         <div className="SidebarHeader">
-                            <h6 className={` ${sideOpen ? "LinkNone" : "noneText"}`}>DOC APP</h6>
+                            <h6 className={` ${sideOpen ? "LinkNone" : "noneText"}`}>MedMe</h6>
                             <button className={`OpenWindowSid ${sideOpen ? "OpenWindowRight" : ""}`} ><AiFillLeftCircle onClick={() => OpenSID()} /></button>
-                            <p className='MobileSidText'>DOC APP</p>
+                            <p className='MobileSidText'>MedMe</p>
                         </div>
                         <div className="menu">
                             {
@@ -76,15 +105,20 @@ const Layout = ({ children }) => {
                                 })
                             }
 
-                            <div className={`menu-item `} onDoubleClick={handleLogout} >
+                            <Button
+                                className='menu-item log'
+                                onClick={showDeleteConfirm} type="dashed"
+
+                            >
                                 <i className='fa fa-sign-out'></i>
 
-                                <div className={`${sideOpen ? "LinkNone" : "noneText"}`} onClick={handleLogout} >
+                                <div className={`${sideOpen ? "LinkNone" : "noneText"}`}  >
                                     Tizimdan chiqish
                                 </div>
                                 <p className='MobileSidText'>Chiqish</p>
 
-                            </div>
+                            </Button>
+
                         </div>
                     </div>
                 </div>
@@ -115,6 +149,7 @@ const Layout = ({ children }) => {
                     }
                 </div>
             </div>
+
         </div >
     )
 }

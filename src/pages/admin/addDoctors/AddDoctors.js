@@ -25,6 +25,10 @@ const AddDoctors = () => {
   const [experience, setExperience] = useState("")
   const [feesPerCunsaltation, setFeesPerCunsaltation] = useState("")
   const [docORrecep, setDocORrecep] = useState("")
+  const [checkList, setCheckList] = useState("")
+  const [percent, setPercent] = useState("")
+  const [salaryORpercent, setSalaryORpercent] = useState("")
+  const [salary, setSalary] = useState("")
   const [doctor, setDoctors] = useState([])
 
 
@@ -38,9 +42,14 @@ const AddDoctors = () => {
     password,
     specialization,
     experience,
-    feesPerCunsaltation,
-    docORrecep
+    feesPerCunsaltation: +feesPerCunsaltation,
+    docORrecep,
+    checkList,
+    percent: +percent,
+    salary: +salary,
   }
+
+  console.log(AllInfo);
   const getDoctor = async () => {
     try {
       const res = await axios?.get('/admin/getAllDoctors')
@@ -201,8 +210,8 @@ const AddDoctors = () => {
                     placeholder="address" />
                 </Form.Item>
               </Col>
-
             </Row >
+
             <Row className="Row">
               <Col className="Col-Form">
                 <Form.Item
@@ -232,10 +241,64 @@ const AddDoctors = () => {
                     placeholder="password" />
                 </Form.Item>
               </Col >
+              <div className={` ${docORrecep == "doctor" ? "salaryBox" : "salaryBox_None"}`}>
+                <Col>
+                  <Form.Item
+                    label="Doktor maoshi"
+                    name="doctor salary"
+                    required
+                    rules={[{ required: true }]}
+                  >
+                    <div className="docORrecep checkList">
+                      <label className="containerChe">Foiz
+                        <input value='percent' onChange={(e) => setCheckList(e.target.value)} name='oli' id='chili' type="radio" />
+                        <span className="checkmark"></span>
+                      </label>
+
+                      <label className="containerChe">Oylik
+                        <input value='salary' onChange={(e) => setCheckList(e.target.value)} name='oli' id='chili' type="radio" />
+                        <span className="checkmark"></span>
+                      </label>
+                    </div>
+                  </Form.Item>
+                </Col >
+                {checkList === "percent"
+                  ?
+                  <Col>
+                    <Form.Item
+                      label="Foiz"
+                      name="percent"
+                      required
+                      rules={[{ required: true }]}
+                    >
+                      <Input
+                        value={percent}
+                        onChange={(e) => setPercent(e.target.value)}
+                        type="number"
+                        placeholder="percent" />
+                    </Form.Item>
+                  </Col >
+                  :
+                  <Col>
+                    <Form.Item
+                      label="Oylik"
+                      name="salary"
+                      required
+                      rules={[{ required: false }]}
+                    >
+                      <Input
+                        value={salary}
+                        onChange={(e) => setSalary(e.target.value)}
+                        type="number"
+                        placeholder="salary" />
+                    </Form.Item>
+                  </Col >
+                }
+              </div>
             </Row >
 
             <div className={`NonePro ${docORrecep == "doctor" ? "OpenPro" : "NonePro"}`}>
-              <h4>Professional tafsilotlar:</h4>
+              {/* <h4>Professional tafsilotlar:</h4> */}
               <Row className="Row">
                 <Col className="Col-Form" >
                   <Form.Item
@@ -270,7 +333,7 @@ const AddDoctors = () => {
                     label="Kunsaltatsia uchun to'lovlar"
                     name="feesPerCunsaltation"
 
-                  // rules={[{ required: true }]}
+                    rules={[{ required: true }]}
                   >
                     <Input
                       value={feesPerCunsaltation}
@@ -307,6 +370,7 @@ const AddDoctors = () => {
                     <th>Kasbi</th>
                     <th>Tel No</th>
                     <th>Qabuli</th>
+                    <th>Oylik & Foiz</th>
                     <th>O'chirish</th>
                   </tr>
                 </thead>
@@ -318,6 +382,11 @@ const AddDoctors = () => {
                       <td data-label="Kasbi">{item.specialization}</td>
                       <td data-label="Tel No">{PhoneNumberFormat(item.phone)}</td>
                       <td data-label="To'landi">{NumberFormat(item.feesPerCunsaltation)} so'm</td>
+                      {item.percent ?
+                        <td data-label="To'landi">{NumberFormat(+item.percent)}%</td>
+                        :
+                        <td data-label="To'landi">{NumberFormat(item.salary)} so'm</td>
+                      }
                       <td data-label="O'chirish">
                         <button onClick={() => deletePatients(item?._id)} button="true" className='btn btn-danger'>Del</button>
                       </td>
@@ -372,3 +441,17 @@ const AddDoctors = () => {
 };
 
 export default AddDoctors;
+
+
+
+
+
+
+// Azimov	Faxriddin	Nevrolog	934566676	100000
+// Melikulov	Alisher	Kardioxirurg	904445434	150000
+// Aminov	Sanjar	Kardiolog	905556545	200000
+// Fozilbekov	Ro'ziqul	Ginekolog	770706687	80000
+// Miraxmedov	G'ayrat	Anesteziolog	904324466	90000
+// Babakulov	Abduaziz	Ortoped	902344344	120000
+// Umarova	Gulnora	Revmatolog	946609606	130000
+// Abdullayev	Oybek	Travmatolog	944324445	80000

@@ -1,0 +1,74 @@
+.SearchBar-Box {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    padding: 0px 20px;
+}
+
+.Search-Box {
+    width: 50%;
+    height: 100vh;
+
+}
+
+.Printer {
+    font-size: 20px;
+    margin-left: 5px;
+}
+
+.LuEyeBtn {
+    font-size: 20px;
+    padding: 0;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    margin-left: 16px;
+    margin-top: 3px;
+    background-color: transparent;
+}
+
+.ModelBox_none {
+    display: none;
+}
+
+.ModelBox {
+    display: block;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.548);
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+}
+
+
+.ModelCont {
+    width: 550px;
+    height: 100%;
+    padding: 10px;
+}
+
+.ModTitle {
+    width: 100%;
+    height: 30px;
+    background-color: aqua;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btnPrints{
+    width: 100%;
+    height: 40px;
+    background-color: aqua;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}

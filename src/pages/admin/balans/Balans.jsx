@@ -10,8 +10,9 @@ const Balans = ({ dataTrue }) => {
     const [change, setChange] = useState(0)
     let time = new Date()
     let date = (time.getDate() + change) + "." + (time.getMonth() + 1) + "." + time.getFullYear()
+    let dateKech = (time.getDate() - 1) + "." + (time.getMonth() + 1) + "." + time.getFullYear()
     let dateChane = time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear()
-
+    console.log(dateKech);
     function Disabled() {
         if (dateChane <= date) {
             return "disabled"
@@ -21,23 +22,34 @@ const Balans = ({ dataTrue }) => {
     // console.log(dataTrue.filter((i) => i.view === true));
 
     let base = dataTrue.filter((i) => i.day === date && i.view === true)
+    let baseKech = dataTrue.filter((i) => i.day === dateKech && i.view === true)
     let result = base?.reduce(function (prev, cur) {
         return prev + cur.paySumm
     }, 0);
-
+    let resultKech = baseKech?.reduce(function (prev, cur) {
+        return prev + cur.paySumm
+    }, 0);
     return (
         <div className="grid-one-item grid-common grid-c1">
-
             <div className="grid-c1-content">
                 <p>Balans</p>
-                <div className="lg-value">
-                    {result === 0
+                <div className="lg-value1">
+                    Bugun:  {result === 0
                         ?
                         <img src={NoMony} alt="" />
                         :
-                        <CountUp className="lg-value" end={NumberFormat(result)} decimals="3" suffix=" so'm" />
+                        <CountUp className="lg-value1" end={NumberFormat(result)} decimals="3" suffix=" so'm" />
                     }
                 </div>
+                <div className="lg-value2">
+                    Kechagi: {result === 0
+                        ?
+                        <img src={NoMony} alt="" />
+                        :
+                        <CountUp className="lg-value2" end={NumberFormat(resultKech)} decimals="3" suffix=" so'm" />
+                    }
+                </div>
+
                 <div className="card-wrapper">
                     <span className="card-pin-hidden">**** **** **** </span>
                     <span>1234</span>

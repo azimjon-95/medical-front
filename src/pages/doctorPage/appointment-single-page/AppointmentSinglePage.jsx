@@ -66,8 +66,65 @@ function AppointmentSinglePage() {
                     </form>
                 </div>
             </div>
+
+            {/* <div style={{ display: "none" }}>
+                <RecordList
+                    lastname={lastname}
+                    firstname={firstname}
+                    sickname={sickname}
+                    phone={phone}
+                    retsept={retsept}
+                    address={address}
+                    day={day}
+                    doctorFirstName={doctorFirstName}
+                    doctorLastName={doctorLastName}
+                    doctorPhone={doctorPhone}
+                    year={year}
+                    choseDoctor={choseDoctor}
+                    componentRef={componentRef}
+                />
+            </div> */}
         </Layout>
     )
 }
 
 export default AppointmentSinglePage
+
+
+//     < RecordList
+// id = { id }
+// doctorFirstName = { doctorFirstName }
+// doctorLastName = { doctorLastName }
+// choseDoctor = { choseDoctor }
+// phone = { phone }
+// day = { day }
+// doctorPhone = { doctorPhone }
+// retsept = { retsept }
+// firstname = { firstname }
+// lastname = { lastname }
+// year = { year }
+// address = { address }
+// sickname = { sickname }
+// componentRef = { componentRef }
+//     />
+
+
+
+
+
+// {
+//     id,
+//     componentRef,
+//     sickname,
+//     phone,
+//     doctorFirstName,
+//     doctorLastName,
+//     choseDoctor,
+//     day,
+//     doctorPhone,
+//     retsept,
+//     firstname,
+//     lastname,
+//     year,
+//     address,
+// }) => {

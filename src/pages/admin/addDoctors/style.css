@@ -13,7 +13,16 @@
     width: 32%;
 }
 
+.salaryBox {
+    display: block;
+    width: 32%;
+    display: flex;
+    gap: 8px;
+}
 
+.salaryBox_None {
+    display: none;
+}
 
 .btn {
     width: 100%;
@@ -41,7 +50,13 @@
     .Col-Form {
         width: 100%;
     }
+    .salaryBox {
+        display: block;
+        width: 100%;
 
+        display: flex;
+        gap: 8px;
+    }
     /* .wrapperRadio {
         width: 200px;
     } */
@@ -59,4 +74,8 @@
     border: 1px solid rgb(209, 209, 209);
     border-radius: 5px;
     padding: 0 10px;
+}
+
+.checkList {
+    gap: 5px;
 }
