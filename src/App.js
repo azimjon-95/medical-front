@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/admin/home/HomePage";
 import Login from "./pages/Login";
 import { useSelector } from 'react-redux';
-// import PublicRoute from "./hook/PublicRoute";
 import Patients from "./pages/receptionPage/patients/Patients";
 import Doctor from "./pages/receptionPage/doctor/Doctor";
 import Profile from "./pages/admin/profile/Profile";
@@ -14,9 +13,9 @@ import Appointments from './pages/doctorPage/appointments/Appointments'
 import AppointmentSinglePage from "./pages/doctorPage/appointment-single-page/AppointmentSinglePage";
 import PatientsHistory from "./pages/doctorPage/patientsHistory/PatientsHistory";
 import RecordList from "./components/checkLists/patientRecordList/RecordList";
-// import HeartLine from "./components/loading/HeartLine";
 import SinglePage from "./pages/admin/singlePage/SinglePage";
 import LoadingTik from "./components/loading/tiktok/LoadingTik";
+import GetPatients from "./pages/admin/singlePage/getPatients/GetPatients";
 
 function App() {
   const { loading } = useSelector(state => state.alerts)
@@ -53,6 +52,7 @@ function App() {
             <Route path="/appointments/:id" element={<AppointmentSinglePage />} />
             <Route path="/AppointmentSinglePage/:id" element={<RecordList />} />
             <Route path="/doctorSinglePage/:_id" element={<SinglePage />} />
+            <Route path="/doctorSinglePageAdmin/:_id" element={<GetPatients />} />
 
           </Routes>
         }

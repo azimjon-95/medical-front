@@ -48,7 +48,7 @@ const Login = () => {
   let admin = localStorage.getItem('admin')
 
   if (admin === "owner") window.location = "/reports"
-  if (admin === "Reception") window.location = "/receptionHome"
+  if (admin === "reception") window.location = "/receptionHome"
   if (admin === "doctor") window.location = "/appointments"
 
 

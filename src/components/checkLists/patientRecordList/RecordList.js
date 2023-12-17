@@ -4,20 +4,33 @@ import Qeu from './MedLogoList.png';
 import { IoIosCall, IoIosMail } from 'react-icons/io'
 import axios from '../../../api';
 
-const RecordList = React.forwardRef(({ id, componentRef }) => {
 
-    const [data, setData] = useState([])
+const RecordList = (props) => {
+    const {
+        id,
+        choseDoctor,
+        day,
+        address,
+        doctorFirstName,
+        doctorLastName,
+        firstname,
+        lastname,
+        phone,
+        retsept,
+        sickname,
+        year,
+        doctorPhone,
+        componentRef
+    } = props.obj;
+  
 
-    useEffect(() => {
-        axios.get('/client/all')
-            .then((res) => setData(res.data?.data))
-            .catch((err) => console.log(err))
-    }, [])
+   
 
     let time = new Date()
-    const user = data?.filter((i) => i._id === id)
+   
 
-    console.log(user[0]?.retsept);
+
+
 
     return (
         <>
@@ -38,20 +51,20 @@ const RecordList = React.forwardRef(({ id, componentRef }) => {
                 <div className="textList">
                     <div className="listClinic-info">
                         <div className="D-info">
-                            <b style={{ color: '#0095ff' }}>Doktor: {user.doctorFirstName + " " + user.doctorLastName}</b>
-                            <b>Retsep raqami: [{user[0]?.phone}]</b>
+                            <b style={{ color: '#0095ff' }}>Doktor: {doctorFirstName + " " + doctorLastName}</b>
+                            <b>Retsep raqami: [{phone}]</b>
                         </div>
                         <div className="D-info">
-                            <b>[{user.choseDoctor}]</b>
-                            <b>Sana: {user[0]?.day}</b>
+                            <b>[{choseDoctor}]</b>
+                            <b>Sana: {day}</b>
                         </div>
                         <div className="D-info">
-                            <b>[+998{user[0]?.doctorPhone}]</b>
+                            <b>[+998{doctorPhone}]</b>
                         </div>
                     </div>
                     <div className="Tashxis"></div>
                     <div className="listClinic-Record">
-                        <b>[{user[0]?.retsept}]</b>
+                        <b>[{retsept}]</b>
                     </div>
 
                     <div className="listClinic-UserInfo">
@@ -60,7 +73,7 @@ const RecordList = React.forwardRef(({ id, componentRef }) => {
                                 <b>Janob/Xonim:</b>
                             </span>
                             <span className='Inf-box2'>
-                                <p>[{user[0]?.firstname + " " + user[0]?.lastname}]</p>
+                                <p>[{firstname + " " + lastname}]</p>
                             </span>
                         </div>
                         <div className="userInf">
@@ -68,7 +81,7 @@ const RecordList = React.forwardRef(({ id, componentRef }) => {
                                 <b>Yosh:</b>
                             </span>
                             <span className='Inf-box2'>
-                                <p>[{time.getFullYear() - +(user.year?.slice(0, 4))}]</p>
+                                <p>[{time.getFullYear() - +(year?.slice(0, 4))}]</p>
                             </span>
                         </div>
                         <div className="userInf">
@@ -76,7 +89,7 @@ const RecordList = React.forwardRef(({ id, componentRef }) => {
                                 <b>Manzil:</b>
                             </span>
                             <span className='Inf-box2'>
-                                <p>[{user.address}]</p>
+                                <p>[{address}]</p>
                             </span>
                         </div>
                         <div className="userInf">
@@ -84,7 +97,7 @@ const RecordList = React.forwardRef(({ id, componentRef }) => {
                                 <b>Aloqa raqami:</b>
                             </span>
                             <span className='Inf-box2'>
-                                <p>[+998{user.phone}]</p>
+                                <p>[+998{phone}]</p>
                             </span>
                         </div>
                     </div>
@@ -94,7 +107,9 @@ const RecordList = React.forwardRef(({ id, componentRef }) => {
                     <p><IoIosMail /> choiceclinic@gmail.com</p>
                 </div>
             </div>
+
+
         </>
     )
-})
+}
 export default RecordList

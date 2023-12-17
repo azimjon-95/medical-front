@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { onerMenu, adminMenu, doctorMenu } from '../../utils/DataSidebar';
 import './style.css';
-import { Badge, message, Button, Modal, Space } from 'antd';
+import { message, Button, Modal } from 'antd';
 import { AiFillLeftCircle } from 'react-icons/ai'
 import { IoMdNotifications } from 'react-icons/io'
 import HeartLine from '../loading/HeartLine';
 import { ExclamationCircleFilled } from '@ant-design/icons';
+import Snowfall from '../snowFall/Snowfall';
 
 
 const Layout = ({ children }) => {
     const location = useLocation()
     const navigate = useNavigate()
-    const { user } = useSelector(state => state.user)
     const [sideOpen, setSideOpen] = useState(false)
 
     let admin = localStorage.getItem('admin') || {}
 
-    const SidebarMenu = admin === "doctor" ? doctorMenu : admin === "Reception" ? adminMenu : onerMenu
+    const SidebarMenu = admin === "doctor" ? doctorMenu : admin === "reception" ? adminMenu : onerMenu
 
 
 
@@ -35,7 +35,7 @@ const Layout = ({ children }) => {
     function Catigory() {
         if (admin === "doctor") {
             return "Doktor"
-        } else if (admin === "Reception") {
+        } else if (admin === "reception") {
             return "Resepshin"
         } else if (admin === "owner") {
             return "Derktor"
@@ -72,6 +72,9 @@ const Layout = ({ children }) => {
             },
         });
     };
+
+
+
 
     return (
         <div className='Main-Lay'>
@@ -136,7 +139,7 @@ const Layout = ({ children }) => {
                                 }
                             </button>
                         }
-
+                        <Snowfall />
                     </div>
                     {LineLoad ?
                         <div className="BoxLine">
