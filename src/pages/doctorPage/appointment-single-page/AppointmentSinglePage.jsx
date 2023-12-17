@@ -28,6 +28,7 @@ function AppointmentSinglePage() {
         user.sickname = sickname
         user.retsept = retsept
         user.view = true
+        user.room.dayOfTreatment = "" + user.room.dayOfTreatment 
 
         axios.put('/client/' + id, user)
             .then(res => {
