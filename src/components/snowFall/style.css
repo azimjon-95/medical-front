@@ -19,7 +19,8 @@
     left: 0;
     width:  20px;
     height: 20px;
-    background-image: url('./snowFall.png');
+    background-image: url('./snowflakes3.png');
+    /* background-image: url('./snowFall.png'); */
     background-size: cover;
     animation: animationSnow 5s ease-in-out infinite;
 }

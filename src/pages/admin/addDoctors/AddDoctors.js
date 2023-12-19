@@ -10,6 +10,7 @@ import imgNoData from '../../../assets/nodata.png'
 import { NumberFormat, PhoneNumberFormat } from '../../../hook/NumberFormat'
 import Reception from "./Reception";
 import { ExclamationCircleFilled } from '@ant-design/icons';
+import { TbUsersPlus } from "react-icons/tb";
 
 const AddDoctors = () => {
 
@@ -28,7 +29,7 @@ const AddDoctors = () => {
   const [specialization, setSpecialization] = useState("");
   const [experience, setExperience] = useState("");
   const [feesPerCunsaltation, setFeesPerCunsaltation] = useState("");
-  const [docORrecep, setDocORrecep] = useState("");
+  const [docORrecep] = useState("doctor");
   const [checkList, setCheckList] = useState("");
   const [percent, setPercent] = useState("");
 
@@ -86,7 +87,7 @@ const AddDoctors = () => {
 
   const deletePatients = (_id) => {
     axios
-      .delete(`/delete${_id}`)
+      .delete(`/delete/${_id}`)
       .then((res) => {
         if (res.data.success) {
           message.success("Doktor o'chirildi!");
@@ -114,7 +115,7 @@ const AddDoctors = () => {
       cancelText: "Yo'q",
       onOk() {
         axios
-          .delete(`/delete${_id}`)
+          .delete(`/delete/:${_id}`)
           .then((res) => {
             if (res.data.success) {
               message.success("Doktor o'chirildi!");
@@ -130,12 +131,13 @@ const AddDoctors = () => {
       },
     });
   };
+  let width = window.innerWidth
 
   return (
     <Layout>
       <h3 className="text-center">Admin qo'shish</h3>
       <Tabs>
-        <Tabs.TabPane tab="Xodim qo'shish" key={0}>
+        <Tabs.TabPane tab={`${width > 450 ? "Doktor qo'shish" : 'Doktor+'}`} key={0}>
           <Form layout="vertical" onFinish={handleFinish} className="FormApply">
             <Row className="Row">
               <Col className="Col-Form">
@@ -376,12 +378,12 @@ const AddDoctors = () => {
           </Form>
         </Tabs.TabPane>
 
-        <Tabs.TabPane tab="Admin qo'shish" key={1}>
+        <Tabs.TabPane tab={`${width > 450 ? "Admin qo'shish" : 'Admin+'}`} key={1}>
           <Reception />
         </Tabs.TabPane>
 
 
-        <Tabs.TabPane tab={`Administratorlar ${filterData1.length === 0 ? "" : `- ${filterData1.length}`}`} key={2}>
+        <Tabs.TabPane tab={`${width > 450 ? "Doktorlar" : 'D'} ${filterData1.length === 0 ? "" : `- ${filterData1.length}`}`} key={2}>
           {
             filterData1 == 0 ?
               <div className='NoData'>
@@ -398,6 +400,7 @@ const AddDoctors = () => {
                     <th>Kasbi</th>
                     <th>Tel No</th>
                     <th>Qabuli</th>
+                    <th>Oylik</th>
                     <th>O'chirish</th>
                   </tr>
                 </thead>
@@ -408,9 +411,15 @@ const AddDoctors = () => {
                       <td data-label="Familiyasi">{item.firstName}</td>
                       <td data-label="Kasbi">{item.specialization}</td>
                       <td data-label="Tel No">{PhoneNumberFormat(item.phone)}</td>
-                      <td data-label="Tel No">{NumberFormat(item.feesPerCunsaltation)} so'm</td>
+                      <td data-label="Qabuli">{NumberFormat(item.feesPerCunsaltation)} so'm</td>
+                      {item.percent ?
+                        <td data-label="Oylik">{item.percent} %</td> :
+                        <td data-label="Oylik">{NumberFormat(item.salary)} so'm</td>
+                      }
+
                       <td data-label="O'chirish">
-                        <button onClick={() => showDeleteConfirm(item?._id)} button="true" className='btn btn-danger'>Del</button>
+                        <button onClick={() => deletePatients(item?._id)} button="true" className='btn btn-danger'>Del</button>
+                        {/* <button onClick={() => showDeleteConfirm(item?._id)} button="true" className='btn btn-danger'>Del</button> */}
                       </td>
                     </tr>
                   ))}
@@ -420,7 +429,7 @@ const AddDoctors = () => {
 
         </Tabs.TabPane>
         <Tabs.TabPane
-          tab={`Administratorlar ${filterData2.length === 0 ? "" : `- ${filterData2.length}`
+          tab={`${width > 450 ? "Administratorlar" : 'A'}  ${filterData2.length === 0 ? "" : `- ${filterData2.length}`
             }`}
           key={3}
         >
@@ -436,9 +445,7 @@ const AddDoctors = () => {
                 <tr>
                   <th>Ismi</th>
                   <th>Familiyasi</th>
-
                   <th>Tel No</th>
-
                   <th>O'chirish</th>
                 </tr>
               </thead>

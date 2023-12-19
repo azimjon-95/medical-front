@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import './style.css'
 import { NumberFormat, PhoneNumberFormat } from '../../../../hook/NumberFormat';
 import axios from '../../../../api';
-import { message, Tabs } from 'antd';
+import { message, Tabs, Modal } from 'antd';
 import { FiX } from 'react-icons/fi'
 import { GiEntryDoor } from "react-icons/gi";
 import { PiPrinterFill } from "react-icons/pi";
+import { ExclamationCircleFilled } from '@ant-design/icons';
 
 function EnterRoom({ setOpenRoom, room }) {
     const [clients, setClients] = useState([])
@@ -56,6 +57,30 @@ function EnterRoom({ setOpenRoom, room }) {
     }
 
 
+    // --------------------------------
+
+    const { confirm } = Modal;
+    const OutInRoom = () => {
+        confirm({
+            title: 'Bemorni honadan chiqarmoqchimisiz?',
+            icon: <ExclamationCircleFilled />,
+            okText: 'Ha',
+            okType: 'danger',
+            cancelText: "Yo'q",
+            onOk() {
+                return new Promise((resolve, reject) => {
+                    setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+                    setList(true)
+
+                }).catch(() => console.log('Oops errors!'));
+
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
+    };
+
     return (
 
         <div className='updateRoom'>
@@ -86,7 +111,7 @@ function EnterRoom({ setOpenRoom, room }) {
                                         <td data-label="To'lov"> {NumberFormat(CountingMoney(item.dayOfTreatment))} so'm</td>
                                         <td data-label="Chiqish">
                                             <button onClick={() => {
-                                                setList(true)
+                                                OutInRoom()
                                                 updatePatients(time.id)
                                             }
                                             } button="true" className='btn btn-primary'><GiEntryDoor id='EntryDoor' /></button>

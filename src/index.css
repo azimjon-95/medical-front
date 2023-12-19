@@ -15,5 +15,12 @@ a {
 
 .app {
   width: 100%;
-  min-height: 100vh;
+  width: 1560px;
+  margin: auto;
+}
+
+@media screen and (max-width: 1580px) {
+  .app {
+    width: 100%;
+  }
 }

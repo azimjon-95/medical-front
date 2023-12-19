@@ -56,8 +56,15 @@ const GetPatients = () => {
     let filterarxiv = clients.filter(i => i.day == day)
 
 
-
-
+    // Sort users by date
+    // const [sortList, setSortList] = useState([])
+    // useEffect(() => {
+    //     const sortData = () => {
+    //         dateList.sort((a, b) => new Date(a.date) - new Date(b.date))
+    //         setSortList(dateList)
+    //     }
+    //     sortData()
+    // }, [])
     return (
         <div className='Search-Box'>
             <div className="searchingBox">
