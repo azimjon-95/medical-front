@@ -87,7 +87,7 @@ const Login = () => {
                 <input
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  type={eye ? "password" : "text"}
+                  type={!eye ? "password" : "text"}
                   className="input"
                   placeholder="Password"
                 />

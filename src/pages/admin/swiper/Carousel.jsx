@@ -84,7 +84,7 @@ function DoctorsSlite({ doctor, users }) {
                     </div>
                   ) : (
                     <div className="CountDay-M">
-                      <GiTakeMyMoney /> {NumberFormat(value.salary)} so'm
+                      <GiTakeMyMoney /> {NumberFormat(value.salary)}
                     </div>
                   )}
                 </div>
