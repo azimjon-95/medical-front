@@ -24,12 +24,17 @@
 
 }
 
+.LogoNone {
+    display: none;
+
+}
+
 .LinkNone {
     display: none;
 }
 
 .content {
-    width: calc(100% - 250px) ;
+    width: calc(100% - 250px);
     height: 98vh;
     position: relative;
 }
@@ -232,6 +237,11 @@
     box-shadow: none;
 }
 
+.noneLogo {
+    cursor: pointer;
+    margin-top: 10px;
+}
+
 .MobileSidText {
     display: none;
 }
@@ -249,7 +259,7 @@
 
 
     .content {
-        width: calc(100% - 50px) ;
+        width: calc(100% - 50px);
         height: 98vh;
         position: relative;
     }
@@ -265,6 +275,11 @@
     }
 
     .noneText {
+
+        display: none;
+    }
+
+    .noneLogo {
 
         display: none;
     }

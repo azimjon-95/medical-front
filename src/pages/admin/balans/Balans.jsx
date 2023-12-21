@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import "./style.css";
 import { NumberFormat } from '../../../hook/NumberFormat'
@@ -7,9 +6,12 @@ import CountUp from "react-countup";
 import NoMony from '../../../assets/img/nomony.png'
 import moment from 'moment';
 import { GiMoneyStack } from "react-icons/gi";
+import { MdOutlineBedroomChild } from "react-icons/md";
+import { TbUsersGroup } from "react-icons/tb";
+
+
 
 const Balans = ({ dataTrue }) => {
-
     const [selectedDate, setSelectedDate] = useState(moment().startOf('day'));
     let time = new Date()
     let dateChane = (time.getDate() - 1) + "." + (time.getMonth() + 1) + "." + time.getFullYear()
@@ -20,7 +22,6 @@ const Balans = ({ dataTrue }) => {
         return prev + cur.paySumm
     }, 0);
 
-
     const back = () => {
         setSelectedDate(selectedDate.clone().subtract(1, 'day'));
     };
@@ -28,30 +29,61 @@ const Balans = ({ dataTrue }) => {
         setSelectedDate(selectedDate.clone().add(1, 'day'));
     };
 
-    // ------------------------------------------------------------
+
+    console.log(dataTrue?.room);
     return (
         <div className="grid-one-item grid-common grid-c1">
             <div className="grid-c1-content">
-                <p>Balans</p>
+                <div className="balansBox">
+                    <p>Balans</p>
+                    <div className="bedrom">
+                        <div><TbUsersGroup /> - 250</div>
+                        <div><MdOutlineBedroomChild /> - 60</div>
+                    </div>
+                </div>
+
                 <div className="lg-value1">
                     {result === 0
                         ?
                         <img src={NoMony} alt="" />
                         :
-                        <>
-                            <GiMoneyStack /> <CountUp className="lg-value1" end={NumberFormat(result)} decimals="3" suffix=" so'm" />
-                        </>
+                        <div className='payCaounting'>
+                            <div><GiMoneyStack /> Jami:</div>
+                            <div className="">
+                                <CountUp className="lg-value1" end={NumberFormat(result)} decimals="3" suffix=" so'm" />
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div className="lg-value1">
+                    {result === 0
+                        ?
+                        <img src={NoMony} alt="" />
+                        :
+                        <div className='payCaounting'>
+                            <div><GiMoneyStack /> Bemorlar:</div>
+                            <div className="">
+                                <CountUp className="lg-value1" end={NumberFormat(result)} decimals="3" suffix=" so'm" />
+                            </div>
+                        </div>
+                    }
+                </div>  <div className="lg-value1">
+                    {result === 0
+                        ?
+                        <img src={NoMony} alt="" />
+                        :
+                        <div className='payCaounting'>
+                            <div><GiMoneyStack /> Xonalar:</div>
+                            <div className="">
+                                <CountUp className="lg-value1" end={NumberFormat(result)} decimals="3" suffix=" so'm" />
+                            </div>
+                        </div>
                     }
                 </div>
 
-
-                <div className="card-wrapper">
-                    <span className="card-pin-hidden">**** **** **** </span>
-                    <span>1234</span>
-                </div>
                 <div className="card-logo-wrapper">
                     <div>
-                        <p className="text text-silver-v1 expiry-text"></p>
+
                         <div className="changeDate">
                             <p className="text text-sm text-white  text-date">{selectedDate.format('DD.MM.YYYY')}</p>
                             <span>

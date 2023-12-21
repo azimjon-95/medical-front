@@ -1,6 +1,6 @@
 import React from 'react';
 import './style.css';
-import Loea from './load.png'
+import Loea from './heartline.png'
 
 const HeartLine = () => {
     return (

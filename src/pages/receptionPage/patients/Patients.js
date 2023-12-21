@@ -3,12 +3,13 @@ import './style.css';
 import Layout from '../../../components/layout/Layout';
 import axios from '../../../api';
 import { NumberFormat, PhoneNumberFormat } from '../../../hook/NumberFormat'
-import { message, Tabs } from 'antd';
+import { message, Tabs, Modal } from 'antd';
 import { AiOutlineCheckCircle } from 'react-icons/ai'
 import { showLoading, hideLoading } from "../../../redux/features/lineIoad";
 import { useDispatch } from "react-redux";
 import { MdOutlineDoNotDisturbAlt } from 'react-icons/md'
 import imgNoData from '../../../assets/nodata.png'
+import { DeleteOutlined } from '@ant-design/icons';
 
 const Patients = () => {
   const [payState, setPaid] = useState("")
@@ -31,7 +32,7 @@ const Patients = () => {
   }
 
   const dataFalse = users.filter(i => i.payState === false)
-  const dataTrue = users.filter(i => i.payState === true)
+  const dataTrue = users.filter(i => i.payState === true && i.view !== true)
   localStorage.setItem("dataFalse", dataFalse.length);
 
   console.log(dataFalse);
@@ -52,38 +53,58 @@ const Patients = () => {
     getUsers()
     paySumUpdate()
   }, [])
-  const deletePatients = (_id) => {
-    axios
-      .delete(`/client/${_id}`)
-      .then((res) => {
-        if (res.data.success) {
-          message.success("Bemor o'chirildi!");
-          window.location.reload()
-        } else {
-          message.error(res.data.message);
-        }
-
-      })
-      .catch((err) => console.log(err));
-  };
 
 
-  function updatePayState(e, id) {
+
+  function updatePayState(e, _id) {
     setPaid(e.target.checked)
-    let update = dataFalse.find(i => i._id === id)
+    let update = dataFalse.find(i => i._id === _id)
 
     let doctorSum = doctors.find(i => i.specialization.toLowerCase() === update.choseDoctor.toLowerCase()).feesPerCunsaltation
 
     update.payState = true
     update.paySumm = doctorSum
     console.log(update);
-    axios.put('/client/' + id, update)
+    axios.put('/client/' + _id, update)
       .then(res => { console.log(res) })
       .catch(err => console.log(err))
-      .finally(() => { window.location.reload() })
+    // .finally(() => { window.location.reload() })
 
   }
 
+
+
+
+
+  const { confirm } = Modal;
+  const showDeleteClients = (_id) => {
+    confirm({
+      title: 'Oʻchirib tashlaysizmi?',
+      icon: <DeleteOutlined />,
+      okText: 'Ha',
+      okType: 'danger',
+      cancelText: "Yo'q",
+      onOk() {
+        axios
+          .delete(`/client/remove/${_id}`)
+          .then((res) => {
+            if (res.data.success) {
+              message.success("Bemor o'chirildi!");
+              window.location.reload()
+            } else {
+              message.error(res.data.message);
+            }
+
+          })
+          .catch((err) => console.log(err));
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
+
+  
   return (
     <Layout>
       <h4 className="text-center">Bemorlar</h4>
@@ -139,7 +160,7 @@ const Patients = () => {
 
                       </td>
                       <td data-label="O'chirish">
-                        <button button="true" className='btn btn-danger'>Del</button>
+                        <button onClick={() => showDeleteClients(item?._id)} button="true" className='btn btn-danger'>Del</button>
                       </td>
                     </tr>
                   ))}
@@ -176,7 +197,8 @@ const Patients = () => {
                       <td data-label="Doktor">{item.doctorLastName} {item.doctorFirstName}</td>
                       <td data-label="To'landi">{NumberFormat(item.paySumm)} so'm</td>
                       <td data-label="O'chirish">
-                        <button onClick={() => deletePatients(item?._id)} button="true" className='btn btn-danger'>Del</button>
+                        {/* <button onClick={() => deletePatients(item?._id)} button="true" className='btn btn-danger'>Del</button> */}
+                        <button onClick={() => showDeleteClients(item?._id)} button="true" className='btn btn-danger'>Del</button>
                       </td>
                     </tr>
                   ))}

@@ -8,7 +8,7 @@ import { GiEntryDoor } from "react-icons/gi";
 import { PiPrinterFill } from "react-icons/pi";
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
-function EnterRoom({ setOpenRoom, room }) {
+function EnterRoom({ setOpenRoom, room, none }) {
     const [clients, setClients] = useState([])
     const [clientsRoom, setClientsRoom] = useState()
     const [list, setList] = useState(false)
@@ -95,10 +95,10 @@ function EnterRoom({ setOpenRoom, room }) {
                                 <tr>
                                     <th>Bemor</th>
                                     <th>Yoshi</th>
-                                    <th>Yo'naltirildi</th>
+                                    <th>Tel No</th>
                                     <th>Kun</th>
                                     <th>To'lov</th>
-                                    <th>Chiqish</th>
+                                    <th style={none}>Chiqish</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -106,10 +106,10 @@ function EnterRoom({ setOpenRoom, room }) {
                                     <tr key={inx}>
                                         <td data-label="Bemor">{item.firstname} {item.lastname}</td>
                                         <td data-label="Yoshi">{time.getFullYear() - +(item.year?.slice(0, 4))}</td>
-                                        <td data-label="Tel No">{item.phone}</td>
+                                        <td data-label="Tel No">+998 {PhoneNumberFormat(item.phone)}</td>
                                         <td data-label="Kun">{CountingDay(item.dayOfTreatment)}</td>
                                         <td data-label="To'lov"> {NumberFormat(CountingMoney(item.dayOfTreatment))} so'm</td>
-                                        <td data-label="Chiqish">
+                                        <td style={none} data-label="Chiqish">
                                             <button onClick={() => {
                                                 OutInRoom()
                                                 updatePatients(time.id)

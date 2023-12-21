@@ -12,7 +12,6 @@ const Snowfall = () => {
             let widthSnow = Math.floor(Math.random() * 25);
             let timeSnow = Math.floor((Math.random() * 5) + 5);
          
-
             let div = document.createElement('div');
             div.classList.add('snow');
             div.style.left = leftSnow + 'px';

@@ -33,8 +33,7 @@
 /* End Header  */
 
 .HomeOwner {
-  max-width: 100%;
-  width: 990px;
+  width: 100%;
   padding-right: 5px;
   display: flex;
   flex-direction: column;

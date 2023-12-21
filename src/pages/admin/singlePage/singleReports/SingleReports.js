@@ -18,7 +18,7 @@ const SingleReports = () => {
         axios
             .get("/dailiyReports/doctorsMoney")
             .then((res) => {
-                // console.log(res.data);
+                console.log(res.data);
                 if (res.data.state) {
                     setDoctors(res.data.innerData.doctors);
                     setDailyMoney(res.data.innerData.doctorDailyMoney);

@@ -9,7 +9,7 @@ import { IoMdNotifications } from 'react-icons/io'
 import HeartLine from '../loading/HeartLine';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import Snowfall from '../snowFall/Snowfall';
-
+import LogoMedme from '../../assets/img/logo.png'
 
 const Layout = ({ children }) => {
     const location = useLocation()
@@ -73,18 +73,15 @@ const Layout = ({ children }) => {
         });
     };
 
-
-
-
     return (
         <div className='Main-Lay'>
             <div className="Layout">
                 <div className="SidCont">
                     <div className={`Sidebar ${sideOpen ? "sideOpen" : "Sidebar"}`}>
                         <div className="SidebarHeader">
-                            <h6 className={` ${sideOpen ? "LinkNone" : "noneText"}`}>MedMe</h6>
                             <button className={`OpenWindowSid ${sideOpen ? "OpenWindowRight" : ""}`} ><AiFillLeftCircle onClick={() => OpenSID()} /></button>
-                            <p className='MobileSidText'>MedMe</p>
+
+                            <img onClick={() => OpenSID()} className={` ${sideOpen ? "LogoNone" : "noneLogo"}`} width={120} src={LogoMedme} alt="" />
                         </div>
                         <div className="menu">
                             {

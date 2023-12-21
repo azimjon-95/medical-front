@@ -18,7 +18,13 @@ export const onerMenu = [
     {
         name: "Xarajatlar",
         path: "/statistika",
-        icon: "fa fa-line-chart"
+        icon: "fa fa-line-chart",
+        dsb: "desabled"
+    },
+    {
+        name: "Lecheniya",
+        path: "/viewRoom",
+        icon: "fa fa-home"
     },
     {
         name: "Setting",

@@ -23,42 +23,39 @@
 
 .grid-c1-content .lg-value1 {
   margin-top: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   font-size: 21px;
   color: #ffffff;
-  height: 43px;
+
   width: 100%;
 }
 
+.grid-c1-content .lg-value1 .payCaounting {
+  width: 280px;
+
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
 .lg-value1>img {
   width: 8%;
   height: 100%;
 }
-.lg-value1>svg{
- font-size: 27px;
+
+.lg-value1>svg {
+  font-size: 27px;
 }
+
 .lg-value2>img {
   width: 8%;
   height: 100%;
 }
+
 .grid-c1-content .expiry-text {
   margin-bottom: 6px;
   height: 30px;
-}
-
-.grid-c1-content .card-wrapper {
-  display: flex;
-  height: 35px;
-}
-
-.grid-c1-content .card-pin-hidden {
-  font-size: 32px;
-  margin-right: 8px;
-}
-
-.grid-c1-content span {
-  color: #aeadae;
 }
 
 .grid-c1 .card-logo-wrapper {
@@ -138,6 +135,33 @@
   transform: rotate(-135deg);
   margin-top: 9px;
 }
+
+.balansBox {
+  height: 20px;
+  width: 64%;
+  display: flex;
+
+  justify-content: space-between;
+}
+
+.bedrom {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border: .2px solid gray;
+  border-radius: 4px;
+  padding: 2px 5px;
+}
+
+.bedrom>div {
+  font-size: 14px;
+  color: #ffffff
+}
+
+.bedrom>div>svg {
+  font-size: 18px;
+}
+
 
 @media screen and (max-width: 768px) {
   .grid-c1 {

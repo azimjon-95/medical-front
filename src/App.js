@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/admin/home/HomePage";
 import Login from "./pages/Login";
@@ -16,44 +17,48 @@ import RecordList from "./components/checkLists/patientRecordList/RecordList";
 import SinglePage from "./pages/admin/singlePage/SinglePage";
 import LoadingTik from "./components/loading/tiktok/LoadingTik";
 import GetPatients from "./pages/admin/singlePage/getPatients/GetPatients";
+import Rooms from "./pages/admin/rooms/Rooms";
 
 function App() {
   const { loading } = useSelector(state => state.alerts)
+
+
+  // ---------Online and Ofline Controls-----------
+  const [isOnline, setIsOnline] = useState(window.navigator.onLine);
+  useEffect(() => {
+    const handleOnlineStatusChange = () => {
+      setIsOnline(window.navigator.onLine);
+    };
+    window.addEventListener('online', handleOnlineStatusChange);
+    window.addEventListener('offline', handleOnlineStatusChange);
+    return () => {
+      window.removeEventListener('online', handleOnlineStatusChange);
+      window.removeEventListener('offline', handleOnlineStatusChange);
+    };
+  }, []);
+
+  console.log(isOnline);
   return (
     <div className="app">
-      {/* <QueueList /> */}
       <BrowserRouter>
-        {/* {loading ? <HeartLine /> : */}
         {loading ? <LoadingTik /> :
           <Routes>
-
-
-            <Route path="/"
-              element={
-                <Login />
-                // <PublicRoute>
-                // </PublicRoute>
-              } />
-
+            <Route path="/" element={<Login />} />
             <Route path="/add-doctor" element={<AddDoctors />} />
-
             <Route path="/admin/users" element={<Patients />} />
             <Route path="reports/" element={<HomePage />} />
-
+            <Route path="/viewRoom" element={<Rooms />} />
             <Route path="/admin/doctors" element={<Doctor />} />
             <Route path="/setting" element={<RegisterOwner />} />
             <Route path="/cabins" element={<Cabins />} />
             <Route path="/receptionHome" element={<Register />} />
-
             <Route path="/doctor/profilr/:id" element={<Profile />} />
-
             <Route path="/appointments" element={<Appointments />} />
             <Route path="/doctor/patients_history" element={<PatientsHistory />} />
             <Route path="/appointments/:id" element={<AppointmentSinglePage />} />
             <Route path="/AppointmentSinglePage/:id" element={<RecordList />} />
             <Route path="/doctorSinglePage/:_id" element={<SinglePage />} />
             <Route path="/doctorSinglePageAdmin/:_id" element={<GetPatients />} />
-
           </Routes>
         }
       </BrowserRouter>
