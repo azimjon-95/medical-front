@@ -17,6 +17,7 @@
     box-shadow: 0 0 2px gray;
     margin-right: 15px;
     color: #fff;
+    position: relative;
 }
 
 .sideOpen {
@@ -108,6 +109,7 @@
 
 .menu {
     margin-top: 30px;
+    position: relative;
 }
 
 .menu-item {
@@ -244,6 +246,26 @@
 
 .MobileSidText {
     display: none;
+}
+.supportBtn >svg{
+    font-size: 18px;
+}
+.supportBtn {
+    width: 97%;
+    position: absolute;
+    margin: 0 4px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 28px;
+    background-color: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    color: #fff;
+    font-size: 12px;
 }
 
 @media screen and (max-width: 450px) {

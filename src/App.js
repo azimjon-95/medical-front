@@ -18,6 +18,7 @@ import SinglePage from "./pages/admin/singlePage/SinglePage";
 import LoadingTik from "./components/loading/tiktok/LoadingTik";
 import GetPatients from "./pages/admin/singlePage/getPatients/GetPatients";
 import Rooms from "./pages/admin/rooms/Rooms";
+import Support from "./pages/admin/support/Support";
 
 function App() {
   const { loading } = useSelector(state => state.alerts)
@@ -59,6 +60,7 @@ function App() {
             <Route path="/AppointmentSinglePage/:id" element={<RecordList />} />
             <Route path="/doctorSinglePage/:_id" element={<SinglePage />} />
             <Route path="/doctorSinglePageAdmin/:_id" element={<GetPatients />} />
+            <Route path="/support" element={<Support />} />
           </Routes>
         }
       </BrowserRouter>

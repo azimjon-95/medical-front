@@ -22,6 +22,8 @@ const Balans = ({ dataTrue }) => {
         return prev + cur.paySumm
     }, 0);
 
+
+ 
     const back = () => {
         setSelectedDate(selectedDate.clone().subtract(1, 'day'));
     };
@@ -37,7 +39,7 @@ const Balans = ({ dataTrue }) => {
                 <div className="balansBox">
                     <p>Balans</p>
                     <div className="bedrom">
-                        <div><TbUsersGroup /> - 250</div>
+                        <div><TbUsersGroup /> - {base.length}</div>
                         <div><MdOutlineBedroomChild /> - 60</div>
                     </div>
                 </div>

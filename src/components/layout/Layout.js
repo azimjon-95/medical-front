@@ -10,6 +10,7 @@ import HeartLine from '../loading/HeartLine';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import Snowfall from '../snowFall/Snowfall';
 import LogoMedme from '../../assets/img/logo.png'
+import { MdOutlineContactSupport } from "react-icons/md";
 
 const Layout = ({ children }) => {
     const location = useLocation()
@@ -119,7 +120,15 @@ const Layout = ({ children }) => {
 
                             </Button>
 
+
+
                         </div>
+                        <Link
+                            to="/support"
+                            className='supportBtn'
+
+
+                        ><MdOutlineContactSupport /> Qo'llab quvvatlash</Link>
                     </div>
                 </div>
                 <div className="content">

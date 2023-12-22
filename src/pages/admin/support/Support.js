@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './style.css';
-import { Flex, Input } from 'antd';
+import { notification, Input, Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import Layout from '../../../components/layout/Layout';
+import LogoMedme from '../../../assets/img/logo.png'
+import { SmileOutlined } from '@ant-design/icons';
 
 const Support = () => {
 
+    const [openBor, setOpenBor] = useState(false)
     const [formData, setFormDate] = useState({
         fullname: '',
         question: ''
@@ -13,7 +17,7 @@ const Support = () => {
     const sendMsgToBot = async (e) => {
         e.preventDefault()
 
-        let msg = `<b> Klent savol qoldirdi!</b>%0A%0A 👤 <b>Ismi</b>: ${formData.fullname}%0A%0A  ✉️ <b>Savol:</b> ${formData.question}%0A`
+        let msg = `<b> Klent savol qoldirdi!</b>%0A%0A👤 <b>Ismi</b>: ${formData.fullname}%0A%0A✉️ <b>Savol:</b> ${formData.question}%0A`
 
         let tokenBot = "6662523456:AAHLAjqjIyslOzbUfj-pcXSYPnV1cR1EOPI"
 
@@ -28,42 +32,71 @@ const Support = () => {
             fullname: '',
             question: ''
         })
+        setTimeout(() => {
+            openNotification()
+        }, 2000);
     }
-
     const { TextArea } = Input;
-    const onChange = (e) => {
-        console.log('Change:', e.target.value);
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = () => {
+        api.open({
+            message: "Savolingiz qabul qilindi tez orada siz bilan bog'lanamiz.",
+            icon: (
+                <SmileOutlined
+                    style={{
+                        color: '#108ee9',
+                    }}
+                />
+            ),
+        });
     };
+
     return (
-        <div className='support'>
-            <div className="supportBox">
+        <Layout >
+            <h2 style={{ textAlign: "center", marginTop: "10px" }}> Qo'llab quvvatlash markazi</h2>
+            <div className="support">
+                <div className="supportBox">
+                    <h3>Qanday yordam bera olamiz?</h3>
 
+                    <Input className={`${openBor ? "TextInpBor" : ""}`} onChange={(e) => setFormDate({ ...formData, fullname: e.target.value })} value={formData.fullname} size="large" placeholder="Ism Familya..." prefix={<UserOutlined />} />
 
-                <Flex vertical gap={32}>
-                    <Input onChange={(e) => setFormDate({ ...formData, fullname: e.target.value })} value={formData.fullname} size="large" placeholder="large size" prefix={<UserOutlined />} />
-                    <Input showCount maxLength={20} onChange={onChange} />
-                    <TextArea showCount maxLength={100} onChange={onChange} placeholder="can resize" />
                     <TextArea
+                        className={`${openBor ? "TextAreaBor" : "TextArea"}`}
                         showCount
-                        maxLength={100}
                         onChange={(e) => setFormDate({ ...formData, question: e.target.value })} value={formData.question}
-                        placeholder="disable resize"
+                        placeholder="Savolingizni yozing..."
                         style={{
                             height: 120,
                             resize: 'none',
                         }}
                     />
 
-                    <Button onClick={sendMsgToBot} type="primary" block>
-                        Primary
-                    </Button>
-                </Flex>
+                    {formData.fullname === "" && formData.question === "" ?
+                        <Button className='sentBtnChat' onClick={() => setOpenBor(true)} type="primary" >
+                            Yuborish
+                        </Button>
+                        :
+                        <Button className='sentBtnChat' onClick={sendMsgToBot} type="primary" >
+                            Yuborish
+                        </Button>
+                    }
 
-            </div>
-            <div className="supportBox">
 
+
+                </div>
+                <div className="supportBox">
+                    <div className="textSuppoetBox">
+                        <img width={200} src={LogoMedme} alt="" /> <br />
+                        Medme.uz ilovasi bo'yicha har qanday murojaatlar yuborish mumkin. Sizga doim yordam berishga tayyormiz😊
+                        <br />
+                        ————————————————————
+                        <br />
+                        Можно обращаться по любым вопросам по приложению Medme.uz. Мы всегда готовы вам помочь😊
+                    </div>
+                </div>
+                {contextHolder}
             </div>
-        </div>
+        </Layout>
     )
 }
 
