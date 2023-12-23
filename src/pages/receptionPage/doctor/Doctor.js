@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../../../components/layout/Layout'
 import axios from '../../../api'
-import { message, Table } from 'antd'
+import { Button } from 'antd'
 import { NumberFormat, PhoneNumberFormat } from '../../../hook/NumberFormat'
 import { showLoading, hideLoading } from "../../../redux/features/lineIoad";
 import { useDispatch } from "react-redux";
 import imgNoData from '../../../assets/nodata.png'
+import { IoEyeOutline } from "react-icons/io5";
+import { Link } from 'react-router-dom'
 
 
 const Doctor = () => {
@@ -47,6 +49,7 @@ const Doctor = () => {
                                 <th>Darajasi</th>
                                 <th>Tel No</th>
                                 <th>Konsultatsiya to'lovi</th>
+                                <th>Bemorlari</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -56,6 +59,11 @@ const Doctor = () => {
                                     <td data-label="Darajasi">{item.specialization}</td>
                                     <td data-label="Tel No">{PhoneNumberFormat(item.phone)}</td>
                                     <td data-label="Konsultatsiya">{NumberFormat(item.feesPerCunsaltation)} so'm</td>
+                                    <td data-label="Bemorlari">
+                                        <Link to={`/doctorSinglePageAdmin/${item.specialization}`}>
+                                            <Button style={{ background: "transparent", fontSize: "18px", border: "none", padding: "0px 10pxpx", boxShadow: "none" }}><IoEyeOutline style={{ marginBottom: "10px" }} /></Button>
+                                        </Link>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

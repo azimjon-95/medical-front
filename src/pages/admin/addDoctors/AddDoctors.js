@@ -1,18 +1,23 @@
 import axios from "../../../api";
 import React, { useState, useEffect } from "react";
 import Layout from "../../../components/layout/Layout";
-import { Col, Form, Input, message, Row, Checkbox, Tabs } from "antd";
-import "./style.css";
+import { Col, Form, Input, message, Row, Button, Tabs, Modal } from 'antd';
+import './style.css'
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { showLoading, hideLoading } from "../../../redux/features/indexSlice";
-import imgNoData from "../../../assets/nodata.png";
-import { NumberFormat, PhoneNumberFormat } from "../../../hook/NumberFormat";
+import { showLoading, hideLoading } from '../../../redux/features/indexSlice';
+import imgNoData from '../../../assets/nodata.png'
+import { NumberFormat, PhoneNumberFormat } from '../../../hook/NumberFormat'
+import Reception from "./Reception";
+import { ExclamationCircleFilled } from '@ant-design/icons';
+import { TbUsersPlus } from "react-icons/tb";
 
 const AddDoctors = () => {
-  const { user } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -24,10 +29,10 @@ const AddDoctors = () => {
   const [specialization, setSpecialization] = useState("");
   const [experience, setExperience] = useState("");
   const [feesPerCunsaltation, setFeesPerCunsaltation] = useState("");
-  const [docORrecep, setDocORrecep] = useState("");
+  const [docORrecep] = useState("doctor");
   const [checkList, setCheckList] = useState("");
   const [percent, setPercent] = useState("");
-  const [salaryORpercent, setSalaryORpercent] = useState("");
+
   const [salary, setSalary] = useState("");
   const [doctor, setDoctors] = useState([]);
 
@@ -94,52 +99,49 @@ const AddDoctors = () => {
       .catch((err) => console.log(err));
   };
 
-  let filterData1 = doctor.filter((i) => i.docORrecep === "doctor");
-  let filterData2 = doctor.filter((i) => i.docORrecep === "Reception");
+
+  let filterData1 = doctor.filter((i) => i.docORrecep === "doctor")
+  let filterData2 = doctor.filter((i) => i.docORrecep === "reception")
+
+
+  const { confirm } = Modal;
+
+  const showDeleteConfirm = (_id) => {
+    confirm({
+      title: 'Oʻchirib tashlaysizmi?',
+      icon: <ExclamationCircleFilled />,
+      okText: 'Ha',
+      okType: 'danger',
+      cancelText: "Yo'q",
+      onOk() {
+        axios
+          .delete(`/delete/:${_id}`)
+          .then((res) => {
+            if (res.data.success) {
+              message.success("Doktor o'chirildi!");
+              window.location.reload();
+            } else {
+              message.error(res.data.message);
+            }
+          })
+          .catch((err) => console.log(err));
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
+  let width = window.innerWidth
+
   return (
     <Layout>
       <h3 className="text-center">Admin qo'shish</h3>
       <Tabs>
-        <Tabs.TabPane tab="Xodim qo'shish" key={0}>
+        <Tabs.TabPane tab={`${width > 450 ? "Doktor qo'shish" : 'Doktor+'}`} key={0}>
           <Form layout="vertical" onFinish={handleFinish} className="FormApply">
-            <h4>Shaxsiy ma'lumotlar:</h4>
-            <div className="colRo"></div>
             <Row className="Row">
               <Col className="Col-Form">
-                <Form.Item
-                  label="Doctor yoki Receptoin"
-                  name="doctor or reception"
-                  required
-                  rules={[{ required: true }]}
-                >
-                  <div className="docORrecep">
-                    <label className="containerChe">
-                      Doctor
-                      <input
-                        value="doctor"
-                        onChange={(e) => setDocORrecep(e.target.value)}
-                        name="o"
-                        id="chi"
-                        type="radio"
-                      />
-                      <span className="checkmark"></span>
-                    </label>
 
-                    <label className="containerChe">
-                      Reception
-                      <input
-                        value="Reception"
-                        onChange={(e) => setDocORrecep(e.target.value)}
-                        name="o"
-                        id="chi"
-                        type="radio"
-                      />
-                      <span className="checkmark"></span>
-                    </label>
-                  </div>
-                </Form.Item>
-              </Col>
-              <Col className="Col-Form">
                 <Form.Item
                   label="Ism"
                   name="firstName"
@@ -169,9 +171,6 @@ const AddDoctors = () => {
                   />
                 </Form.Item>
               </Col>
-            </Row>
-
-            <Row className="Row">
               <Col className="Col-Form">
                 <Form.Item
                   label="Telefon raqami"
@@ -186,8 +185,12 @@ const AddDoctors = () => {
                     placeholder="phone number"
                   />
                 </Form.Item>
-              </Col>
+
+              </Col >
+            </Row>
+            <Row className="Row">
               <Col className="Col-Form">
+
                 <Form.Item
                   label="Elektron pochta"
                   name="email"
@@ -217,44 +220,7 @@ const AddDoctors = () => {
                   />
                 </Form.Item>
               </Col>
-            </Row>
-
-            <Row className="Row">
-              <Col className="Col-Form">
-                <Form.Item
-                  label="Login"
-                  name="login"
-                  required
-                  rules={[{ required: true }]}
-                >
-                  <Input
-                    value={login}
-                    onChange={(e) => setLogin(e.target.value)}
-                    type="text"
-                    placeholder="username"
-                  />
-                </Form.Item>
-              </Col>
-              <Col className="Col-Form">
-                <Form.Item
-                  label="Paroli"
-                  name="password"
-                  required
-                  rules={[{ required: true }]}
-                >
-                  <Input
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    type="text"
-                    placeholder="password"
-                  />
-                </Form.Item>
-              </Col>
-              <div
-                className={` ${
-                  docORrecep == "doctor" ? "salaryBox" : "salaryBox_None"
-                }`}
-              >
+              <div className="salaryBox" >
                 <Col>
                   <Form.Item
                     label="Doktor maoshi"
@@ -325,131 +291,147 @@ const AddDoctors = () => {
               </div>
             </Row>
 
-            <div
-              className={`NonePro ${
-                docORrecep == "doctor" ? "OpenPro" : "NonePro"
-              }`}
-            >
-              {/* <h4>Professional tafsilotlar:</h4> */}
-              <Row className="Row">
-                <Col className="Col-Form">
-                  <Form.Item
-                    label="Mutaxassislik"
-                    name="specialization"
+            <Row className="Row">
+              <Col className="Col-Form">
+                <Form.Item
+                  label="Login"
+                  name="login"
+                  required
+                  rules={[{ required: true }]}
+                >
+                  <Input
+                    value={login}
+                    onChange={(e) => setLogin(e.target.value)}
+                    type="text"
+                    placeholder="username"
+                  />
+                </Form.Item>
+              </Col>
+              <Col className="Col-Form">
+                <Form.Item
+                  label="Paroli"
+                  name="password"
+                  required
+                  rules={[{ required: true }]}
+                >
+                  <Input
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    type="text"
+                    placeholder="password"
+                  />
+                </Form.Item>
+              </Col>
+              <Col className="Col-Form">
+                <Form.Item
+                  label="Kunsaltatsia uchun to'lovlar"
+                  name="feesPerCunsaltation"
 
-                    // rules={[{ required: true }]}
-                  >
-                    <Input
-                      value={specialization}
-                      onChange={(e) => setSpecialization(e.target.value)}
-                      type="text"
-                      placeholder="your specialization"
-                    />
-                  </Form.Item>
-                </Col>
-                <Col className="Col-Form">
-                  <Form.Item
-                    label="Tajriba"
-                    name="experience"
+                  rules={[{ required: true }]}
+                >
+                  <Input
+                    value={feesPerCunsaltation}
+                    onChange={(e) => setFeesPerCunsaltation(e.target.value)}
+                    type="number"
+                    placeholder="fees Per Cunsaltation " />
+                </Form.Item>
+              </Col >
+            </Row>
 
-                    // rules={[{ required: true }]}
-                  >
-                    <Input
-                      value={experience}
-                      onChange={(e) => setExperience(e.target.value)}
-                      type="text"
-                      placeholder="experience"
-                    />
-                  </Form.Item>
-                </Col>
-                <Col className="Col-Form">
-                  <Form.Item
-                    label="Kunsaltatsia uchun to'lovlar"
-                    name="feesPerCunsaltation"
-                    rules={[{ required: true }]}
-                  >
-                    <Input
-                      value={feesPerCunsaltation}
-                      onChange={(e) => setFeesPerCunsaltation(e.target.value)}
-                      type="number"
-                      placeholder="fees Per Cunsaltation "
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
-            </div>
 
+            <Row className="Row">
+              <Col className="Col-Form" >
+                <Form.Item
+                  label="Mutaxassislik"
+                  name="specialization"
+
+                  rules={[{ required: true }]}
+                >
+                  <Input
+                    value={specialization}
+                    onChange={(e) => setSpecialization(e.target.value)}
+                    type="text"
+                    placeholder="your specialization" />
+                </Form.Item>
+              </Col>
+              <Col className="Col-Form">
+                <Form.Item
+                  label="Tajriba"
+                  name="experience"
+
+                  rules={[{ required: true }]}
+                >
+                  <Input
+                    value={experience}
+                    nChange={(e) => setExperience(e.target.value)}
+                    type="text"
+                    placeholder="experience" />
+                </Form.Item>
+              </Col>
+            </Row>
             <Col className="Col-Form">
+
               <button className="btn btn-primary" type="submit">
                 Yuborish
               </button>
             </Col>
           </Form>
         </Tabs.TabPane>
-        <Tabs.TabPane
-          tab={`Doktorlar${
-            filterData1.length === 0 ? "" : ` - ${filterData1.length}`
-          }`}
-          key={1}
-        >
-          {filterData1 == 0 ? (
-            <div className="NoData">
-              <div className="NoDataImg">
-                <img src={imgNoData} alt="No Data" />
+
+        <Tabs.TabPane tab={`${width > 450 ? "Admin qo'shish" : 'Admin+'}`} key={1}>
+          <Reception />
+        </Tabs.TabPane>
+
+
+        <Tabs.TabPane tab={`${width > 450 ? "Doktorlar" : 'D'} ${filterData1.length === 0 ? "" : `- ${filterData1.length}`}`} key={2}>
+          {
+            filterData1 == 0 ?
+              <div className='NoData'>
+                <div className="NoDataImg">
+                  <img src={imgNoData} alt="No Data" />
+                </div>
               </div>
-            </div>
-          ) : (
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Ismi</th>
-                  <th>Familiyasi</th>
-                  <th>Kasbi</th>
-                  <th>Tel No</th>
-                  <th>Qabuli</th>
-                  <th>Oylik & Foiz</th>
-                  <th>O'chirish</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filterData1?.map((item, inx) => (
-                  <tr key={inx}>
-                    <td data-label="Ismi">{item.lastName} </td>
-                    <td data-label="Familiyasi">{item.firstName}</td>
-                    <td data-label="Kasbi">{item.specialization}</td>
-                    <td data-label="Tel No">{PhoneNumberFormat(item.phone)}</td>
-                    <td data-label="To'landi">
-                      {NumberFormat(item.feesPerCunsaltation)} so'm
-                    </td>
-                    {item.percent ? (
-                      <td data-label="To'landi">
-                        {NumberFormat(+item.percent)}%
-                      </td>
-                    ) : (
-                      <td data-label="To'landi">
-                        {NumberFormat(item.salary)} so'm
-                      </td>
-                    )}
-                    <td data-label="O'chirish">
-                      <button
-                        onClick={() => deletePatients(item?._id)}
-                        button="true"
-                        className="btn btn-danger"
-                      >
-                        Del
-                      </button>
-                    </td>
+              :
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Ismi</th>
+                    <th>Familiyasi</th>
+                    <th>Kasbi</th>
+                    <th>Tel No</th>
+                    <th>Qabuli</th>
+                    <th>Oylik</th>
+                    <th>O'chirish</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+                </thead>
+                <tbody>
+                  {filterData1?.map((item, inx) => (
+                    <tr key={inx}>
+                      <td data-label="Ismi">{item.lastName} </td>
+                      <td data-label="Familiyasi">{item.firstName}</td>
+                      <td data-label="Kasbi">{item.specialization}</td>
+                      <td data-label="Tel No">{PhoneNumberFormat(item.phone)}</td>
+                      <td data-label="Qabuli">{NumberFormat(item.feesPerCunsaltation)} so'm</td>
+                      {item.percent ?
+                        <td data-label="Oylik">{item.percent} %</td> :
+                        <td data-label="Oylik">{NumberFormat(item.salary)} so'm</td>
+                      }
+
+                      <td data-label="O'chirish">
+                        <button onClick={() => deletePatients(item?._id)} button="true" className='btn btn-danger'>Del</button>
+                        {/* <button onClick={() => showDeleteConfirm(item?._id)} button="true" className='btn btn-danger'>Del</button> */}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+          }
+
         </Tabs.TabPane>
         <Tabs.TabPane
-          tab={`Administratorlar ${
-            filterData2.length === 0 ? "" : `- ${filterData2.length}`
-          }`}
-          key={2}
+          tab={`${width > 450 ? "Administratorlar" : 'A'}  ${filterData2.length === 0 ? "" : `- ${filterData2.length}`
+            }`}
+          key={3}
         >
           {filterData2 == 0 ? (
             <div className="NoData">
@@ -463,9 +445,7 @@ const AddDoctors = () => {
                 <tr>
                   <th>Ismi</th>
                   <th>Familiyasi</th>
-                  <th>Kasbi</th>
                   <th>Tel No</th>
-                  <th>Qabuli</th>
                   <th>O'chirish</th>
                 </tr>
               </thead>
@@ -474,14 +454,12 @@ const AddDoctors = () => {
                   <tr key={inx}>
                     <td data-label="Ismi">{item.lastName} </td>
                     <td data-label="Familiyasi">{item.firstName}</td>
-                    <td data-label="Kasbi">{item.docORrecep}</td>
+
                     <td data-label="Tel No">{PhoneNumberFormat(item.phone)}</td>
-                    <td data-label="To'landi">
-                      {NumberFormat(item.feesPerCunsaltation)} so'm
-                    </td>
+
                     <td data-label="O'chirish">
                       <button
-                        onClick={() => deletePatients(item?._id)}
+                        onClick={() => showDeleteConfirm(item?._id)}
                         button="true"
                         className="btn btn-danger"
                       >
@@ -493,6 +471,7 @@ const AddDoctors = () => {
               </tbody>
             </table>
           )}
+
         </Tabs.TabPane>
       </Tabs>
     </Layout>

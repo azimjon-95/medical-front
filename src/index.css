@@ -15,5 +15,19 @@ a {
 
 .app {
   width: 100%;
-  min-height: 100vh;
+  width: 1560px;
+  margin: auto;
+}
+
+@media screen and (max-width: 1580px) {
+  .app {
+    width: 100%;
+  }
+}
+
+.isOnline {
+  width: 100%;
+  padding: 2px 0;
+  color: #fff;
+  text-align: center;
 }

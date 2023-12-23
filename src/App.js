@@ -16,11 +16,29 @@ import RecordList from "./components/checkLists/patientRecordList/RecordList";
 import SinglePage from "./pages/admin/singlePage/SinglePage";
 import LoadingTik from "./components/loading/tiktok/LoadingTik";
 import PageNotFound from "./components/pageNotFound/PageNotFound";
+import GetPatients from "./pages/admin/singlePage/getPatients/GetPatients";
+import { useState } from "react";
 
 function App() {
   const { loading } = useSelector((state) => state.alerts);
+
+  const [isOnline, setIsOnline] = useState("");
+  window.ononline = () => setIsOnline("Online");
+  window.onoffline = () => setIsOnline("Ofline");
+
+  setTimeout(() => setIsOnline(""), [5000]);
   return (
     <div className="app">
+      {/* ---------isOnline---------- */}
+      {isOnline && (
+        <p
+          style={{ background: isOnline === "Ofline" ? "red" : "#17cd32" }}
+          className="isOnline"
+        >
+          {isOnline}
+        </p>
+      )}
+      {/* ---------isOnline---------- */}
       {loading ? (
         <LoadingTik />
       ) : (
@@ -42,6 +60,7 @@ function App() {
           <Route path="/appointments/:id" element={<AppointmentSinglePage />} />
           <Route path="/AppointmentSinglePage/:id" element={<RecordList />} />
           <Route path="/doctorSinglePage/:_id" element={<SinglePage />} />
+          <Route path="/doctorSinglePageAdmin/:_id" element={<GetPatients />} />
 
           <Route path="*" element={<PageNotFound />} />
         </Routes>
