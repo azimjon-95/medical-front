@@ -1,18 +1,25 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import './AppointmentSinglePage.css'
 import { useParams, useNavigate } from 'react-router-dom'
 import Layout from '../../../components/layout/Layout';
 import { useEffect, useState } from 'react';
 import axios from '../../../api/index';
 import { message } from 'antd';
+import ReactToPrint from "react-to-print";
+import RecordList from '../../../components/checkLists/patientRecordList/RecordList';
+import { LuEye } from "react-icons/lu"
 
 function AppointmentSinglePage() {
     const navigate = useNavigate()
+    const componentRef = useRef();
     const { id } = useParams()
     const [user, setUser] = useState(null)
     const [sickname, setSickname] = useState('')
     const [retsept, setRetsept] = useState('')
-
+    const [_id, setidD] = useState("No data")
+    const checkID = (id) => {
+        setidD(id)
+    }
     useEffect(() => {
         axios.get('/client/' + id)
             .then(res => {
@@ -28,14 +35,14 @@ function AppointmentSinglePage() {
         user.sickname = sickname
         user.retsept = retsept
         user.view = true
-        user.room.dayOfTreatment = "" + user.room.dayOfTreatment 
+        user.room.dayOfTreatment = "" + user.room.dayOfTreatment
 
         axios.put('/client/' + id, user)
             .then(res => {
                 console.log(res);
                 if (res.data.success) {
                     message.success("malumotlar saqlandi")
-                    navigate(`/AppointmentSinglePage/${user?._id}`)
+
                 }
             })
             .catch(err => console.log(err))
@@ -63,7 +70,20 @@ function AppointmentSinglePage() {
                         <input type="text" value={sickname} onChange={(e) => setSickname(e.target.value)} />
                         <label htmlFor="" className='label'>Retsept(dorilar)*</label>
                         <textarea name="" cols="30" rows="10" value={retsept} onChange={(e) => setRetsept(e.target.value)}></textarea>
-                        <button button="true" className='btn btn-secondary'>Saqlash</button>
+                        <ReactToPrint
+                            trigger={() => <button onClick={() => checkID(_id)} >< LuEye className='Printer' /> Saqlash</button>}
+                            content={() => componentRef.current}
+                        />
+                        <div style={{ display: "none" }}>
+                            <RecordList
+                                obj={{
+                                    _id,
+
+                                }}
+                                componentRef={componentRef}
+                            />
+                        </div>
+
                     </form>
                 </div>
             </div>

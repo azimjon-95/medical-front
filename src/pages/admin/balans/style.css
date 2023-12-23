@@ -32,8 +32,7 @@
 
 .grid-c1-content .lg-value1 .payCaounting {
   width: 280px;
-
-
+  height: 35.7px;
   display: flex;
   justify-content: space-between;
   align-items: center;

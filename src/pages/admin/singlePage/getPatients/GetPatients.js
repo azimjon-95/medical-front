@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux";
 import { LuEye } from "react-icons/lu"
 import { Modal, Tabs, Button } from 'antd';
 import imgNoData from '../../../../assets/nodata.png'
-import { PiPrinterFill } from "react-icons/pi";
 import ReactToPrint from "react-to-print";
 import { SearchOutlined, LeftOutlined } from '@ant-design/icons';
 import { FaUsers } from "react-icons/fa";
@@ -18,9 +17,6 @@ const GetPatients = () => {
     const componentRef = useRef();
     const { _id } = useParams()
     const [client, setClient] = useState([])
-    const [loading, setLoading] = useState(false);
-    const [open, setOpen] = useState(false);
-
     const dispatch = useDispatch()
     const [query, setQuery] = useState("");
     const [id, setidD] = useState("No data")
