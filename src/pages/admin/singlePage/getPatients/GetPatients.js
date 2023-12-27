@@ -1,25 +1,20 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import "./style.css";
-import axios from "../../../../api";
 import { Link, useParams } from "react-router-dom";
-import { showLoading, hideLoading } from "../../../../redux/features/lineIoad";
 import { useDispatch } from "react-redux";
 import { LuEye } from "react-icons/lu";
-import { Modal, Tabs, Button } from "antd";
+import { Tabs, Button } from "antd";
 import imgNoData from "../../../../assets/nodata.png";
-import { PiPrinterFill } from "react-icons/pi";
 import ReactToPrint from "react-to-print";
 import { SearchOutlined, LeftOutlined } from "@ant-design/icons";
 import { FaUsers } from "react-icons/fa";
 import { setInfo } from "../../../../redux/recordList/recordList";
 
 import RecordList from "../../../../components/checkLists/patientRecordList/RecordList";
+import { useGetAllUsersQuery } from "../../../../redux/apiSlice";
 const GetPatients = () => {
   const componentRef = useRef();
   const { _id } = useParams();
-  const [client, setClient] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
 
   const dispatch = useDispatch();
   const [query, setQuery] = useState("");
@@ -29,23 +24,8 @@ const GetPatients = () => {
     dispatch(setInfo(id));
   };
   // ----------------------------------------
-  const getUsers = async () => {
-    try {
-      dispatch(showLoading());
-      const res = await axios.get("/client/all");
-      dispatch(hideLoading());
-      if (res.data.success) {
-        setClient(res.data.data);
-      }
-    } catch (error) {
-      dispatch(hideLoading());
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getUsers();
-  }, []);
+  let { data: allClient } = useGetAllUsersQuery();
+  let client = allClient?.data;
 
   let clients = client.filter(
     (client) =>
@@ -56,7 +36,7 @@ const GetPatients = () => {
   let time = new Date();
   let day =
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
-  let filterarxiv = clients.filter((i) => i.day == day);
+  // let filterarxiv = clients.filter((i) => i.day == day);
 
   // Sort users by date
   // const [sortList, setSortList] = useState([])

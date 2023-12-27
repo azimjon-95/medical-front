@@ -20,7 +20,7 @@ import GetPatients from "./pages/admin/singlePage/getPatients/GetPatients";
 import { useState } from "react";
 
 function App() {
-  const { loading } = useSelector((state) => state.alerts);
+  const loading = useSelector((state) => state.alerts);
 
   const [isOnline, setIsOnline] = useState("");
   window.ononline = () => setIsOnline("Online");

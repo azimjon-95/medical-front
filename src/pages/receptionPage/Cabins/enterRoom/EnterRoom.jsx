@@ -1,26 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./style.css";
-import { NumberFormat, PhoneNumberFormat } from "../../../../hook/NumberFormat";
+import { NumberFormat } from "../../../../hook/NumberFormat";
 import axios from "../../../../api";
 import { message, Tabs, Modal } from "antd";
 import { FiX } from "react-icons/fi";
 import { GiEntryDoor } from "react-icons/gi";
 import { PiPrinterFill } from "react-icons/pi";
 import { ExclamationCircleFilled } from "@ant-design/icons";
+import { useGetAllUsersQuery } from "../../../../redux/apiSlice";
 
 function EnterRoom({ setOpenRoom, room }) {
-  const [clients, setClients] = useState([]);
-  const [clientsRoom, setClientsRoom] = useState();
   const [list, setList] = useState(false);
 
-  useEffect(() => {
-    axios
-      .get("/client/all")
-      .then((res) => setClients(res.data?.data))
-      .catch((err) => console.log(err));
-  }, []);
-
+  let { data: allClients } = useGetAllUsersQuery();
+  let clients = allClients?.data;
   let time = new Date();
+  console.log(clients);
 
   const CountingDay = (value) => {
     let date1 = new Date(value);
@@ -51,8 +46,8 @@ function EnterRoom({ setOpenRoom, room }) {
   };
 
   function updatePatients(id) {
-    let update = clients.find((i) => i._id === id);
-
+    console.log(id);
+    let update = clients?.find((i) => i._id === id);
     update.room.day = true;
     update.room.total = true;
     axios
@@ -118,7 +113,8 @@ function EnterRoom({ setOpenRoom, room }) {
                       {item.firstname} {item.lastname}
                     </td>
                     <td data-label="Yoshi">
-                      {time.getFullYear() - +item.year?.slice(0, 4)}
+                      {!(time.getFullYear() - +item?.year?.slice(0, 4)) &&
+                        "noma'lum"}
                     </td>
                     <td data-label="Tel No">{item.phone}</td>
                     <td data-label="Kun">{CountingDay(item.dayOfTreatment)}</td>
@@ -134,7 +130,7 @@ function EnterRoom({ setOpenRoom, room }) {
                             payForRoom: CountingMoney(item.dayOfTreatment),
                             id: item._id,
                           });
-                          updatePatients(time.id);
+                          updatePatients(item._id);
                         }}
                         button="true"
                         className="btn btn-primary"

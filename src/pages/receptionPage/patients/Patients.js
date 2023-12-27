@@ -1,54 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./style.css";
 import Layout from "../../../components/layout/Layout";
 import axios from "../../../api";
 import { NumberFormat, PhoneNumberFormat } from "../../../hook/NumberFormat";
 import { message, Tabs } from "antd";
 import { AiOutlineCheckCircle } from "react-icons/ai";
-import { showLoading, hideLoading } from "../../../redux/features/lineIoad";
-import { useDispatch } from "react-redux";
 import { MdOutlineDoNotDisturbAlt } from "react-icons/md";
 import imgNoData from "../../../assets/nodata.png";
+import {
+  useGetAllDoctorsQuery,
+  useGetAllUsersQuery,
+} from "../../../redux/apiSlice";
 
 const Patients = () => {
   const [payState, setPaid] = useState("");
-  const [users, setUsers] = useState([]);
-  const [paySum, setPaySum] = useState(0);
-  const dispatch = useDispatch();
 
-  const getUsers = async () => {
-    try {
-      dispatch(showLoading());
-      const res = await axios.get("/client/all");
-      dispatch(hideLoading());
-      if (res.data.data) {
-        setUsers(res.data.data);
-      }
-    } catch (error) {
-      dispatch(hideLoading());
-      console.log(error);
-    }
-  };
+  let { data: doctors } = useGetAllDoctorsQuery();
+  let { data: users, isLoading: loading } = useGetAllUsersQuery();
 
-  const dataFalse = users.filter((i) => i.payState === false);
-  const dataTrue = users.filter((i) => i.payState === true);
-  localStorage.setItem("dataFalse", dataFalse.length);
+  const dataFalse = users?.data?.filter((i) => i.payState === false);
+  const dataTrue = users?.data?.filter((i) => i.payState === true);
+  localStorage.setItem("dataFalse", dataFalse?.length);
 
-  console.log(dataFalse);
-  const [doctors, setDoctors] = useState([]);
-  const paySumUpdate = async () => {
-    try {
-      const res = await axios.get("/admin/getAllDoctors");
-      if (res.data.data) {
-        setDoctors(res.data.data);
-      }
-    } catch (error) {}
-  };
-
-  useEffect(() => {
-    getUsers();
-    paySumUpdate();
-  }, []);
   const deletePatients = (_id) => {
     axios
       .delete(`/client/${_id}`)
@@ -67,32 +40,34 @@ const Patients = () => {
     setPaid(e.target.checked);
     let update = dataFalse.find((i) => i._id === id);
 
-    let doctorSum = doctors.find(
+    let doctorSum = doctors?.data?.find(
       (i) => i.specialization.toLowerCase() === update.choseDoctor.toLowerCase()
     ).feesPerCunsaltation;
 
-    update.payState = true;
-    update.paySumm = doctorSum;
-    update.room.dayOfTreatment = "0";
-    console.log(update);
+    let newInfo = {
+      ...update,
+      payState: true,
+      paySumm: doctorSum,
+      room: { ...update.room, dayOfTreatment: "0" },
+    };
     axios
-      .put("/client/" + id, update)
+      .put("/client/" + id, newInfo)
       .then((res) => {
-        
-        console.log(res);
+        if (res.data.success) {
+          message.success(res.data.message);
+        }
       })
       .catch((err) => console.log(err))
       .finally(() => {
         window.location.reload();
       });
   }
-
   return (
     <Layout>
       <h4 className="text-center">Bemorlar</h4>
       <Tabs>
         <Tabs.TabPane tab="Online ro'yhatdan o'tkanlar" key={0}>
-          {dataFalse == 0 ? (
+          {loading || !dataFalse.length ? (
             <div className="NoData">
               <div className="NoDataImg">
                 <img src={imgNoData} alt="No Data" />
@@ -146,7 +121,7 @@ const Patients = () => {
                         ) : (
                           <del className="Tolanmadi lii">
                             {NumberFormat(
-                              doctors.find(
+                              doctors?.data?.find(
                                 (i) =>
                                   i.specialization.toLowerCase() ===
                                   item.choseDoctor.toLowerCase()

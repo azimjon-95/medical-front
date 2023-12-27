@@ -1,15 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Layout from "../../../components/layout/Layout";
 import {
-  BsFillArchiveFill,
-  BsFillGrid3X3GapFill,
-  BsPeopleFill,
-  BsFillBellFill,
-} from "react-icons/bs";
-import {
-  BarChart,
-  Bar,
-  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -19,70 +10,42 @@ import {
   LineChart,
   Line,
 } from "recharts";
-import axios from "../../../api";
 import "./App.css";
 import Balans from "../balans/Balans";
 import { useDispatch } from "react-redux";
-import { showLoading, hideLoading } from "../../../redux/features/lineIoad";
 import DoctorsSlite from "../swiper/Carousel";
+import {
+  useGetAllDoctorsQuery,
+  useGetAllUsersQuery,
+} from "../../../redux/apiSlice";
 
 const HomePage = () => {
-  const [doctor, setDoctors] = useState([]);
-  const dispatch = useDispatch();
-  const [users, setUsers] = useState([]);
-
-  const getDoctor = async () => {
-    try {
-      dispatch(showLoading());
-      const res = await axios?.get("/admin/getAllDoctors");
-      dispatch(hideLoading());
-
-      if (res.data.success) {
-        setDoctors(res.data.data);
-      }
-    } catch (error) {
-      dispatch(hideLoading());
-      console.log(error);
-    }
-  };
-
-  const getUsers = async () => {
-    try {
-      const res = await axios.get("/client/all");
-      if (res.data.data) {
-        setUsers(res?.data.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getDoctor();
-    getUsers();
-  }, []);
+  let { data: allDoctor } = useGetAllDoctorsQuery();
+  let doctor = allDoctor?.data;
+  let { data: allUser } = useGetAllUsersQuery();
+  let users = allUser?.data;
 
   // const findData = users.filter(i => i.choseDoctor == doctor.specialization)
   let currentMonth = new Date().getMonth() + 1;
   let allUserForChart = users
-    .filter((i) => i.view)
-    .filter((i) => i?.day?.split(".")[1] == currentMonth)
-    .sort((a, b) => a?.day?.split(".")[2] < b?.day?.split(".")[2]);
+    ?.filter((i) => i.view)
+    ?.filter((i) => i?.day?.split(".")[1] == currentMonth)
+    ?.sort((a, b) => a?.day?.split(".")[2] < b?.day?.split(".")[2]);
 
   console.log(allUserForChart);
 
   let week1 = allUserForChart
-    .filter((i) => i.day.split(".")[0] >= 1 && i.day.split(".")[0] <= 7)
-    .reduce((a, b) => a + b.paySumm, 0);
+    ?.filter((i) => i.day.split(".")[0] >= 1 && i.day.split(".")[0] <= 7)
+    ?.reduce((a, b) => a + b.paySumm, 0);
   let week2 = allUserForChart
-    .filter((i) => i.day.split(".")[0] >= 8 && i.day.split(".")[0] <= 14)
-    .reduce((a, b) => a + b.paySumm, 0);
+    ?.filter((i) => i.day.split(".")[0] >= 8 && i.day.split(".")[0] <= 14)
+    ?.reduce((a, b) => a + b.paySumm, 0);
   let week3 = allUserForChart
-    .filter((i) => i.day.split(".")[0] >= 15 && i.day.split(".")[0] <= 21)
-    .reduce((a, b) => a + b.paySumm, 0);
+    ?.filter((i) => i.day.split(".")[0] >= 15 && i.day.split(".")[0] <= 21)
+    ?.reduce((a, b) => a + b.paySumm, 0);
   let week4 = allUserForChart
-    .filter((i) => i.day.split(".")[0] >= 22 && i.day.split(".")[0] <= 31)
-    .reduce((a, b) => a + b.paySumm, 0);
+    ?.filter((i) => i.day.split(".")[0] >= 22 && i.day.split(".")[0] <= 31)
+    ?.reduce((a, b) => a + b.paySumm, 0);
 
   // let totalPriceSort = [week1, week2, week3, week4].sort()
 
@@ -120,7 +83,7 @@ const HomePage = () => {
     },
   ];
 
-  const dataTrue = users.filter((i) => i.payState === true);
+  const dataTrue = users?.filter((i) => i.payState === true);
 
   return (
     <Layout>
