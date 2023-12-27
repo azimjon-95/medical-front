@@ -53,7 +53,6 @@ const Login = () => {
   if (admin === "owner") window.location = "/reports";
   if (admin === "reception") window.location = "/receptionHome";
   if (admin === "doctor") window.location = "/appointments";
-
   return (
     <div className="Loginbodylog">
       <img className="wave" src={wave} alt="login" />

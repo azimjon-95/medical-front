@@ -7,24 +7,10 @@ import axios from "../../../api";
 import { useSelector } from "react-redux";
 
 const RecordList = (props) => {
-  const {
-    id,
-    choseDoctor,
-    day,
-    address,
-    doctorFirstName,
-    doctorLastName,
-    firstname,
-    lastname,
-    phone,
-    retsept,
-    sickname,
-    year,
-    doctorPhone,
-    componentRef,
-  } = props.obj;
+  console.log(props);
+  let { componentRef, year, day } = props;
 
-  const userInfo = useSelector((s) => s.recordList.info);
+  const userInfo = useSelector((s) => s.recordList);
   console.log(userInfo);
   let time = new Date();
 
@@ -50,7 +36,7 @@ const RecordList = (props) => {
                 Doktor:{" "}
                 {userInfo?.doctorFirstName + " " + userInfo?.doctorLastName}
               </b>
-              <b>Retsep raqami: [{userInfo?.phone}99]</b>
+              <b>Retsep raqami: [{userInfo?.phone}]</b>
             </div>
             <div className="D-info">
               <b>[{userInfo?.choseDoctor}]</b>
@@ -66,7 +52,7 @@ const RecordList = (props) => {
           </div>
 
           <div className="listClinic-UserInfo">
-            <div className="userInf">
+            <div className="u serInf">
               <span className="Inf-box1">
                 <b>Janob/Xonim:</b>
               </span>

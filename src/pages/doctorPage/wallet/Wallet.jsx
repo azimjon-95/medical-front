@@ -3,52 +3,25 @@ import Layout from '../../../components/layout/Layout'
 import axios from '../../../api'
 import './style.css'
 import { PhoneNumberFormat, NumberFormat } from '../../../hook/NumberFormat'
-import { useDispatch, useSelector } from "react-redux";
-import { fetchData } from "../../../redux/get/getDataClice";
-import { showLoading, hideLoading } from "../../../redux/features/lineIoad";
+
 import img1 from '../../../assets/img/singleImg1.png';
 import img2 from '../../../assets/img/singleImg2.png';
 import LogoMedme from '../../../assets/img/logo.png'
+import { useGetDailyReportsQuery, useGetAllUsersQuery } from "../../../redux/apiSlice";
+import { Link, useParams } from "react-router-dom";
 
 function Wallet() {
-    const dispatch = useDispatch();
-    const [client, setClient] = useState([])
+    const { _id } = useParams();
 
-    const data = useSelector((state) => state.data);
-    let doctors =
-        useSelector((state) => state?.data?.data?.innerData?.doctors) || [];
-    let dailyMoney =
-        useSelector((state) => state?.data?.data?.innerData?.doctorDailyMoney) ||
-        [];
-    let todaysClients =
-        useSelector((state) => state?.data?.data?.innerData?.todaysClient) || [];
-
-    useEffect(() => {
-        dispatch(fetchData());
-    }, []);
+    let { data: dailyReports } = useGetDailyReportsQuery();
+    let data = dailyReports?.innerData;
+    let doctors = data?.doctors || [];
+    let dailyMoney = data?.doctorDailyMoney || [];
+    let todaysClients = data?.todaysClient || [];
 
 
-
-
-
-    const getUsers = async () => {
-        try {
-            dispatch(showLoading())
-            const res = await axios.get('/client/all')
-            dispatch(hideLoading())
-            if (res.data.success) {
-                setClient(res.data.data)
-            }
-        } catch (error) {
-            dispatch(hideLoading())
-            console.log(error);
-        }
-    }
-
-    useEffect(() => {
-        getUsers()
-    }, [])
-
+    let { data: allClient } = useGetAllUsersQuery();
+    let client = allClient?.data;
 
     let category = localStorage.getItem('category')
     let filterDoctors = doctors.filter(i => i.specialization === category)

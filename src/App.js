@@ -23,7 +23,7 @@ import { useState } from "react";
 import Wallet from "./pages/doctorPage/wallet/Wallet";
 
 function App() {
-  const { loading } = useSelector((state) => state.alerts);
+  const loading = useSelector((state) => state.alerts);
 
   const [isOnline, setIsOnline] = useState("");
   window.ononline = () => setIsOnline("Online");
@@ -48,7 +48,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/add-doctor" element={<AddDoctors />} />
-          <Route path="/admin/users" element={<Patients />} />
+          <Route path="/patients" element={<Patients />} />
           <Route path="reports/" element={<HomePage />} />
           <Route path="/admin/doctors" element={<Doctor />} />
           <Route path="/setting" element={<RegisterOwner />} />

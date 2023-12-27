@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./Carousel.css";
 import { FaUserDoctor } from "react-icons/fa6";
 import { NumberFormat } from "../../../hook/NumberFormat";
@@ -7,25 +7,14 @@ import { FaUsers } from "react-icons/fa6";
 import { TbFilePercent } from "react-icons/tb";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchData } from "../../../redux/get/getDataClice";
+import { useGetDailyReportsQuery } from "../../../redux/apiSlice";
 
 function DoctorsSlite() {
-  const dispatch = useDispatch();
-  const data = useSelector((state) => state.data);
-  let doctors =
-    useSelector((state) => state?.data?.data?.innerData?.doctors) || [];
-  let dailyMoney =
-    useSelector((state) => state?.data?.data?.innerData?.doctorDailyMoney) ||
-    [];
-  let todaysClients =
-    useSelector((state) => state?.data?.data?.innerData?.todaysClient) || [];
-
-  useEffect(() => {
-    dispatch(fetchData());
-  }, []);
-
-  console.log(data);
+  let { data: dailyReports } = useGetDailyReportsQuery();
+  let data = dailyReports?.innerData;
+  let doctors = data?.doctors || [];
+  let dailyMoney = data?.doctorDailyMoney || [];
+  let todaysClients = data?.todaysClient || [];
 
   let time = new Date();
   let day =

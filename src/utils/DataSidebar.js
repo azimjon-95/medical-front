@@ -45,7 +45,7 @@ export const adminMenu = [
 
     {
         name: "Bemorlar",
-        path: "/admin/users",
+        path: "/patients",
         icon: "fa fa-user"
     },
     {

@@ -84,7 +84,7 @@
 .user-profile {
     margin-top: 4rem;
     height: 85px;
-    width:  85px;
+    width: 85px;
     align-self: flex-start;
 }
 
@@ -340,12 +340,14 @@
         border-radius: 5px;
         margin-bottom: 5px;
     }
+
     .summary-balance {
         font-size: 1.4rem;
         letter-spacing: 1.5px;
         margin-bottom: 0rem;
-    
+
     }
+
     .summary-text {
         font-size: 0.8rem;
         font-weight: 300;

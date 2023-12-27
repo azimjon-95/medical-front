@@ -1,100 +1,77 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef  } from "react";
 import "./style.css";
 import Layout from "../../../components/layout/Layout";
 import axios from "../../../api";
 import { NumberFormat, PhoneNumberFormat } from "../../../hook/NumberFormat";
 import { message, Tabs, Modal, Button } from "antd";
 import { AiOutlineCheckCircle } from "react-icons/ai";
-import { showLoading, hideLoading } from "../../../redux/features/lineIoad";
-import { useDispatch } from "react-redux";
 import { MdOutlineDoNotDisturbAlt } from "react-icons/md";
-import imgNoData from "../../../assets/nodata.png";
-import { SearchOutlined, DeleteOutlined } from '@ant-design/icons';
-import ReactToPrint from "react-to-print";
-import CheckList from '../../../components/checkLists/checkList/CheckList'
-import { PiPrinterFill } from "react-icons/pi";
 import { FaUsers } from "react-icons/fa";
-
+import imgNoData from "../../../assets/nodata.png";
+import {
+  useGetAllDoctorsQuery,
+  useGetAllUsersQuery,
+} from "../../../redux/apiSlice";
+import { ExclamationCircleFilled ,SearchOutlined} from "@ant-design/icons";
+import { PiPrinterFill } from 'react-icons/pi';
+import ReactToPrint from 'react-to-print';
+import CheckList from '../../../components/checkLists/checkList/CheckList'
 
 
 const Patients = () => {
   const [payState, setPaid] = useState("");
-  const [users, setUsers] = useState([]);
-  const dispatch = useDispatch();
-  const [doctors, setDoctors] = useState([]);
-  const [list, setList] = useState(false);
-  const componentRef = useRef();
-  const [chAllClieants, setChAllClieants] = useState([])
   const [query, setQuery] = useState("");
+  const [list, setList] = useState(false);
+  let { data: doctors } = useGetAllDoctorsQuery();
+  let { data: users, isLoading: loading } = useGetAllUsersQuery();
+  const componentRef = useRef();
+  const dataFalse = users?.data?.filter((i) => i.payState === false);
+  const dataTrue = users?.data?.filter((i) => i.payState === true && i.view !== true);
+  const filterarxiv = users?.data?.filter((i) => i.view !== true);
+  localStorage.setItem("dataFalse", dataFalse?.length);
 
 
-  const getUsers = async () => {
-    try {
-      dispatch(showLoading());
-      const res = await axios.get("/client/all");
-      dispatch(hideLoading());
-      if (res.data.data) {
-        setUsers(res.data.data);
-      }
-    } catch (error) {
-      dispatch(hideLoading());
-      console.log(error);
-    }
-  };
-
-  const dataFalse = users.filter((i) => i.payState === false);
-  const dataTrue = users.filter((i) => i.payState === true && i.view !== true);
-  localStorage.setItem("dataFalse", dataFalse.length);
-  let time = new Date()
-  let todaysTime = time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear()
-  let Hours = time.getHours() + ":" + time.getMinutes();
-
-  const paySumUpdate = async () => {
-    try {
-      const res = await axios.get("/admin/getAllDoctors");
-      if (res.data.data) {
-        setDoctors(res.data.data);
-      }
-    } catch (error) { }
-  };
-
-  useEffect(() => {
-    getUsers();
-    paySumUpdate();
-  }, []);
 
   function updatePayState(e, id) {
     e.preventDefaoult();
     let update = dataFalse.find((i) => i._id === id);
 
-    let doctorSum = doctors.find(
+    let doctorSum = doctors?.data?.find(
       (i) => i.specialization.toLowerCase() === update.choseDoctor.toLowerCase()
     ).feesPerCunsaltation;
 
-    update.payState = true;
-    update.paySumm = doctorSum;
-    update.room.dayOfTreatment = "0";
-
+    let newInfo = {
+      ...update,
+      payState: true,
+      paySumm: doctorSum,
+      room: { ...update.room, dayOfTreatment: "0" },
+    };
     axios
-      .put("/client/" + id, update)
+      .put("/client/" + id, newInfo)
       .then((res) => {
-
-        console.log(res);
+        if (res.data.success) {
+          message.success(res.data.message);
+        }
       })
       .catch((err) => console.log(err))
   }
 
 
 
+  let time = new Date();
+  let todaysTime = time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear()
+  let Hours = time.getHours() + ":" + time.getMinutes();
 
 
+
+  // -----------Delete-------------
   const { confirm } = Modal;
   const showDeleteClients = (_id) => {
     confirm({
-      title: 'Oʻchirib tashlaysizmi?',
-      icon: <DeleteOutlined />,
-      okText: 'Ha',
-      okType: 'danger',
+      title: "Oʻchirib tashlaysizmi?",
+      icon: <ExclamationCircleFilled />,
+      okText: "Ha",
+      okType: "danger",
       cancelText: "Yo'q",
       onOk() {
         axios
@@ -102,36 +79,23 @@ const Patients = () => {
           .then((res) => {
             if (res.data.success) {
               message.success("Bemor o'chirildi!");
-              window.location.reload()
+              window.location.reload();
             } else {
               message.error(res.data.message);
             }
-
           })
           .catch((err) => console.log(err));
       },
       onCancel() {
-        console.log('Cancel');
+        console.log("Cancel");
       },
     });
   };
-
-
-
-  useEffect(() => {
-    axios.get("/client/all")
-      .then((res) => setChAllClieants(res?.data.data))
-      .catch((err) => console.log(err));
-  }, [])
-  let filterarxiv = chAllClieants.filter(i => i.day == todaysTime)
-
-
-
   return (
     <Layout>
       <div className="search" style={{ border: "1px solid grey", margin: " 10px auto 0px auto" }}>
         <div>
-          <FaUsers />-{dataTrue.length}
+          <FaUsers />-{dataTrue?.length}
         </div>
         <input
           value={query}
@@ -142,8 +106,8 @@ const Patients = () => {
         <SearchOutlined />
       </div>
       <Tabs>
-        <Tabs.TabPane tab="Online ro'yhatdan o'tkanlar" key={0}>
-          {dataFalse == 0 ? (
+        <Tabs.TabPane  defaultActiveKey="0" tab="Online ro'yhatdan o'tkanlar" key={0}>
+          {loading || !dataFalse?.length ? (
             <div className="NoData">
               <div className="NoDataImg">
                 <img src={imgNoData} alt="No Data" />
@@ -233,7 +197,6 @@ const Patients = () => {
                       </td>
                       <td data-label="O'chirish">
                         <button onClick={() => showDeleteClients(_id)} button="true" className='btn btn-danger'>Del</button>
-
                       </td>
 
                       <td className={`${list ? "viewCheckList" : "ListNone"}`}>
@@ -359,13 +322,13 @@ const Patients = () => {
                           filterarxiv={filterarxiv}
                         />
                       </td>
-                    </tr>
+                    </tr >
                   ))}
               </tbody>
             </table>
           )}
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Bemorlar" key={1}>
+        </Tabs.TabPane >
+        <Tabs.TabPane  defaultActiveKey="1" tab="Bemorlar" key={1}>
           {dataTrue == 0 ? (
             <div className="NoData">
               <div className="NoDataImg">
@@ -412,9 +375,11 @@ const Patients = () => {
             </table>
           )}
         </Tabs.TabPane>
-      </Tabs>
-    </Layout>
+      </Tabs >
+    </Layout >
   );
 };
 
 export default Patients;
+
+

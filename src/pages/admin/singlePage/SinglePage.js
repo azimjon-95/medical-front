@@ -1,19 +1,24 @@
-import React from 'react';
-import './style.css';
-import GetPatients from './getPatients/GetPatients'
-import SingleReports from './singleReports/SingleReports';
-
-
+import React, { useEffect } from "react";
+import "./style.css";
+import axios from "../../../api";
+import GetPatients from "./getPatients/GetPatients";
+import SingleReports from "./singleReports/SingleReports";
+import { useGetAllUsersQuery } from "../../../redux/apiSlice";
 
 const SinglePage = () => {
-    return (
-        <div className='SearchBar-Box'>
-            <SingleReports />
-            <GetPatients />
+  // ----------------------------------------
 
-        </div >
-    )
-}
+  let { data: allClients } = useGetAllUsersQuery();
+  let clients = allClients?.data;
+  console.log(clients);
 
-export default SinglePage
+  return (
+    <div className="SearchBar-Box">
+      <SingleReports />
+      <GetPatients />
 
+    </div>
+  );
+};
+
+export default SinglePage;
