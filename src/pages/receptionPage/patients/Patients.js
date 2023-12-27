@@ -1,75 +1,87 @@
-import React, { useState, useEffect } from 'react'
-import './style.css';
-import Layout from '../../../components/layout/Layout';
-import axios from '../../../api';
-import { NumberFormat, PhoneNumberFormat } from '../../../hook/NumberFormat'
-import { message, Tabs, Modal } from 'antd';
-import { AiOutlineCheckCircle } from 'react-icons/ai'
+import React, { useState, useEffect, useRef } from "react";
+import "./style.css";
+import Layout from "../../../components/layout/Layout";
+import axios from "../../../api";
+import { NumberFormat, PhoneNumberFormat } from "../../../hook/NumberFormat";
+import { message, Tabs, Modal, Button } from "antd";
+import { AiOutlineCheckCircle } from "react-icons/ai";
 import { showLoading, hideLoading } from "../../../redux/features/lineIoad";
 import { useDispatch } from "react-redux";
-import { MdOutlineDoNotDisturbAlt } from 'react-icons/md'
-import imgNoData from '../../../assets/nodata.png'
-import { DeleteOutlined } from '@ant-design/icons';
+import { MdOutlineDoNotDisturbAlt } from "react-icons/md";
+import imgNoData from "../../../assets/nodata.png";
+import { SearchOutlined, DeleteOutlined } from '@ant-design/icons';
+import ReactToPrint from "react-to-print";
+import CheckList from '../../../components/checkLists/checkList/CheckList'
+import { PiPrinterFill } from "react-icons/pi";
+import { FaUsers } from "react-icons/fa";
+
+
 
 const Patients = () => {
-  const [payState, setPaid] = useState("")
-  const [users, setUsers] = useState([])
-  const [paySum, setPaySum] = useState(0)
-  const dispatch = useDispatch()
+  const [payState, setPaid] = useState("");
+  const [users, setUsers] = useState([]);
+  const dispatch = useDispatch();
+  const [doctors, setDoctors] = useState([]);
+  const [list, setList] = useState(false);
+  const componentRef = useRef();
+  const [chAllClieants, setChAllClieants] = useState([])
+  const [query, setQuery] = useState("");
+
 
   const getUsers = async () => {
     try {
-      dispatch(showLoading())
-      const res = await axios.get('/client/all')
-      dispatch(hideLoading())
+      dispatch(showLoading());
+      const res = await axios.get("/client/all");
+      dispatch(hideLoading());
       if (res.data.data) {
-        setUsers(res.data.data)
+        setUsers(res.data.data);
       }
     } catch (error) {
-      dispatch(hideLoading())
+      dispatch(hideLoading());
       console.log(error);
     }
-  }
+  };
 
-  const dataFalse = users.filter(i => i.payState === false)
-  const dataTrue = users.filter(i => i.payState === true && i.view !== true)
+  const dataFalse = users.filter((i) => i.payState === false);
+  const dataTrue = users.filter((i) => i.payState === true && i.view !== true);
   localStorage.setItem("dataFalse", dataFalse.length);
+  let time = new Date()
+  let todaysTime = time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear()
+  let Hours = time.getHours() + ":" + time.getMinutes();
 
-  console.log(dataFalse);
-  const [doctors, setDoctors] = useState([])
   const paySumUpdate = async () => {
     try {
-      const res = await axios.get("/admin/getAllDoctors")
+      const res = await axios.get("/admin/getAllDoctors");
       if (res.data.data) {
-        setDoctors
-          (res.data.data)
+        setDoctors(res.data.data);
       }
-    } catch (error) {
-
-    }
-  }
+    } catch (error) { }
+  };
 
   useEffect(() => {
-    getUsers()
-    paySumUpdate()
-  }, [])
+    getUsers();
+    paySumUpdate();
+  }, []);
 
+  function updatePayState(e, id) {
+    e.preventDefaoult();
+    let update = dataFalse.find((i) => i._id === id);
 
+    let doctorSum = doctors.find(
+      (i) => i.specialization.toLowerCase() === update.choseDoctor.toLowerCase()
+    ).feesPerCunsaltation;
 
-  function updatePayState(e, _id) {
-    setPaid(e.target.checked)
-    let update = dataFalse.find(i => i._id === _id)
+    update.payState = true;
+    update.paySumm = doctorSum;
+    update.room.dayOfTreatment = "0";
 
-    let doctorSum = doctors.find(i => i.specialization.toLowerCase() === update.choseDoctor.toLowerCase()).feesPerCunsaltation
+    axios
+      .put("/client/" + id, update)
+      .then((res) => {
 
-    update.payState = true
-    update.paySumm = doctorSum
-    console.log(update);
-    axios.put('/client/' + _id, update)
-      .then(res => { console.log(res) })
-      .catch(err => console.log(err))
-    // .finally(() => { window.location.reload() })
-
+        console.log(res);
+      })
+      .catch((err) => console.log(err))
   }
 
 
@@ -104,111 +116,305 @@ const Patients = () => {
     });
   };
 
-  
+
+
+  useEffect(() => {
+    axios.get("/client/all")
+      .then((res) => setChAllClieants(res?.data.data))
+      .catch((err) => console.log(err));
+  }, [])
+  let filterarxiv = chAllClieants.filter(i => i.day == todaysTime)
+
+
+
   return (
     <Layout>
-      <h4 className="text-center">Bemorlar</h4>
+      <div className="search" style={{ border: "1px solid grey", margin: " 10px auto 0px auto" }}>
+        <div>
+          <FaUsers />-{dataTrue.length}
+        </div>
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value.toLowerCase())}
+          type="text"
+          placeholder="Izlash..."
+        />
+        <SearchOutlined />
+      </div>
       <Tabs>
         <Tabs.TabPane tab="Online ro'yhatdan o'tkanlar" key={0}>
-
-          {
-            dataFalse == 0 ?
-              <div className='NoData'>
-                <div className="NoDataImg">
-                  <img src={imgNoData} alt="No Data" />
-                </div>
+          {dataFalse == 0 ? (
+            <div className="NoData">
+              <div className="NoDataImg">
+                <img src={imgNoData} alt="No Data" />
               </div>
-              :
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Bemor</th>
-                    <th>Tel No</th>
-                    <th>Yo'naltirildi</th>
-                    <th>Doktor</th>
-                    <th>To'landi</th>
-                    <th>O'chirish</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {dataFalse?.map((item, inx) => (
+            </div>
+          ) : (
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Bemor</th>
+                  <th>Tel No</th>
+                  <th>Yo'naltirildi</th>
+                  <th>Doktor</th>
+                  <th>To'landi</th>
+                  <th>O'chirish</th>
+                </tr>
+              </thead>
+              <tbody>
+                {dataFalse?.filter((asd) => asd.firstname.toLowerCase().includes(query))
+                  .map(({
+                    _id,
+                    firstname,
+                    lastname,
+                    phone,
+                    doctorPhone,
+                    paySumm,
+                    paySum,
+                    payState,
+                    choseDoctor,
+                    doctorFirstName,
+                    doctorLastName,
+                    doctorSpecialization,
+                  }, inx) => (
                     <tr key={inx}>
-                      <td data-label="Bemor">{item.lastname} {item.firstname}</td>
-                      <td data-label="Tel No">{PhoneNumberFormat(item.phone)}</td>
-                      <td data-label="Yo'naltirildi">{item.choseDoctor}</td>
-                      <td data-label="Doktor">{item.doctorLastName} {item.doctorFirstName}</td>
+                      <td data-label="Bemor">
+                        {lastname} {firstname}
+                      </td>
+                      <td data-label="Tel No">{PhoneNumberFormat(phone)}</td>
+                      <td data-label="Yo'naltirildi">{choseDoctor}</td>
+                      <td data-label="Doktor">
+                        {doctorLastName} {doctorFirstName}
+                      </td>
                       <td data-label="To'landi">
                         <div className="PayContainer">
                           <div className="PayPatients">
-                            {/* <div onClick={() => setPaid()} className="docORrecep"> */}
-                            <label className="containerChe PayCHe">
-                              {payState ?
-                                <AiOutlineCheckCircle className='Md' />
-                                :
-                                <MdOutlineDoNotDisturbAlt className='Ai' />
-                              }
-                              <input value='Reception' onChange={(e) => updatePayState(e, item._id)} name='o' id='chi' type="radio" />
-                              <span className="checkmark"></span>
-                            </label>
-                          </div>
-                          {payState ?
-                            <i className='Tolanmadi lee'>{item.paySumm} so'm</i>
-                            :
-                            <del className='Tolanmadi lii'>{NumberFormat(doctors.find(i => i.specialization.toLowerCase() === item.choseDoctor.toLowerCase()).feesPerCunsaltation)} so'm</del>
-                          }
-                        </div>
 
+                            {/* <label className="containerChe PayCHe">
+                              {payState ? (
+                                <AiOutlineCheckCircle className="Md" />
+                              ) : (
+                                <MdOutlineDoNotDisturbAlt className="Ai" />
+                              )}
+                              <input
+                                value="Reception"
+                                onChange={(e) => updatePayState(e, _id)}
+                                name="o"
+                                id="chi"
+                                type="radio"
+                              />
+                              <span className="checkmark"></span>
+                            </label> */}
+                            <Button
+                              onClick={(e) => {
+                                setList(true)
+                                setTimeout(() => {
+                                  updatePayState(e, _id)
+                                }, 2000)
+
+                              }}
+                            >Qabul qilish</Button>
+                          </div>
+                          {payState ? (
+                            <i className="Tolanmadi lee">{paySumm} so'm</i>
+                          ) : (
+                            <del className="Tolanmadi lii">
+                              {NumberFormat(
+                                doctors.find(
+                                  (i) =>
+                                    i.specialization.toLowerCase() ===
+                                    choseDoctor.toLowerCase()
+                                )?.feesPerCunsaltation
+                              )}{" "}
+                              so'm
+                            </del>
+                          )}
+                        </div>
                       </td>
                       <td data-label="O'chirish">
-                        <button onClick={() => showDeleteClients(item?._id)} button="true" className='btn btn-danger'>Del</button>
+                        <button onClick={() => showDeleteClients(_id)} button="true" className='btn btn-danger'>Del</button>
+
+                      </td>
+
+                      <td className={`${list ? "viewCheckList" : "ListNone"}`}>
+                        <button onClick={() => setList(false)} className="OutCheck">+</button>
+                        <div className="viewBox">
+                          <ReactToPrint trigger={() =>
+                            <button className="PrintChekList" type="submit"> <PiPrinterFill /></button>}
+                            content={() => componentRef.current}
+                          >
+                          </ReactToPrint>
+                          <div className="waveList">
+                            <center id="top">
+                              <div className="logo"></div>
+                              <div className="info">
+                                <h2 className="item-h2">Har doim siz bilan!</h2>
+                              </div>
+                            </center>
+
+                            <div id="mid">
+                              <div className="info">
+                                <h2 className="item-h2">Aloqa uchun malumot</h2>
+                                <p className="text_p">
+                                  Manzil : Pop Tinchlik ko'chasi 7-uy<br />
+                                  Email : JohnDoe@gmail.com<br />
+                                  Tel No : +998(94)432-44-45<br />
+                                </p>
+                              </div>
+                            </div>
+
+                            <div id="bot">
+                              <div id="table">
+                                <div className="tabletitle">
+                                  <div className="item_check">
+                                    <h2 className="item-h2">Element</h2>
+                                  </div>
+                                  <div className="Hours">
+                                    <h2 className="item-h2"></h2>
+                                  </div>
+                                  <div className="Rate">
+                                    <h2 className="item-h2"></h2>
+                                  </div>
+                                </div>
+
+                                <div className="service">
+                                  <div className="tableitem">
+                                    <p className="itemtext">{choseDoctor}: Oliy toifali shifokor</p>
+                                  </div>
+
+                                  <div className="tableitem">
+                                    <p className="itemtext"> {doctorLastName} {doctorFirstName}</p>
+                                  </div>
+                                </div>
+
+                                <div className="service">
+                                  <div className="tableitem">
+                                    <p className="itemtext">Doktor Tel :</p>
+                                  </div>
+                                  <div className="tableitem">
+                                    <p className="itemtext">+998{doctorPhone}</p>
+                                  </div>
+                                </div>
+
+                                <div className="service">
+                                  <div className="tableitem">
+                                    <p className="itemtext">Qabul :</p>
+                                  </div>
+
+                                  <div className="tableitem">
+                                    <p className="itemtext">{NumberFormat(paySum)} so'm</p>
+                                  </div>
+                                </div>
+                                <div className="service">
+                                  <div className="tableitem">
+                                    <p className="itemtext">Bemor:</p>
+                                  </div>
+                                  <div className="tableitem">
+                                    <p className="itemtext">{firstname} {lastname}</p>
+                                  </div>
+                                </div>
+
+                                <div className="service">
+                                  <div className="tableitem">
+                                    <p className="itemtext text_p">Sana :</p>
+                                  </div>
+                                  <div className="tableitem">
+                                    <p className="itemtext text_p">{Hours} {todaysTime}</p>
+                                  </div>
+                                </div>
+
+                                <div className="tabletitle">
+                                  <div className="tableitem">
+                                    <p>To'landi: </p>
+                                  </div>
+
+                                  <div className="payment">
+                                    <h2 className="item-h1">{NumberFormat(paySum)} so'm</h2>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div id="legalcopy">
+                                <h2>{filterarxiv.length}</h2>
+                                <p >Sizning navbatingiz!</p>
+                              </div>
+
+                            </div>
+
+                          </div>
+                        </div>
+                      </td>
+                      <td style={{ display: "none" }}>
+                        <CheckList
+                          componentRef={componentRef}
+                          firstname={firstname}
+                          lastname={lastname}
+                          payState={paySum}
+                          doctorFirstName={doctorFirstName}
+                          doctorLastName={doctorLastName}
+                          doctorSpecialization={doctorSpecialization}
+                          todaysTime={todaysTime}
+                          Hours={Hours}
+                          doctorPhone={doctorPhone}
+                          filterarxiv={filterarxiv}
+                        />
                       </td>
                     </tr>
                   ))}
-                </tbody>
-              </table>
-          }
+              </tbody>
+            </table>
+          )}
         </Tabs.TabPane>
         <Tabs.TabPane tab="Bemorlar" key={1}>
-          {
-            dataTrue == 0 ?
-              <div className='NoData'>
-                <div className="NoDataImg">
-                  <img src={imgNoData} alt="No Data" />
-                </div>
+          {dataTrue == 0 ? (
+            <div className="NoData">
+              <div className="NoDataImg">
+                <img src={imgNoData} alt="No Data" />
               </div>
-              :
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Bemor</th>
-                    <th>Tel No</th>
-                    <th>Yo'naltirildi</th>
-                    <th>Doktor</th>
-                    <th>To'landi</th>
-                    <th>O'chirish</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {dataTrue?.map((item, inx) => (
+            </div>
+          ) : (
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Bemor</th>
+                  <th>Tel No</th>
+                  <th>Yo'naltirildi</th>
+                  <th>Doktor</th>
+                  <th>To'landi</th>
+                  <th>O'chirish</th>
+                </tr>
+              </thead>
+              <tbody>
+                {dataTrue?.filter((asd) => asd.firstname.toLowerCase().includes(query))
+                  .map((item, inx) => (
                     <tr key={inx}>
-                      <td data-label="Bemor">{item.lastname} {item.firstname}</td>
+                      <td data-label="Bemor">
+                        {item.lastname} {item.firstname}
+                      </td>
                       <td data-label="Tel No">{PhoneNumberFormat(item.phone)}</td>
                       <td data-label="Yo'naltirildi">{item.choseDoctor}</td>
-                      <td data-label="Doktor">{item.doctorLastName} {item.doctorFirstName}</td>
-                      <td data-label="To'landi">{NumberFormat(item.paySumm)} so'm</td>
-                      <td data-label="O'chirish">
-                        {/* <button onClick={() => deletePatients(item?._id)} button="true" className='btn btn-danger'>Del</button> */}
-                        <button onClick={() => showDeleteClients(item?._id)} button="true" className='btn btn-danger'>Del</button>
+                      <td data-label="Doktor">
+                        {item.doctorLastName} {item.doctorFirstName}
                       </td>
+                      <td data-label="To'landi">
+                        {NumberFormat(item.paySumm)} so'm
+                      </td>
+                      <td data-label="O'chirish">
+                        <button onClick={() => showDeleteClients(item?._id)} button="true" className='btn btn-danger'>Del</button>
+
+                      </td>
+
+
+
                     </tr>
                   ))}
-                </tbody>
-              </table>
-          }
+              </tbody>
+            </table>
+          )}
         </Tabs.TabPane>
       </Tabs>
-    </Layout >
-  )
-}
+    </Layout>
+  );
+};
 
-export default Patients
+export default Patients;

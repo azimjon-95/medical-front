@@ -1,24 +1,17 @@
 import axios from "../../../api";
 import React, { useState, useEffect } from "react";
 import Layout from "../../../components/layout/Layout";
-import { Col, Form, Input, message, Row, Button, Tabs, Modal } from 'antd';
+import { Col, Form, Input, message, Row, Tabs, Modal } from 'antd';
 import './style.css'
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { showLoading, hideLoading } from '../../../redux/features/indexSlice';
 import imgNoData from '../../../assets/nodata.png'
 import { NumberFormat, PhoneNumberFormat } from '../../../hook/NumberFormat'
 import Reception from "./Reception";
 import { ExclamationCircleFilled } from '@ant-design/icons';
-import { TbUsersPlus } from "react-icons/tb";
 
 const AddDoctors = () => {
-
   const dispatch = useDispatch()
-  const navigate = useNavigate()
-
-
-
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");

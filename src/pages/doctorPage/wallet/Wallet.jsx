@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import axios from '../../../../api'
+import Layout from '../../../components/layout/Layout'
+import axios from '../../../api'
 import './style.css'
-import { useParams } from 'react-router-dom'
-import { PhoneNumberFormat, NumberFormat } from '../../../../hook/NumberFormat'
+import { PhoneNumberFormat, NumberFormat } from '../../../hook/NumberFormat'
 import { useDispatch, useSelector } from "react-redux";
-import { fetchData } from "../../../../redux/get/getDataClice";
-import { showLoading, hideLoading } from "../../../../redux/features/lineIoad";
-import img1 from '../../../../assets/img/singleImg1.png';
-import img2 from '../../../../assets/img/singleImg2.png';
-import LogoMedme from '../../../../assets/img/logo.png'
+import { fetchData } from "../../../redux/get/getDataClice";
+import { showLoading, hideLoading } from "../../../redux/features/lineIoad";
+import img1 from '../../../assets/img/singleImg1.png';
+import img2 from '../../../assets/img/singleImg2.png';
+import LogoMedme from '../../../assets/img/logo.png'
 
-
-const SingleReports = () => {
-    const { _id } = useParams()
+function Wallet() {
     const dispatch = useDispatch();
     const [client, setClient] = useState([])
 
@@ -28,6 +26,9 @@ const SingleReports = () => {
     useEffect(() => {
         dispatch(fetchData());
     }, []);
+
+
+
 
 
     const getUsers = async () => {
@@ -48,9 +49,12 @@ const SingleReports = () => {
         getUsers()
     }, [])
 
-    let filterDoctors = doctors.filter(i => i.specialization === _id)
+
+    let category = localStorage.getItem('category')
+    let filterDoctors = doctors.filter(i => i.specialization === category)
+
     let clients = client.filter(client => client.choseDoctor
-        .toLowerCase() === _id
+        .toLowerCase() === category
             ?.toLowerCase() && client.view === true)
 
     let time = new Date()
@@ -59,13 +63,14 @@ const SingleReports = () => {
     let filterarxiv = clients.filter(i => i.day == day)
     let getMonth = client.filter(i => i.month == dayMonth)
 
+
     return (
-        <div className='Search-Box'>
+        <Layout>
             <div class="containerWallet">
                 {
                     filterDoctors?.map((value, inx) => {
                         return (
-                            <div key={inx} className="Wallet" style={{ height: '96.5vh' }}>
+                            <div key={inx} className="Wallet">
                                 <div className="headerWallet">
                                     <div className="header-summary">
                                         <div className="summary-text">
@@ -86,25 +91,20 @@ const SingleReports = () => {
 
                                             )}
                                         </div>
-                                    </div>
-                                    <div className="imgBox_doc">
-                                        {
-                                            value.lastName?.endsWith("v") ?
-                                                <div className="user-profileOv">
-                                                    <img src={img1} alt="" />
-                                                </div>
-                                                :
-                                                <div className="user-profileOv">
-                                                    <img src={img2} alt="" />
-                                                </div>
-                                        }
-                                         <div className="summary-textOv">
-                                         {value.firstName + " " + value.lastName}
-                                        </div>
-                                        <span>{value.specialization}</span>
-                                    
-                                    </div>
+                                        <div className="summary-text-2">
 
+                                        </div>
+                                    </div>
+                                    {
+                                        value.lastName?.endsWith("v") ?
+                                            <div className="user-profile">
+                                                <img src={img1} alt="" />
+                                            </div>
+                                            :
+                                            <div className="user-profile">
+                                                <img src={img2} alt="" />
+                                            </div>
+                                    }
                                 </div>
                                 <div className="contentWallet">
                                     <div className="cardWallet">
@@ -150,9 +150,9 @@ const SingleReports = () => {
                 }
 
             </div>
-        </div>
+
+        </Layout>
     )
 }
 
-export default SingleReports;
-
+export default Wallet

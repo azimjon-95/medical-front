@@ -11,7 +11,7 @@ import bg from "../assets/img/bg.svg";
 import { FaUser } from "react-icons/fa";
 import { PiLockKeyFill } from "react-icons/pi";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
-
+import imgDoc from '../assets/img/singleImg1.png'
 import { Link } from "react-router-dom";
 
 const Login = () => {
@@ -62,8 +62,8 @@ const Login = () => {
           <img src={bg} alt="login" />
         </div>
         <div className="login-content">
-          <form className="FormLogin" onSubmit={onfinishHandler}>
-            <img src={avatar} alt="login LOGO" />
+          <form  className="FormLogin" onSubmit={onfinishHandler}>
+            <img src={imgDoc} alt="login LOGO" />
             <h2 className="title">Welcome</h2>
             <div className="input-div one">
               <div className="iconCont">
@@ -87,15 +87,15 @@ const Login = () => {
                 <input
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  type={eye ? "password" : "text"}
+                  type={!eye ? "password" : "text"}
                   className="input"
                   placeholder="Password"
                 />
                 <button type="button" onClick={() => setEye(!eye)}>
                   {eye ? (
-                    <AiFillEyeInvisible onClick={() => setEye(!eye)} />
-                  ) : (
                     <AiFillEye onClick={() => setEye(!eye)} />
+                  ) : (
+                    < AiFillEyeInvisible onClick={() => setEye(!eye)} />
                   )}
                 </button>
               </div>

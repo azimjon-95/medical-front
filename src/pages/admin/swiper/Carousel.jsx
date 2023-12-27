@@ -7,37 +7,33 @@ import { FaUsers } from "react-icons/fa6";
 import { TbFilePercent } from "react-icons/tb";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { Link } from "react-router-dom";
-
-import axios from "../../../api/index";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchData } from "../../../redux/get/getDataClice";
 
 function DoctorsSlite() {
-  const [doctors, setDoctors] = useState(null);
-  const [dailyMoney, setDailyMoney] = useState(null);
-  const [todaysClients, setTodaysClients] = useState(null);
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.data);
+  let doctors =
+    useSelector((state) => state?.data?.data?.innerData?.doctors) || [];
+  let dailyMoney =
+    useSelector((state) => state?.data?.data?.innerData?.doctorDailyMoney) ||
+    [];
+  let todaysClients =
+    useSelector((state) => state?.data?.data?.innerData?.todaysClient) || [];
 
   useEffect(() => {
-    axios
-      .get("/dailiyReports/doctorsMoney")
-      .then((res) => {
-        // console.log(res.data);
-        if (res.data.state) {
-          setDoctors(res.data.innerData.doctors);
-          setDailyMoney(res.data.innerData.doctorDailyMoney);
-          setTodaysClients(res.data.innerData.todaysClient);
-        }
-      })
-      .catch((err) => console.log(err));
-  });
+    dispatch(fetchData());
+  }, []);
+
+  console.log(data);
 
   let time = new Date();
   let day =
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
 
-
-
   return (
     <div className="carousel">
-      {doctors ? (
+      {doctors.length > 0 ? (
         doctors?.map((value, inx) => {
           return (
             <Link
@@ -55,22 +51,23 @@ function DoctorsSlite() {
               <div className="allInfoTotal">
                 <div className="sDay">{day}</div>
                 <div className="CountDay-M">
-                  <LiaMoneyBillWaveSolid />  {
-                    value.specialization === 0 ? <>
-                      {" " + NumberFormat(dailyMoney[value.specialization])} so'm
-                    </> :
-                      ""
-                  }
+                  <LiaMoneyBillWaveSolid />{" "}
+                  {value.specialization === 0 ? (
+                    <>
+                      {" " + NumberFormat(dailyMoney[value.specialization])}{" "}
+                      so'm
+                    </>
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div className="CountDay-M">
-                  <FaUsers /> {
-                    value.specialization === 0 ?
-                      <>
-                        {todaysClients[value.specialization]}
-                      </>
-                      :
-                      ""
-                  }
+                  <FaUsers />{" "}
+                  {value.specialization === 0 ? (
+                    <>{todaysClients[value.specialization]}</>
+                  ) : (
+                    ""
+                  )}
                 </div>
 
                 <div className="CountDay-M">
@@ -80,19 +77,25 @@ function DoctorsSlite() {
                         <TbFilePercent /> {value.percent}%
                       </div>
                       <div className="CountDay-M">
-                        <GiTakeMyMoney /> {value.specialization === 0 ?
-                          <> {NumberFormat(
-                            (dailyMoney[value.specialization] * value.percent) /
-                            100
-                          )} so'm</>
-                          : ""
-                        }
-
+                        <GiTakeMyMoney />{" "}
+                        {value.specialization === 0 ? (
+                          <>
+                            {" "}
+                            {NumberFormat(
+                              (dailyMoney[value.specialization] *
+                                value.percent) /
+                                100
+                            )}{" "}
+                            so'm
+                          </>
+                        ) : (
+                          ""
+                        )}
                       </div>
                     </div>
                   ) : (
                     <div className="CountDay-M">
-                      <GiTakeMyMoney /> {NumberFormat(value.salary)} so'm
+                      <GiTakeMyMoney /> {NumberFormat(value.salary)}
                     </div>
                   )}
                 </div>

@@ -1,20 +1,15 @@
 import axios from "../../../api";
 import React, { useState, useEffect, useRef } from "react";
 import Layout from "../../../components/layout/Layout";
-import { Col, Form, Input, message, Row, Select, DatePicker, Space } from 'antd';
+import { Col, Form, Input, message, Row, Select, DatePicker, Modal } from 'antd';
 import './style.css'
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { showLoading, hideLoading } from '../../../redux/features/indexSlice';
 import { NumberFormat } from "../../../hook/NumberFormat";
 import ReactToPrint from "react-to-print";
-import QueueList from "../../../components/checkLists/queue/QueueLisit";
-
+import { PiPrinterFill } from "react-icons/pi";
+import CheckList from '../../../components/checkLists/checkList/CheckList'
 
 const Register = () => {
-  const { user } = useSelector(state => state.user)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+
   const componentRef = useRef();
   const [firstname, setFirstName] = useState("")
   const [lastname, setLastName] = useState("")
@@ -28,8 +23,9 @@ const Register = () => {
   const [doctorFirstName, setDoctorFirstName] = useState("")
   const [doctorLastName, setDoctorLastName] = useState("")
   const [doctorSpecialization, setDoctorSpecialization] = useState("")
-  const [queueNumber, setQueueNumber] = useState(23)
+  const [chAllClieants, setChAllClieants] = useState([])
   const [allDoctor, setChAllDoctor] = useState([])
+  const [list, setList] = useState(false);
 
 
   useEffect(() => {
@@ -60,9 +56,11 @@ const Register = () => {
   }
 
   let time = new Date()
-  const handleFinish = async () => {
+  let todaysTime = time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear()
+  let Hours = time.getHours() + ":" + time.getMinutes()
+  const handleFinish = async (e) => {
+    e.preventDefault()
     let doctor_price = allDoctor.find(d => d._id === choseDoctor)
-
     const AllInfo = {
       firstname,
       lastname,
@@ -75,38 +73,48 @@ const Register = () => {
       doctorFirstName: doctor_price.firstName,
       doctorLastName: doctor_price.lastName,
       doctorPhone: doctor_price.phone,
-      day: time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear(),
+      day: todaysTime,
+      month: time.toLocaleString("default", { month: 'long' }),
 
     }
-    console.log(AllInfo);
-
 
     try {
-      dispatch(showLoading())
       const res = await axios.post("/client", AllInfo);
-      dispatch(hideLoading())
       if (res.data.success) {
         message.success("Register Successfully!");
       } else {
         message.error(res.data.message);
       }
     } catch (error) {
-      dispatch(hideLoading())
       console.log(error);
       message.error(error?.response?.data.slice(5))
     }
+
   }
 
   const onChange = (date, dateString) => {
     setYear(dateString);
 
   };
+  useEffect(() => {
+    axios.get("/client/all")
+      .then((res) => setChAllClieants(res?.data.data))
+      .catch((err) => console.log(err));
+  }, [])
+  let filterarxiv = chAllClieants.filter(i => i.day == todaysTime)
+
+
+
+
+
+
+
 
   return (
 
     <Layout>
       <h3 className="text-center">Bemorni ro'yhatga olish</h3>
-      <Form layout="vertical" onFinish={handleFinish} className="FormApply">
+      <Form layout="vertical" className="FormApply">
         <Row className="Row">
           <Col className="Col-Form">
             <Form.Item
@@ -247,26 +255,137 @@ const Register = () => {
         <Col className="Col-Form">
           {payState && payState
             ?
-            <ReactToPrint trigger={() =>
-              <button className="btn btn-primary" type="submit"> Yuborish</button>}
-              content={() => componentRef.current}
-            >
-            </ReactToPrint>
+            <button onClick={(e) => {
+              handleFinish(e)
+              setList(true)
+            }} className="btn btn-primary" type="submit"> Yuborishk</button>
             :
             <button className="btn btn-primary" type="submit"> Yuborish</button>
           }
         </Col>
 
       </Form >
+      <div className={`${list ? "viewCheckList" : "ListNone"}`}>
+        <button onClick={() => setList(false)} className="OutCheck">+</button>
+        <div className="viewBox">
+          <ReactToPrint trigger={() =>
+            <button className="PrintChekList" type="submit"> <PiPrinterFill /></button>}
+            content={() => componentRef.current}
+          >
+          </ReactToPrint>
+          <div className="waveList">
+            <center id="top">
+              <div className="logo"></div>
+              <div className="info">
+                <h2 className="item-h2">Har doim siz bilan!</h2>
+              </div>
+            </center>
+
+            <div id="mid">
+              <div className="info">
+                <h2 className="item-h2">Aloqa uchun malumot</h2>
+                <p className="text_p">
+                  Manzil : Pop Tinchlik ko'chasi 7-uy<br />
+                  Email : JohnDoe@gmail.com<br />
+                  Tel No : +998(94)432-44-45<br />
+                </p>
+              </div>
+            </div>
+
+            <div id="bot">
+              <div id="table">
+                <div className="tabletitle">
+                  <div className="item_check">
+                    <h2 className="item-h2">Element</h2>
+                  </div>
+                  <div className="Hours">
+                    <h2 className="item-h2"></h2>
+                  </div>
+                  <div className="Rate">
+                    <h2 className="item-h2"></h2>
+                  </div>
+                </div>
+
+                <div className="service">
+                  <div className="tableitem">
+                    <p className="itemtext">{doctorSpecialization}: Oliy toifali shifokor</p>
+                  </div>
+
+                  <div className="tableitem">
+                    <p className="itemtext"> {doctorLastName} {doctorFirstName}</p>
+                  </div>
+                </div>
+
+                <div className="service">
+                  <div className="tableitem">
+                    <p className="itemtext">Doktor Tel :</p>
+                  </div>
+                  <div className="tableitem">
+                    <p className="itemtext">+998{doctorPhone}</p>
+                  </div>
+                </div>
+
+                <div className="service">
+                  <div className="tableitem">
+                    <p className="itemtext">Qabul :</p>
+                  </div>
+
+                  <div className="tableitem">
+                    <p className="itemtext">{NumberFormat(paySum)} so'm</p>
+                  </div>
+                </div>
+                <div className="service">
+                  <div className="tableitem">
+                    <p className="itemtext">Bemor:</p>
+                  </div>
+                  <div className="tableitem">
+                    <p className="itemtext">{firstname} {lastname}</p>
+                  </div>
+                </div>
+
+                <div className="service">
+                  <div className="tableitem">
+                    <p className="itemtext text_p">Sana :</p>
+                  </div>
+                  <div className="tableitem">
+                    <p className="itemtext text_p">{Hours} {todaysTime}</p>
+                  </div>
+                </div>
+
+                <div className="tabletitle">
+                  <div className="tableitem">
+                    <p>To'landi: </p>
+                  </div>
+
+                  <div className="payment">
+                    <h2 className="item-h1">{NumberFormat(paySum)} so'm</h2>
+                  </div>
+                </div>
+              </div>
+
+              <div id="legalcopy">
+                <h2>{filterarxiv.length}</h2>
+                <p >Sizning navbatingiz!</p>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
       <div style={{ display: "none" }}>
-        <QueueList componentRef={componentRef}
+        <CheckList
+          componentRef={componentRef}
           firstname={firstname}
           lastname={lastname}
           payState={paySum}
           doctorFirstName={doctorFirstName}
           doctorLastName={doctorLastName}
           doctorSpecialization={doctorSpecialization}
-          queueNumber={queueNumber}
+          todaysTime={todaysTime}
+          Hours={Hours}
+          doctorPhone={doctorPhone}
+          filterarxiv={filterarxiv + 1}
         />
       </div>
 
@@ -281,3 +400,15 @@ export default Register;
 
 
 
+// firstname
+// lastname
+// address
+// year
+// phone
+// doctorPhone
+// paySum
+// payState
+// choseDoctor
+// doctorFirstName
+// doctorLastName
+// doctorSpecialization

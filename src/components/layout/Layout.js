@@ -18,7 +18,6 @@ const Layout = ({ children }) => {
     const [sideOpen, setSideOpen] = useState(false)
 
     let admin = localStorage.getItem('admin') || {}
-
     const SidebarMenu = admin === "doctor" ? doctorMenu : admin === "reception" ? adminMenu : onerMenu
 
 
@@ -27,8 +26,6 @@ const Layout = ({ children }) => {
         setSideOpen(i => !i)
     }
     const { LineLoad } = useSelector(state => state.lines)
-
-
     let category = localStorage.getItem('ClientLength')
     let doctorName = localStorage.getItem('doctorName')
     let dataFalse = localStorage.getItem('dataFalse')
@@ -42,10 +39,6 @@ const Layout = ({ children }) => {
             return "Derektor"
         }
     }
-
-
-
-
 
     // --------------------Log out--------------
 

@@ -111,6 +111,12 @@
     background-color: #f5f5f5;
 }
 
+.table>tbody {
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+
+}
 
 
 @media(max-width: 900px) {

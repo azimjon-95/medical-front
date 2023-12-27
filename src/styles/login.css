@@ -41,6 +41,12 @@
 .FormLogin {
     width: 360px;
 }
+.FormLogin{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
 
 .login-content img {
     height: 100px;
@@ -64,6 +70,7 @@
 
 .login-content .input-div.one {
     margin-top: 0;
+    width: 100%;
 }
 
 .iconCont {
@@ -77,6 +84,7 @@
 
 .input-div>.Inputdiv {
     position: relative;
+    width: 100%;
     height: 45px;
     display: flex;
     justify-content: flex-end;
@@ -158,6 +166,7 @@
 
 .input-div.pass {
     margin-bottom: 4px;
+    width: 100%;
 }
 
 .FormLogin>a {

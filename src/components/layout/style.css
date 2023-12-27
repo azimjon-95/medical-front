@@ -63,8 +63,6 @@
 .body {
     height: calc(100vh - 72px);
     border-radius: 5px;
-    height: 100%;
-    /* margin-bottom: 20px; */
     box-shadow: 0 0 2px gray;
     overflow: auto;
 }

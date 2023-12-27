@@ -62,11 +62,6 @@ export const adminMenu = [
 ]
 
 export const doctorMenu = [
-    // {
-    //     name: "Home",
-    //     path: "/",
-    //     icon: "fa fa-home"
-    // },
     {
         name: "Bemorlar",
         path: "/appointments",
@@ -76,5 +71,10 @@ export const doctorMenu = [
         name: "Arxiv",
         path: `/doctor/patients_history`,
         icon: "fa fa-history"
+    },
+    {
+        name: "Kashelyok",
+        path: "/kashelyok",
+        icon: "fa fa-money"
     }
 ]
