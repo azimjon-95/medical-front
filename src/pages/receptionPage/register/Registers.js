@@ -33,6 +33,7 @@ const Register = () => {
 
   let { data: all_Doctor } = useGetAllDoctorsQuery();
   let allDoctor = all_Doctor?.data || [];
+  // const [create, {isLoading}] = useCreateClientMutation();
 
   let sortedData = allDoctor?.filter((i) => i.specialization.length > 3);
 
@@ -88,10 +89,8 @@ const Register = () => {
       message.error(error?.response?.data.slice(5));
     }
 
-    // const res = useCreateClientMutation({ AllInfo });
-    // console.log(res);
+    // c  };
   };
-
   const onChange = (date, dateString) => {
     setYear(dateString);
   };
