@@ -8,7 +8,7 @@ import imgNoData from "../../../assets/nodata.png";
 import { IoEyeOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
-import { useGetAllDoctorsQuery } from "../../../redux/apiSlice";
+import { useGetAllDoctorsQuery } from "../../../redux/doctorApi";
 
 const Doctor = () => {
   const dispatch = useDispatch();

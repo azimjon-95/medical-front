@@ -15,7 +15,7 @@ import { GiMoneyStack } from "react-icons/gi";
 import { NumberFormat } from "../../../hook/NumberFormat";
 import EnterRoom from "./enterRoom/EnterRoom";
 
-import { useGetAllRoomsQuery } from "../../../redux/apiSlice";
+import { useGetAllRoomsQuery } from "../../../redux/roomApi";
 
 const Cabins = () => {
   const dispatch = useDispatch();

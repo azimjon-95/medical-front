@@ -7,7 +7,7 @@ import { FiX } from "react-icons/fi";
 import { GiEntryDoor } from "react-icons/gi";
 import { PiPrinterFill } from "react-icons/pi";
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { useGetAllUsersQuery } from "../../../../redux/apiSlice";
+import { useGetAllUsersQuery } from "../../../../redux/clientApi";
 
 function EnterRoom({ setOpenRoom, room }) {
   const [list, setList] = useState(false);

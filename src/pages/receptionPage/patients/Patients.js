@@ -7,10 +7,8 @@ import { message, Tabs } from "antd";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { MdOutlineDoNotDisturbAlt } from "react-icons/md";
 import imgNoData from "../../../assets/nodata.png";
-import {
-  useGetAllDoctorsQuery,
-  useGetAllUsersQuery,
-} from "../../../redux/apiSlice";
+import { useGetAllDoctorsQuery } from "../../../redux/doctorApi";
+import { useGetAllUsersQuery } from "../../../redux/clientApi";
 
 const Patients = () => {
   const [payState, setPaid] = useState("");

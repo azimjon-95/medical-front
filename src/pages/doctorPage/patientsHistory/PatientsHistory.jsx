@@ -9,7 +9,7 @@ import imgNoData from "../../../assets/nodata.png";
 import { PiPrinterFill } from "react-icons/pi";
 import ReactToPrint from "react-to-print";
 import RecordList from "../../../components/checkLists/patientRecordList/RecordList";
-import { useGetAllUsersQuery } from "../../../redux/apiSlice";
+import { useGetAllUsersQuery } from "../../../redux/clientApi";
 
 function PatientsHistory() {
   const componentRef = useRef();

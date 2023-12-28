@@ -3,17 +3,16 @@ import React, { useState, useEffect } from "react";
 import Layout from "../../../components/layout/Layout";
 import { Col, Form, Input, message, Row, TimePicker } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { showLoading, hideLoading } from "../../../redux/features/indexSlice";
 import moment from "moment";
-import { useGetDoctorInfoQuery } from "../../../redux/apiSlice";
+import { useGetDoctorInfoQuery } from "../../../redux/doctorApi";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.user);
   const [doctor, setDoctors] = useState(null);
   const params = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   // ------Update doc--------
   const handleFinish = async (values) => {

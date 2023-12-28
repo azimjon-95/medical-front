@@ -3,11 +3,13 @@ import "./AppointmentSinglePage.css";
 import { useParams, useNavigate } from "react-router-dom";
 import Layout from "../../../components/layout/Layout";
 import { useState } from "react";
-import { useGetSingleUserQuery } from "../../../redux/apiSlice";
+import { useGetSingleUserQuery } from "../../../redux/clientApi";
 import { message } from "antd";
 import axios from "../../../api/";
-
+import { useDispatch } from "react-redux";
+import { setInfo } from "../../../redux/recordList/recordList";
 function AppointmentSinglePage() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
   const [sickname, setSickname] = useState("");
@@ -35,6 +37,8 @@ function AppointmentSinglePage() {
         }
       })
       .catch((err) => console.log(err));
+
+    dispatch(setInfo(newUser));
   }
 
   return (
