@@ -1,23 +1,15 @@
-import axios from "../../../api";
 import React, { useState, useEffect, useRef } from "react";
 import Layout from "../../../components/layout/Layout";
 import { Col, Form, Input, message, Row, Select, DatePicker } from "antd";
 import "./style.css";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { showLoading, hideLoading } from "../../../redux/features/indexSlice";
 import { NumberFormat } from "../../../hook/NumberFormat";
 import ReactToPrint from "react-to-print";
-import { PiPrinterFill } from "react-icons/pi";
-import {
-  useCreateClientMutation,
-  useGetAllDoctorsQuery,
-  useGetAllUsersQuery
-} from "../../../redux/apiSlice";
-import CheckList from '../../../components/checkLists/checkList/CheckList'
-
+import CheckList from "../../../components/checkLists/checkList/CheckList";
+import { useGetAllDoctorsQuery } from "../../../redux/doctorApi";
+import { useCreateClientMutation } from "../../../redux/clientApi";
+import { useGetAllUsersQuery } from "../../../redux/clientApi";
+import {PiPrinterFill} from 'react-icons/pi'
 const Register = () => {
-  const dispatch = useDispatch();
   const componentRef = useRef();
   const [firstname, setFirstName] = useState("");
   const [lastname, setLastName] = useState("");
@@ -40,7 +32,9 @@ const Register = () => {
   let { data: users, isLoading: loading } = useGetAllUsersQuery();
   let { data: all_Doctor } = useGetAllDoctorsQuery();
   let allDoctor = all_Doctor?.data || [];
-  // const [create, {isLoading}] = useCreateClientMutation();
+
+  const [CreateNewClient, { isLoading, isSuccess }] = useCreateClientMutation();
+
   let sortedData = allDoctor?.filter((i) => i.specialization.length > 3);
 
 
@@ -85,22 +79,13 @@ const Register = () => {
 
     };
 
-    try {
-      dispatch(showLoading());
-      const res = await axios.post("/client", AllInfo);
-      dispatch(hideLoading());
-      if (res.data.success) {
-        message.success("Register Successfully!");
-      } else {
-        message.error(res.data.message);
-      }
-    } catch (error) {
-      dispatch(hideLoading());
-      console.log(error);
-      message.error(error?.response?.data.slice(5));
-    }
-
-    // c  };
+    CreateNewClient(AllInfo)
+      .then((res) => {
+        if (res.data.success) {
+          message.success(res.data.message);
+        }
+      })
+      .catch((err) => console.log(err));
   };
   const onChange = (date, dateString) => {
     setYear(dateString);

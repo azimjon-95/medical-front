@@ -9,11 +9,10 @@ import imgNoData from "../../../assets/nodata.png";
 import { NumberFormat, PhoneNumberFormat } from "../../../hook/NumberFormat";
 import Reception from "./Reception";
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { useGetAllDoctorsQuery } from "../../../redux/apiSlice";
+import { useGetAllDoctorsQuery } from "../../../redux/doctorApi";
 
 const AddDoctors = () => {
   const dispatch = useDispatch();
-
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");

@@ -7,7 +7,7 @@ import { FiX } from "react-icons/fi";
 import { GiEntryDoor } from "react-icons/gi";
 import { PiPrinterFill } from "react-icons/pi";
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { useGetAllUsersQuery } from "../../../../redux/apiSlice";
+import { useGetAllUsersQuery } from "../../../../redux/clientApi";
 import ReactToPrint from 'react-to-print';
 import CheckList from '../../../../components/checkLists/checkList/CheckList'
 

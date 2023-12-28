@@ -8,12 +8,13 @@ import moment from "moment";
 import { GiMoneyStack } from "react-icons/gi";
 import { MdOutlineBedroomChild } from "react-icons/md";
 import { TbUsersGroup } from "react-icons/tb";
-import axios from '../../../api';
 import {
-  useGetAllDoctorsQuery,
-  useGetAllUsersQuery,
   useGetAllRoomsQuery
-} from "../../../redux/apiSlice";
+} from "../../../redux/roomApi";
+
+import {
+  useGetAllUsersQuery,
+} from "../../../redux/clientApi";
 
 const Balans = ({ dataTrue }) => {
   let { data: users, isLoading: loading } = useGetAllUsersQuery();

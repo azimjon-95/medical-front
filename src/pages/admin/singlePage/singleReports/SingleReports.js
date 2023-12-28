@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import './style.css'
-import { PhoneNumberFormat, NumberFormat } from '../../../../hook/NumberFormat';
+import { NumberFormat } from '../../../../hook/NumberFormat';
 import img1 from '../../../../assets/img/singleImg1.png';
 import img2 from '../../../../assets/img/singleImg2.png';
 import LogoMedme from '../../../../assets/img/logo.png'
-import { useGetDailyReportsQuery, useGetAllUsersQuery } from "../../../../redux/apiSlice";
-import { Link, useParams } from "react-router-dom";
+import { useGetAllUsersQuery } from "../../../../redux/clientApi";
+import { useGetDailyReportsQuery } from "../../../../redux/clientApi";
+import { useParams } from "react-router-dom";
 
 function SingleReports() {
   const { _id } = useParams();
@@ -14,7 +15,6 @@ function SingleReports() {
   let data = dailyReports?.innerData;
   let doctors = data?.doctors || [];
   let dailyMoney = data?.doctorDailyMoney || [];
-  let todaysClients = data?.todaysClient || [];
 
 
   let { data: allClient } = useGetAllUsersQuery();

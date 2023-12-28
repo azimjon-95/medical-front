@@ -11,7 +11,7 @@ import { FaUsers } from "react-icons/fa";
 import { setInfo } from "../../../../redux/recordList/recordList";
 
 import RecordList from "../../../../components/checkLists/patientRecordList/RecordList";
-import { useGetAllUsersQuery } from "../../../../redux/apiSlice";
+import { useGetAllUsersQuery } from "../../../../redux/clientApi";
 const GetPatients = () => {
   const componentRef = useRef();
   const { _id } = useParams();

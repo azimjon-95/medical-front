@@ -23,8 +23,7 @@ import { useState } from "react";
 import Wallet from "./pages/doctorPage/wallet/Wallet";
 
 function App() {
-  const loading = useSelector((state) => state.alerts);
-
+  const { loading } = useSelector((state) => state.alerts);
   const [isOnline, setIsOnline] = useState("");
   window.ononline = () => setIsOnline("Online");
   window.onoffline = () => setIsOnline("Ofline");

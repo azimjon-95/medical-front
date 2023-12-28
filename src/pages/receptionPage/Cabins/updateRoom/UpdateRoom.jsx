@@ -4,7 +4,7 @@ import { NumberFormat, PhoneNumberFormat } from "../../../../hook/NumberFormat";
 import axios from "../../../../api";
 import { FiX } from "react-icons/fi";
 import { Col, Form, message, DatePicker } from "antd";
-import { useGetAllUsersQuery } from "../../../../redux/apiSlice";
+import { useGetAllUsersQuery } from "../../../../redux/clientApi";
 
 function UpdateRoom({ setOpenUpdate, room }) {
   const [phone, setPhone] = useState("");

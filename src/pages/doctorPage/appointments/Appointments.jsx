@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { PhoneNumberFormat } from "../../../hook/NumberFormat";
 // import NotificationSound from "../../../assets/ayfon-sms.mp3";
 import imgNoData from "../../../assets/nodata.png";
-import { useGetAllUsersQuery } from "../../../redux/apiSlice";
+import { useGetAllUsersQuery } from "../../../redux/clientApi";
 
 function Appointments() {
   //   const audioPlayer = useRef(null);

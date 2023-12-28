@@ -12,12 +12,9 @@ import {
 } from "recharts";
 import "./App.css";
 import Balans from "../balans/Balans";
-import { useDispatch } from "react-redux";
 import DoctorsSlite from "../swiper/Carousel";
-import {
-  useGetAllDoctorsQuery,
-  useGetAllUsersQuery,
-} from "../../../redux/apiSlice";
+import { useGetAllDoctorsQuery } from "../../../redux/doctorApi";
+import { useGetAllUsersQuery } from "../../../redux/clientApi";
 
 const HomePage = () => {
   let { data: allDoctor } = useGetAllDoctorsQuery();

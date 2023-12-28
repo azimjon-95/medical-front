@@ -7,7 +7,8 @@ import { PhoneNumberFormat, NumberFormat } from '../../../hook/NumberFormat'
 import img1 from '../../../assets/img/singleImg1.png';
 import img2 from '../../../assets/img/singleImg2.png';
 import LogoMedme from '../../../assets/img/logo.png'
-import { useGetDailyReportsQuery, useGetAllUsersQuery } from "../../../redux/apiSlice";
+import { useGetDailyReportsQuery } from "../../../redux/clientApi";
+import { useGetAllUsersQuery } from "../../../redux/clientApi";
 import { Link, useParams } from "react-router-dom";
 
 function Wallet() {

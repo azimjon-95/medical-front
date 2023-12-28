@@ -1,18 +1,18 @@
-import React, { useState, useRef  } from "react";
+import React, { useState, useRef } from "react";
 import "./style.css";
 import Layout from "../../../components/layout/Layout";
 import axios from "../../../api";
 import { NumberFormat, PhoneNumberFormat } from "../../../hook/NumberFormat";
 import { message, Tabs, Modal, Button } from "antd";
-import { AiOutlineCheckCircle } from "react-icons/ai";
-import { MdOutlineDoNotDisturbAlt } from "react-icons/md";
 import { FaUsers } from "react-icons/fa";
 import imgNoData from "../../../assets/nodata.png";
 import {
-  useGetAllDoctorsQuery,
-  useGetAllUsersQuery,
-} from "../../../redux/apiSlice";
-import { ExclamationCircleFilled ,SearchOutlined} from "@ant-design/icons";
+  useGetAllUsersQuery
+} from "../../../redux/clientApi";
+import {
+  useGetAllDoctorsQuery
+} from "../../../redux/doctorApi";
+import { ExclamationCircleFilled, SearchOutlined } from "@ant-design/icons";
 import { PiPrinterFill } from 'react-icons/pi';
 import ReactToPrint from 'react-to-print';
 import CheckList from '../../../components/checkLists/checkList/CheckList'
@@ -34,7 +34,7 @@ const Patients = () => {
 
   function updatePayState(e, id) {
     e.preventDefaoult();
-    let update = dataFalse.find((i) => i._id === id);
+    let update = dataFalse?.find((i) => i._id === id);
 
     let doctorSum = doctors?.data?.find(
       (i) => i.specialization.toLowerCase() === update.choseDoctor.toLowerCase()
@@ -106,7 +106,7 @@ const Patients = () => {
         <SearchOutlined />
       </div>
       <Tabs>
-        <Tabs.TabPane  defaultActiveKey="0" tab="Online ro'yhatdan o'tkanlar" key={0}>
+        <Tabs.TabPane defaultActiveKey="0" tab="Online ro'yhatdan o'tkanlar" key={0}>
           {loading || !dataFalse?.length ? (
             <div className="NoData">
               <div className="NoDataImg">
@@ -126,7 +126,7 @@ const Patients = () => {
                 </tr>
               </thead>
               <tbody>
-                {dataFalse?.filter((asd) => asd.firstname.toLowerCase().includes(query))
+                {dataFalse?.filter((asd) => asd?.firstname.toLowerCase().includes(query))
                   .map(({
                     _id,
                     firstname,
@@ -184,10 +184,10 @@ const Patients = () => {
                           ) : (
                             <del className="Tolanmadi lii">
                               {NumberFormat(
-                                doctors.find(
+                                doctors?.find(
                                   (i) =>
-                                    i.specialization.toLowerCase() ===
-                                    choseDoctor.toLowerCase()
+                                    i.specialization?.toLowerCase() ===
+                                    choseDoctor?.toLowerCase()
                                 )?.feesPerCunsaltation
                               )}{" "}
                               so'm
@@ -298,7 +298,7 @@ const Patients = () => {
                               </div>
 
                               <div id="legalcopy">
-                                <h2>{filterarxiv.length}</h2>
+                                <h2>{filterarxiv?.length}</h2>
                                 <p >Sizning navbatingiz!</p>
                               </div>
 
@@ -328,7 +328,7 @@ const Patients = () => {
             </table>
           )}
         </Tabs.TabPane >
-        <Tabs.TabPane  defaultActiveKey="1" tab="Bemorlar" key={1}>
+        <Tabs.TabPane defaultActiveKey="1" tab="Bemorlar" key={1}>
           {dataTrue == 0 ? (
             <div className="NoData">
               <div className="NoDataImg">
@@ -348,19 +348,19 @@ const Patients = () => {
                 </tr>
               </thead>
               <tbody>
-                {dataTrue?.filter((asd) => asd.firstname.toLowerCase().includes(query))
+                {dataTrue?.filter((asd) => asd.firstname?.toLowerCase().includes(query))
                   .map((item, inx) => (
                     <tr key={inx}>
                       <td data-label="Bemor">
-                        {item.lastname} {item.firstname}
+                        {item?.lastname} {item?.firstname}
                       </td>
-                      <td data-label="Tel No">{PhoneNumberFormat(item.phone)}</td>
-                      <td data-label="Yo'naltirildi">{item.choseDoctor}</td>
+                      <td data-label="Tel No">{PhoneNumberFormat(item?.phone)}</td>
+                      <td data-label="Yo'naltirildi">{item?.choseDoctor}</td>
                       <td data-label="Doktor">
-                        {item.doctorLastName} {item.doctorFirstName}
+                        {item?.doctorLastName} {item?.doctorFirstName}
                       </td>
                       <td data-label="To'landi">
-                        {NumberFormat(item.paySumm)} so'm
+                        {NumberFormat(item?.paySumm)} so'm
                       </td>
                       <td data-label="O'chirish">
                         <button onClick={() => showDeleteClients(item?._id)} button="true" className='btn btn-danger'>Del</button>

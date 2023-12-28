@@ -3,7 +3,7 @@ import "./style.css";
 import axios from "../../../api";
 import GetPatients from "./getPatients/GetPatients";
 import SingleReports from "./singleReports/SingleReports";
-import { useGetAllUsersQuery } from "../../../redux/apiSlice";
+import { useGetAllUsersQuery } from "../../../redux/clientApi";
 
 const SinglePage = () => {
   // ----------------------------------------

@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./style.css";
 import Qeu from "./MedLogoList.png";
 import { IoIosCall, IoIosMail } from "react-icons/io";
-import axios from "../../../api";
 
 import { useSelector } from "react-redux";
 
@@ -10,8 +9,8 @@ const RecordList = (props) => {
   console.log(props);
   let { componentRef, year, day } = props;
 
-  const userInfo = useSelector((s) => s.recordList);
-  console.log(userInfo);
+  const { info } = useSelector((s) => s.recordList);
+  let userInfo = info;
   let time = new Date();
 
   return (
@@ -40,10 +39,10 @@ const RecordList = (props) => {
             </div>
             <div className="D-info">
               <b>[{userInfo?.choseDoctor}]</b>
-              <b>Sana: {day}</b>
+              <b>Sana: {userInfo?.day}</b>
             </div>
             <div className="D-info">
-              <b>[+998{userInfo?.doctorPhone}]</b>
+              <b>[+998 {userInfo?.phone}]</b>
             </div>
           </div>
           <div className="Tashxis"></div>
@@ -65,7 +64,11 @@ const RecordList = (props) => {
                 <b>Yosh:</b>
               </span>
               <span className="Inf-box2">
-                <p>[{time.getFullYear() - +year?.slice(0, 4)}]</p>
+                <p>
+                  [{" "}
+                  {userInfo?.year ? time.getFullYear() - +year?.slice(0, 4) : 0}
+                  ]
+                </p>
               </span>
             </div>
             <div className="userInf">
@@ -73,7 +76,7 @@ const RecordList = (props) => {
                 <b>Manzil:</b>
               </span>
               <span className="Inf-box2">
-                <p>[{userInfo?.address}]</p>
+                <p>[{userInfo?.address ? userInfo?.address : "nomalum"}]</p>
               </span>
             </div>
             <div className="userInf">
