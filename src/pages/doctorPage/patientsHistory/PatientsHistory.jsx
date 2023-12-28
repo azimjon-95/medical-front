@@ -10,18 +10,24 @@ import { PiPrinterFill } from "react-icons/pi";
 import ReactToPrint from "react-to-print";
 import RecordList from "../../../components/checkLists/patientRecordList/RecordList";
 import { useGetAllUsersQuery } from "../../../redux/apiSlice";
+import { setInfo } from "../../../redux/recordList/recordList";
+import { useDispatch } from "react-redux";
+import { FaUsers } from "react-icons/fa";
+import { SearchOutlined, LeftOutlined } from "@ant-design/icons";
 
 function PatientsHistory() {
   const componentRef = useRef();
   const audioPlayer = useRef(null);
-  const [id, setID] = useState("");
+  const [id, setidD] = useState("No data");
+  const dispatch = useDispatch()
 
   let { data: allUsers } = useGetAllUsersQuery();
   let data = allUsers?.data;
 
-  const showModal = (id) => {
-    setID(id);
-  };
+  const checkID = (id) => {
+    setidD(id);
+    dispatch(setInfo(id));
+};
   let category = localStorage.getItem("category");
 
   let clients = data?.filter(
@@ -35,104 +41,227 @@ function PatientsHistory() {
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
   let filterarxiv = clients?.filter((i) => i.day == day);
 
+  const [query, setQuery] = useState("");
   return (
     <Layout>
-      <h3 className="text-center">Arxiv</h3>
 
+      <h3 className="text-center">Arxiv</h3>
+      <div className="search" style={{ border: "1px solid grey", margin: "auto" }}>
+        <div>
+          <FaUsers />-{clients?.length}
+        </div>
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value.toLowerCase())}
+          type="text"
+          placeholder="Izlash..."
+        />
+        <SearchOutlined />
+      </div>
       <Tabs>
         <Tabs.TabPane tab="Bugungi" key={0}>
-          {filterarxiv == 0 ? (
-            <div className="NoData">
-              <div className="NoDataImg">
-                <img src={imgNoData} alt="No Data" />
+
+          {
+            filterarxiv == 0 ?
+              <div className='NoData'>
+                <div className="NoDataImg">
+                  <img src={imgNoData} alt="No Data" />
+                </div>
               </div>
-            </div>
-          ) : (
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>№</th>
-                  <th>Bemor</th>
-                  <th>Tashxis</th>
-                  <th>Tel</th>
-                  <th>Ko'rish</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filterarxiv?.map((item, inx) => (
-                  <tr key={inx}>
-                    <td>{inx + 1}</td>
-                    <td className="Bem" data-label="Bemor">
-                      {item.lastname} {item.firstname}
-                    </td>
-                    <td data-label="Tashxis">{item.sickname}</td>
-                    <td data-label="Tel No">+998{item.phone}</td>
-                    <td>
-                      <Link to={`/AppointmentSinglePage/${item._id}`}>
-                        <LuEye className="btn-secondary" />
-                      </Link>
-                    </td>
+              :
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>№</th>
+                    <th>Bemor</th>
+                    <th>Tashxis</th>
+                    <th>Tel</th>
+                    <th>Chop etish </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+                </thead>
+                <tbody>
+                  {filterarxiv?.filter((asd) => asd.firstname.toLowerCase().includes(query))
+                    .map(({
+                      _id,
+                      choseDoctor,
+                      day,
+                      address,
+                      doctorFirstName,
+                      doctorLastName,
+                      firstname,
+                      lastname,
+                      phone,
+                      retsept,
+                      sickname,
+                      year,
+                      doctorPhone,
+                    }, inx) => (
+                      <tr key={inx}>
+                        <td>{inx + 1}</td>
+                        <td className='Bem' data-label="Bemor">
+                          {lastname} {firstname}
+                        </td>
+                        <td data-label="Tashxis">{sickname}</td>
+                        <td data-label="Tel No">+998{phone}</td>
+
+                        <td type="primary">
+                          <Button>
+                            <ReactToPrint
+                              trigger={() => <button
+                                onFocus={() =>
+                                  checkID({
+                                    _id,
+                                    choseDoctor,
+                                    day,
+                                    address,
+                                    doctorFirstName,
+                                    doctorLastName,
+                                    firstname,
+                                    lastname,
+                                    phone,
+                                    retsept,
+                                    sickname,
+                                    year,
+                                    doctorPhone,
+                                  })
+                                }
+                                style={{ border: "none", background: "transparent", fontSize: "14px", display: "flex", justifyContent: "center" }}
+                              > < PiPrinterFill className='Printer' /></button>
+                              }
+                              content={() => componentRef.current}
+                            />
+                          </Button>
+                        </td>
+
+                        <td style={{ display: "none" }}>
+                          <RecordList
+                            obj={{
+                              id,
+                              componentRef,
+                              choseDoctor,
+                              day,
+                              address,
+                              doctorFirstName,
+                              doctorLastName,
+                              firstname,
+                              lastname,
+                              phone,
+                              retsept,
+                              sickname,
+                              year,
+                              doctorPhone,
+                            }}
+                            componentRef={componentRef}
+                          />
+                        </td>
+
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+          }
         </Tabs.TabPane>
         <Tabs.TabPane tab="Jammi" key={1}>
-          {clients == 0 ? (
-            <div className="NoData">
-              <div className="NoDataImg">
-                <img src={imgNoData} alt="No Data" />
+
+          {
+            clients == 0 ?
+              <div className='NoData'>
+                <div className="NoDataImg">
+                  <img src={imgNoData} alt="No Data" />
+                </div>
               </div>
-            </div>
-          ) : (
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>№</th>
-                  <th>Bemor</th>
-                  <th>Tashxis</th>
-                  <th>Tel</th>
-                  <th>Chop etish </th>
-                </tr>
-              </thead>
-              <tbody>
-                {clients?.map((item, inx) => (
-                  <tr key={inx}>
-                    <td>{inx + 1}</td>
-                    <td className="Bem" data-label="Bemor">
-                      {item.lastname} {item.firstname}
-                    </td>
-                    <td data-label="Tashxis">{item.sickname}</td>
-                    <td data-label="Tel No">+998{item.phone}</td>
-
-                    <td type="primary" onClick={() => showModal(item._id)}>
-                      <Button className="LuEyeBtn">
-                        <ReactToPrint
-                          trigger={() => (
-                            <button
-                              style={{
-                                border: "none",
-                                background: "transparent",
-                                fontSize: "14px",
-                              }}
-                            >
-                              <PiPrinterFill className="Printer" />
-                            </button>
-                          )}
-                          content={() => componentRef.current}
-                        />
-                      </Button>
-                    </td>
-
-                    <div style={{ display: "none" }}>
-                      <RecordList id={id} componentRef={componentRef} />
-                    </div>
+              :
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>№</th>
+                    <th>Bemor</th>
+                    <th>Tashxis</th>
+                    <th>Tel</th>
+                    <th>Chop etish </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+                </thead>
+                <tbody>
+                  {clients?.filter((asd) => asd.firstname.toLowerCase().includes(query))
+                    .map(({
+                      _id,
+                      choseDoctor,
+                      day,
+                      address,
+                      doctorFirstName,
+                      doctorLastName,
+                      firstname,
+                      lastname,
+                      phone,
+                      retsept,
+                      sickname,
+                      year,
+                      doctorPhone,
+                    }, inx) => (
+                      <tr key={inx}>
+                        <td>{inx + 1}</td>
+                        <td className='Bem' data-label="Bemor">
+                          {lastname} {firstname}
+                        </td>
+                        <td data-label="Tashxis">{sickname}</td>
+                        <td data-label="Tel No">+998{phone}</td>
+
+                        <td type="primary">
+                          <Button>
+                            <ReactToPrint
+                              trigger={() => <button
+                                onFocus={() =>
+                                  checkID({
+                                    _id,
+                                    choseDoctor,
+                                    day,
+                                    address,
+                                    doctorFirstName,
+                                    doctorLastName,
+                                    firstname,
+                                    lastname,
+                                    phone,
+                                    retsept,
+                                    sickname,
+                                    year,
+                                    doctorPhone,
+                                  })
+                                }
+                                style={{ border: "none", background: "transparent", fontSize: "14px", display: "flex", justifyContent: "center" }}
+                              > < PiPrinterFill className='Printer' /></button>
+                              }
+                              content={() => componentRef.current}
+                            />
+                          </Button>
+                        </td>
+
+                        <td style={{ display: "none" }}>
+                          <RecordList
+                            obj={{
+                              id,
+                              componentRef,
+                              choseDoctor,
+                              day,
+                              address,
+                              doctorFirstName,
+                              doctorLastName,
+                              firstname,
+                              lastname,
+                              phone,
+                              retsept,
+                              sickname,
+                              year,
+                              doctorPhone,
+                            }}
+                            componentRef={componentRef}
+                          />
+                        </td>
+
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+          }
         </Tabs.TabPane>
       </Tabs>
       <audio ref={audioPlayer} src={NotificationSound} />

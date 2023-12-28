@@ -12,7 +12,6 @@ import { setInfo } from "../../../../redux/recordList/recordList";
 
 import RecordList from "../../../../components/checkLists/patientRecordList/RecordList";
 import { useGetAllUsersQuery } from "../../../../redux/apiSlice";
-
 const GetPatients = () => {
   const componentRef = useRef();
   const { _id } = useParams();
@@ -37,7 +36,9 @@ const GetPatients = () => {
   let time = new Date();
   let day =
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
-  
+  let filterarxiv = clients?.filter((i) => i.day == day);
+
+
   return (
     <div className="Search-Box">
       <div className="searchingBox">
@@ -85,7 +86,7 @@ const GetPatients = () => {
               </thead>
               <tbody>
                 {clients
-                  ?.filter((asd) => asd.firstname.toLowerCase().includes(query))
+                  ?.filter((asd) => asd?.firstname?.toLowerCase().includes(query))
                   .map(
                     (
                       {
@@ -105,7 +106,7 @@ const GetPatients = () => {
                       },
                       inx
                     ) => {
-                      return !lastname.includes("Mavjud") ? (
+                      return !lastname?.includes("Mavjud") ? (
                         <tr key={inx}>
                           <td>{inx + 1}</td>
                           <td className="Bem" data-label="Bemor">
@@ -114,7 +115,7 @@ const GetPatients = () => {
                           <td data-label="Tashxis">{sickname}</td>
                           <td data-label="Tel No">+998{phone}</td>
                           <td>
-                            <Button className="LuEyeBtn">
+                            <div className="LuEyeBtn">
                               <ReactToPrint
                                 trigger={() => (
                                   <button
@@ -147,7 +148,7 @@ const GetPatients = () => {
                                 // trigger={() => <button onClick={() => checkID(_id)} style={{ border: "none", background: "transparent", fontSize: "14px" }}>< LuEye className='Printer' /></button>}
                                 content={() => componentRef.current}
                               />
-                            </Button>
+                            </div>
                           </td>
                           <td style={{ display: "none" }}>
                             <RecordList

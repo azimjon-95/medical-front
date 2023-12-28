@@ -20,11 +20,7 @@ function SingleReports() {
   let { data: allClient } = useGetAllUsersQuery();
   let client = allClient?.data;
 
-
-
-
   let filterDoctors = doctors?.filter(i => i.specialization === _id)
-  console.log(filterDoctors);
   let clients = client?.filter(client => client.choseDoctor
     .toLowerCase() === _id
       ?.toLowerCase() && client.view === true)
@@ -39,7 +35,7 @@ function SingleReports() {
   return (
 
     <div className='Search-Box'>
-      <div class="containerWallet">
+      <div className="containerWallet">
         {
           filterDoctors?.map((value, inx) => {
             return (
@@ -49,21 +45,27 @@ function SingleReports() {
                     <div className="summary-text">
                       Bir kunlik tushim
                     </div>
-                    <div className="summary-balance">
-                      {value.specialization === 0 ? (
-                        ""
-                      ) : (<>
-                        {" "}
-                        {NumberFormat(
-                          (dailyMoney[value.specialization] *
-                            value.percent) /
-                          100
-                        )}{" "}
-                        so'm
-                      </>
+                    {
+                      value.percent ?
+                        <div className="summary-balance">
+                          {value.specialization === 0 ? (
+                            ""
+                          ) : (<>
+                            {" "}
+                            {NumberFormat(
+                              (dailyMoney[value.specialization] *
+                                value.percent) /
+                              100
+                            )}{" "}
+                            so'm
+                          </>
 
-                      )}
-                    </div>
+                          )}
+                        </div>
+                        :
+
+                        <div className="summary-balance">{NumberFormat(value.salary)} so'm</div>
+                    }
                   </div>
                   <div className="imgBox_doc">
                     {
@@ -92,10 +94,14 @@ function SingleReports() {
 
                         <span> {" " + NumberFormat(dailyMoney[value.specialization])}{" "}so'm</span>
                       </div>
-                      <div className="card-item">
-                        <span>Oylik foizda</span>
-                        <span>{value.percent}%</span>
-                      </div>
+                      {
+                        value?.salary ? ""
+                          :
+                          <div className="card-item">
+                            <span>Oylik foizda</span>
+                            <span>{value.percent}%</span>
+                          </div>
+                      }
                     </div>
                     <div className="lower-row">
                       <div className="icon-item">
@@ -106,14 +112,23 @@ function SingleReports() {
                         <div className="icon">{getMonth.length}</div>
                         <div className="icon-text">{time.toLocaleString("default", { month: 'long' })}</div>
                       </div>
-                      <div className="icon-item">
-                        <div className="icon"><i className="fal fa-paper-plane"></i></div>
-                        <div className="icon-text">Bir oylik tushim</div>
-                      </div>
-                      <div className="icon-item">
-                        <div className="icon">{NumberFormat(value.feesPerCunsaltation)} so'm</div>
-                        <div className="icon-text">Qabul</div>
-                      </div>
+                      {
+                        value?.salary ? ""
+                          :
+                          <div className="icon-item">
+                            <div className="icon"><i className="fal fa-paper-plane"></i></div>
+                            <div className="icon-text">Bir oylik tushim</div>
+                          </div>
+                      }
+                      {
+                        value?.salary ? ""
+                          :
+                          <div className="icon-item">
+                            <div className="icon">{NumberFormat(value.feesPerCunsaltation)} so'm</div>
+                            <div className="icon-text">Qabul</div>
+                          </div>
+                      }
+
                     </div>
                   </div>
 

@@ -31,7 +31,7 @@ function AppointmentSinglePage() {
         console.log(res);
         if (res.data.success) {
           message.success("malumotlar saqlandi");
-          navigate(`/AppointmentSinglePage/${user?._id}`);
+          navigate(`/doctor/patients_history`)
         }
       })
       .catch((err) => console.log(err));

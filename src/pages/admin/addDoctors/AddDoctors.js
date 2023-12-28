@@ -68,19 +68,7 @@ const AddDoctors = () => {
     }
   };
 
-  const deletePatients = (_id) => {
-    axios
-      .delete(`/delete/${_id}`)
-      .then((res) => {
-        if (res.data.success) {
-          message.success("Doktor o'chirildi!");
-          window.location.reload();
-        } else {
-          message.error(res.data.message);
-        }
-      })
-      .catch((err) => console.log(err));
-  };
+  
   console.log(doctor);
   let filterData1 = doctor?.filter((i) => i.docORrecep === "doctor");
   let filterData2 = doctor?.filter((i) => i.docORrecep === "reception");
@@ -409,7 +397,7 @@ const AddDoctors = () => {
 
                     <td data-label="O'chirish">
                       <button
-                        onClick={() => deletePatients(item?._id)}
+                        onClick={() => showDeleteConfirm(item?._id)}
                         button="true"
                         className="btn btn-danger"
                       >
