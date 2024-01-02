@@ -26,6 +26,8 @@ const Register = () => {
   const [doctorSpecialization, setDoctorSpecialization] = useState("");
   const [list, setList] = useState(false);
 
+  const [queueNumber, setQueueNumber] = useState(0);
+
   let { data: users, isLoading: loading } = useGetAllUsersQuery();
   let { data: all_Doctor } = useGetAllDoctorsQuery();
   let allDoctor = all_Doctor?.data || [];
@@ -52,8 +54,10 @@ const Register = () => {
   }
 
   let time = new Date();
+
   let todaysTime =
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
+
   let Hours = time.getHours() + ":" + time.getMinutes();
   let filterarxiv = users?.data?.filter((i) => i.day == todaysTime);
   const handleFinish = async () => {
@@ -77,8 +81,10 @@ const Register = () => {
 
     CreateNewClient(AllInfo)
       .then((res) => {
-        if (res.data.success) {
-          message.success(res.data.message);
+        if (res?.data?.success) {
+          setQueueNumber(res.data.data.queueNumber);
+          message.success(res?.data?.message);
+          setList(true);
         }
       })
       .catch((err) => console.log(err));
@@ -241,7 +247,7 @@ const Register = () => {
             <button
               onClick={(e) => {
                 handleFinish(e);
-                setList(true);
+                // setList(true);
               }}
               className="btn btn-primary"
               type="submit"
@@ -374,7 +380,7 @@ const Register = () => {
               </div>
 
               <div id="legalcopy">
-                <h2>{filterarxiv?.length + 1}</h2>
+                <h2>{queueNumber}</h2>
                 <p>Sizning navbatingiz!</p>
               </div>
             </div>
