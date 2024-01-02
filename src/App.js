@@ -19,8 +19,9 @@ import SinglePage from "./pages/admin/singlePage/SinglePage";
 import LoadingTik from "./components/loading/tiktok/LoadingTik";
 import PageNotFound from "./components/pageNotFound/PageNotFound";
 import GetPatients from "./pages/admin/singlePage/getPatients/GetPatients";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Wallet from "./pages/doctorPage/wallet/Wallet";
+
 
 function App() {
   const { loading } = useSelector((state) => state.alerts);
@@ -29,6 +30,20 @@ function App() {
   window.onoffline = () => setIsOnline("Ofline");
 
   setTimeout(() => setIsOnline(""), [5000]);
+
+
+
+  // ----The language will be added in the second update-------
+  const startLanguage = localStorage.getItem('language');
+  const [language, setLanguage] = useState(startLanguage || 'uz');
+  const handleLanguageChange = (newLanguage) => {
+    setLanguage(newLanguage)
+  }
+  useEffect(() => {
+    localStorage.setItem('language', language)
+  }, [language])
+  // ------------------------------------------
+
   return (
     <div className="app">
       {/* ---------isOnline---------- */}

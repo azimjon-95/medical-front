@@ -5,6 +5,9 @@ import { UserOutlined } from '@ant-design/icons';
 import Layout from '../../../components/layout/Layout';
 import LogoMedme from '../../../assets/img/logo.png'
 import { SmileOutlined } from '@ant-design/icons';
+import { IoIosCall } from "react-icons/io";
+import { FaTelegram } from "react-icons/fa";
+import { BsInstagram } from "react-icons/bs";
 
 const Support = () => {
 
@@ -92,6 +95,11 @@ const Support = () => {
                         ————————————————————
                         <br />
                         Можно обращаться по любым вопросам по приложению Medme.uz. Мы всегда готовы вам помочь😊
+                    </div>
+                    <div className="SupportLinks">
+                        <a href='https://t.me/+xM21LsZm7jQ1NzRi' className="S-box"><FaTelegram /></a>
+                        <a href='https://www.instagram.com/medme_uz?utm_source=qr&igsh=bWp5OWF6eWJwNHM2' className="S-box"><BsInstagram /></a>
+                        <a href='tel:+998944324454' className="S-box"><IoIosCall /></a>
                     </div>
                 </div>
                 {contextHolder}

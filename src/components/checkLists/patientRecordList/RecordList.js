@@ -46,12 +46,13 @@ const RecordList = (props) => {
             </div>
           </div>
           <div className="Tashxis"></div>
+            <h3>Dorilar ro'yxati!</h3>
           <div className="listClinic-Record">
             <b>[{userInfo?.retsept}]</b>
           </div>
 
           <div className="listClinic-UserInfo">
-            <div className="u serInf">
+            <div className="userInf">
               <span className="Inf-box1">
                 <b>Janob/Xonim:</b>
               </span>

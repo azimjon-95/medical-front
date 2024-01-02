@@ -96,6 +96,20 @@ function EnterRoom({ none, setOpenRoom, room }) {
     });
   };
 
+
+  let viewCheckListOnline = {
+    display: "block",
+    width: "100%",
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.518)",
+    position: "fixed",
+    top: "0",
+    left: "0",
+  }
+
   return (
     <div className="updateRoom">
       <FiX className="updateRoomCloseBtn" onClick={() => setOpenRoom(false)} />
@@ -144,6 +158,8 @@ function EnterRoom({ none, setOpenRoom, room }) {
                           OutInRoom(phone, room._id, {
                             dayOfTreatment: CountingMoney(dayOfTreatment),
                             payForRoom: CountingDay(dayOfTreatment),
+                            roomNumber: room.roomNumber,
+                            outDay: todaysTime,
                             id: _id,
                           });
                           updatePatients(_id);
@@ -155,7 +171,7 @@ function EnterRoom({ none, setOpenRoom, room }) {
                       </button>
                     </td>
 
-                    <td className={`${list ? "viewCheckList" : "ListNone"}`}>
+                    <td style={list ? viewCheckListOnline : { display: "none" }} className="viewCheckList">
                       <button onClick={() => setList(false)} className="OutCheck">+</button>
                       <div className="viewBox">
                         <ReactToPrint trigger={() =>

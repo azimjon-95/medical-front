@@ -2,28 +2,18 @@
     position: relative;
 }
 
-
-
-
 .Tolanmadi {
-    position: absolute;
-    bottom: -17px;
-    left: 0;
+    line-height: 0;
     font-size: 12px;
-}
-
-.lee {
-    color: green;
-}
-
-.lii {
     color: red;
 }
+
 
 .PayPatients {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-direction: column;
     height: 30px;
     border: 1px solid rgb(209, 209, 209);
     border-radius: 5px;

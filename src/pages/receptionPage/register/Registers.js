@@ -8,7 +8,8 @@ import CheckList from "../../../components/checkLists/checkList/CheckList";
 import { useGetAllDoctorsQuery } from "../../../redux/doctorApi";
 import { useCreateClientMutation } from "../../../redux/clientApi";
 import { useGetAllUsersQuery } from "../../../redux/clientApi";
-import {PiPrinterFill} from 'react-icons/pi'
+import { PiPrinterFill } from 'react-icons/pi';
+
 const Register = () => {
   const componentRef = useRef();
   const [firstname, setFirstName] = useState("");
@@ -25,16 +26,12 @@ const Register = () => {
   const [doctorSpecialization, setDoctorSpecialization] = useState("");
   const [list, setList] = useState(false);
 
-
-
-
-
   let { data: users, isLoading: loading } = useGetAllUsersQuery();
   let { data: all_Doctor } = useGetAllDoctorsQuery();
   let allDoctor = all_Doctor?.data || [];
 
   const [CreateNewClient, { isLoading, isSuccess }] = useCreateClientMutation();
-
+  const [isAnimating, setIsAnimating] = useState(false);
   let sortedData = allDoctor?.filter((i) => i.specialization.length > 3);
 
 
@@ -58,8 +55,17 @@ const Register = () => {
   let time = new Date();
   let todaysTime = time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear()
   let Hours = time.getHours() + ":" + time.getMinutes();
+  let clientLength = allDoctor?.filter((d) => d._id === choseDoctor);
+
   let filterarxiv = users?.data?.filter(i => i.day == todaysTime)
-  const handleFinish = async () => {
+  let filterDoc = clientLength?.filter(i => i.specialization === filterarxiv.choseDoctor)
+  // console.log(filterarxiv);
+  console.log(filterDoc);
+  // console.log(clientLength.specialization);
+  // let filterarxiv = users?.data?.filter(i => i.day == todaysTime && i.choseDoctor === clientLength.specialization)
+
+  const handleFinish = async (e) => {
+    e.preventDefault();
     let doctor_price = allDoctor?.find((d) => d._id === choseDoctor);
 
     const AllInfo = {
@@ -78,7 +84,7 @@ const Register = () => {
       month: time.toLocaleString("default", { month: 'long' }),
 
     };
-
+    console.log(AllInfo);
     CreateNewClient(AllInfo)
       .then((res) => {
         if (res.data.success) {
@@ -86,6 +92,13 @@ const Register = () => {
         }
       })
       .catch((err) => console.log(err));
+
+
+    setFirstName(" ")
+    setLastName(" ")
+    setAddress(" ");
+    setYear(" ");
+    setPhone(" ");
   };
   const onChange = (date, dateString) => {
     setYear(dateString);
@@ -93,6 +106,18 @@ const Register = () => {
 
 
 
+
+
+
+
+  const handleClick = () => {
+    setIsAnimating(true);
+
+    // Remove the animation class after 600ms
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 600);
+  };
   return (
     <Layout>
       <h3 className="text-center">Bemorni ro'yhatga olish</h3>
@@ -246,12 +271,17 @@ const Register = () => {
           {payState && payState
             ?
             <button onClick={(e) => {
-              handleFinish(e)
-              setList(true)
-            }} className="btn btn-primary" type="submit"> Yuborishk</button>
+              setTimeout(() => {
+                handleFinish(e)
+                setList(true)
+              }, 1500)
+
+              handleClick()
+            }} className={`button ${isAnimating ? 'animate' : ''}`} type="submit"> Yuborishk</button>
             :
             <button className="btn btn-primary" type="submit"> Yuborish</button>
           }
+
         </Col>
       </Form>
       <div className={`${list ? "viewCheckList" : "ListNone"}`}>

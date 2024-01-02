@@ -8,7 +8,7 @@
     align-items: center;
     position: absolute;
     top: 0px;
- 
+
     left: 0;
     z-index: -1;
 }
@@ -17,10 +17,11 @@
     position: absolute;
     top: 0;
     left: 0;
-    width:  20px;
+    width: 20px;
     height: 20px;
+    /* background-image: url('./autumn.png'); autumn*/
+    /* background-image: url('./blossom.png'); */
     background-image: url('./snowflakes3.png');
-    /* background-image: url('./snowFall.png'); */
     background-size: cover;
     animation: animationSnow 5s ease-in-out infinite;
 }

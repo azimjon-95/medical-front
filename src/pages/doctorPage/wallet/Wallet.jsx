@@ -24,23 +24,24 @@ function Wallet() {
     let { data: allClient } = useGetAllUsersQuery();
     let client = allClient?.data;
 
-    let category = localStorage.getItem('category')
-    let filterDoctors = doctors.filter(i => i.specialization === category)
+    let category = localStorage?.getItem('category')
+    let filterDoctors = doctors?.filter(i => i.specialization === category)
 
-    let clients = client.filter(client => client.choseDoctor
+    let clients = client?.filter(client => client.choseDoctor
         .toLowerCase() === category
             ?.toLowerCase() && client.view === true)
 
     let time = new Date()
     let day = (time.getDate() - 1) + "." + (time.getMonth() + 1) + "." + time.getFullYear();
     let dayMonth = time.toLocaleString("default", { month: 'long' })
-    let filterarxiv = clients.filter(i => i.day == day)
-    let getMonth = client.filter(i => i.month == dayMonth)
+    let filterarxiv = clients?.filter(i => i.day == day)
+    let getMonth = client?.filter(i => i.month == dayMonth)
 
 
     return (
         <Layout>
-            <div class="containerWallet">
+            <div className="containerWallet">
+
                 {
                     filterDoctors?.map((value, inx) => {
                         return (
@@ -56,8 +57,8 @@ function Wallet() {
                                             ) : (<>
                                                 {" "}
                                                 {NumberFormat(
-                                                    (dailyMoney[value.specialization] *
-                                                        value.percent) /
+                                                    (dailyMoney[value?.specialization] *
+                                                        value?.percent) /
                                                     100
                                                 )}{" "}
                                                 so'm
@@ -70,13 +71,13 @@ function Wallet() {
                                         </div>
                                     </div>
                                     {
-                                        value.lastName?.endsWith("v") ?
+                                        value.lastName?.endsWith("a") ?
                                             <div className="user-profile">
-                                                <img src={img1} alt="" />
+                                                <img src={img2} alt="" />
                                             </div>
                                             :
                                             <div className="user-profile">
-                                                <img src={img2} alt="" />
+                                                <img src={img1} alt="" />
                                             </div>
                                     }
                                 </div>
@@ -86,20 +87,20 @@ function Wallet() {
                                             <div className="card-item">
                                                 <span>Bugungi balans</span>
 
-                                                <span> {" " + NumberFormat(dailyMoney[value.specialization])}{" "}so'm</span>
+                                                <span> {" " + NumberFormat(dailyMoney[value?.specialization])}{" "}so'm</span>
                                             </div>
                                             <div className="card-item">
                                                 <span>Oylik foizda</span>
-                                                <span>{value.percent}%</span>
+                                                <span>{value?.percent}%</span>
                                             </div>
                                         </div>
                                         <div className="lower-row">
                                             <div className="icon-item">
-                                                <div className="icon">{filterarxiv.length}</div>
+                                                <div className="icon">{filterarxiv?.length}</div>
                                                 <div className="icon-text">Bugun</div>
                                             </div>
                                             <div className="icon-item">
-                                                <div className="icon">{getMonth.length}</div>
+                                                <div className="icon">{getMonth?.length}</div>
                                                 <div className="icon-text">{time.toLocaleString("default", { month: 'long' })}</div>
                                             </div>
                                             <div className="icon-item">
@@ -107,7 +108,7 @@ function Wallet() {
                                                 <div className="icon-text">Bir oylik tushim</div>
                                             </div>
                                             <div className="icon-item">
-                                                <div className="icon">{NumberFormat(value.feesPerCunsaltation)} so'm</div>
+                                                <div className="icon">{NumberFormat(value?.feesPerCunsaltation)} so'm</div>
                                                 <div className="icon-text">Qabul</div>
                                             </div>
                                         </div>
@@ -122,7 +123,6 @@ function Wallet() {
                         )
                     })
                 }
-
             </div>
 
         </Layout>

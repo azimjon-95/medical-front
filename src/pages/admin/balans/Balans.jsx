@@ -42,7 +42,9 @@ const Balans = ({ dataTrue }) => {
   let result = base?.reduce(function (prev, cur) {
     return prev + cur.paySumm
   }, 0);
-  let TreatmentsFees = base?.reduce(function (prev, cur) {
+
+  let baseRoom = dataTrue?.filter((i) => i.outDay === change && i.view === true)
+  let TreatmentsFees = baseRoom?.reduce(function (prev, cur) {
     return prev + cur.room.payForRoom
   }, 0);
   let total = result + TreatmentsFees

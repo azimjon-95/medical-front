@@ -91,6 +91,20 @@ const Patients = () => {
       },
     });
   };
+
+  let viewCheckListOnline = {
+    display: "block",
+    width: "100%",
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.518)",
+    position: "fixed",
+    top: "0",
+    left: "0",
+  }
+
   return (
     <Layout>
       <div className="search" style={{ border: "1px solid grey", margin: " 10px auto 0px auto" }}>
@@ -121,7 +135,8 @@ const Patients = () => {
                   <th>Tel No</th>
                   <th>Yo'naltirildi</th>
                   <th>Doktor</th>
-                  <th>To'landi</th>
+                  <th>To'lov</th>
+                  <th>Faollashtirish</th>
                   <th>O'chirish</th>
                 </tr>
               </thead>
@@ -150,56 +165,39 @@ const Patients = () => {
                       <td data-label="Doktor">
                         {doctorLastName} {doctorFirstName}
                       </td>
-                      <td data-label="To'landi">
-                        <div className="PayContainer">
-                          <div className="PayPatients">
+                      <td data-label="Doktor">
+                        <del className="Tolanmadi lii">
+                          {NumberFormat(
+                            doctors?.data.find(
+                              (i) =>
+                                i?.specialization.toLowerCase() ===
+                                choseDoctor?.toLowerCase()
+                            )?.feesPerCunsaltation
+                          )}{" "}
+                          so'm
+                        </del>
+                      </td>
+                      <td data-label="Faollashtirish">
 
-                            {/* <label className="containerChe PayCHe">
-                              {payState ? (
-                                <AiOutlineCheckCircle className="Md" />
-                              ) : (
-                                <MdOutlineDoNotDisturbAlt className="Ai" />
-                              )}
-                              <input
-                                value="Reception"
-                                onChange={(e) => updatePayState(e, _id)}
-                                name="o"
-                                id="chi"
-                                type="radio"
-                              />
-                              <span className="checkmark"></span>
-                            </label> */}
-                            <Button
-                              onClick={(e) => {
-                                setList(true)
-                                setTimeout(() => {
-                                  updatePayState(e, _id)
-                                }, 2000)
+                        <Button
+               
+                          onClick={(e) => {
+                            setList(true)
+                            setTimeout(() => {
+                              updatePayState(e, _id)
+                            }, 2000)
 
-                              }}
-                            >Qabul qilish</Button>
-                          </div>
-                          {payState ? (
-                            <i className="Tolanmadi lee">{paySumm} so'm</i>
-                          ) : (
-                            <del className="Tolanmadi lii">
-                              {NumberFormat(
-                                doctors?.find(
-                                  (i) =>
-                                    i.specialization?.toLowerCase() ===
-                                    choseDoctor?.toLowerCase()
-                                )?.feesPerCunsaltation
-                              )}{" "}
-                              so'm
-                            </del>
-                          )}
-                        </div>
+                          }}
+                        >
+                          Qabul qilish
+                        </Button>
+
                       </td>
                       <td data-label="O'chirish">
                         <button onClick={() => showDeleteClients(_id)} button="true" className='btn btn-danger'>Del</button>
                       </td>
 
-                      <td className={`${list ? "viewCheckList" : "ListNone"}`}>
+                      <td style={list ? viewCheckListOnline : { display: "none" }} className="viewCheckList">
                         <button onClick={() => setList(false)} className="OutCheck">+</button>
                         <div className="viewBox">
                           <ReactToPrint trigger={() =>
@@ -366,9 +364,6 @@ const Patients = () => {
                         <button onClick={() => showDeleteClients(item?._id)} button="true" className='btn btn-danger'>Del</button>
 
                       </td>
-
-
-
                     </tr>
                   ))}
               </tbody>

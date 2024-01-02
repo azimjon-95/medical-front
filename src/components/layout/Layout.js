@@ -9,6 +9,7 @@ import { IoMdNotifications } from "react-icons/io";
 import HeartLine from "../loading/HeartLine";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import Snowfall from "../snowFall/Snowfall";
+import { MdOutlineContactSupport } from "react-icons/md";
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -21,8 +22,8 @@ const Layout = ({ children }) => {
     admin === "doctor"
       ? doctorMenu
       : admin === "reception"
-      ? adminMenu
-      : onerMenu;
+        ? adminMenu
+        : onerMenu;
 
   const OpenSID = () => {
     setSideOpen((i) => !i);
@@ -38,9 +39,9 @@ const Layout = ({ children }) => {
     if (admin === "doctor") {
       return "Doktor";
     } else if (admin === "reception") {
-      return "Resepshin";
+      return "Resepshn";
     } else if (admin === "owner") {
-      return "Derektor";
+      return "Direktor";
     }
   }
 
@@ -120,6 +121,12 @@ const Layout = ({ children }) => {
                 <p className="MobileSidText">Chiqish</p>
               </Button>
             </div>
+            <Link
+              to="/support"
+              className='supportBtn'
+
+
+            ><MdOutlineContactSupport /> Qo'llab quvvatlash</Link>
           </div>
         </div>
         <div className="content">
