@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./UpdateRoom.css";
 import { NumberFormat, PhoneNumberFormat } from "../../../../hook/NumberFormat";
-import axios from "../../../../api";
 import { FiX } from "react-icons/fi";
 import { Col, Form, message, DatePicker } from "antd";
 import { useGetAllUsersQuery } from "../../../../redux/clientApi";
+import { useUpdateRoomMutation } from "../../../../redux/roomApi";
 
 function UpdateRoom({ setOpenUpdate, room }) {
+  let [updateRoomFunc] = useUpdateRoomMutation();
   const [phone, setPhone] = useState("");
   const [dayOfTreatment, setDayOfTreatment] = useState();
   const [roomFull, setRoomFull] = useState(false);
@@ -29,18 +30,12 @@ function UpdateRoom({ setOpenUpdate, room }) {
       return message.warning("Bemor xonada avvaldan mavjud!"); // check room capacity
     if (!exactClient) return message.error("Bemor ro'yhatdan o'tmagan");
 
-    exactClient.dayOfTreatment = dayOfTreatment || 0;
+    let a = { ...exactClient, dayOfTreatment: dayOfTreatment || 0 };
 
-    let changedRoom = { ...room, capacity: [...room.capacity, exactClient] }; // new room capacity
-
-    console.log(changedRoom);
-
-    // axios
-    //   .put("/rooms/update/" + room._id, changedRoom)
-    //   .then((res) => message.success(res.data.message))
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    let changedRoom = { ...room, capacity: [...room.capacity, a] }; // new room capacity
+    updateRoomFunc({ id: room._id, body: changedRoom })
+      .then((res) => message.success(res.data.message), setOpenUpdate(false))
+      .catch((err) => console.log("err>>", err));
   }
 
   const getDate = (date, dateString) => {

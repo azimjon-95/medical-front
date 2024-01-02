@@ -39,7 +39,7 @@ const Layout = ({ children }) => {
     if (admin === "doctor") {
       return "Doktor";
     } else if (admin === "reception") {
-      return "Resepshn";
+      return "Adminstrator";
     } else if (admin === "owner") {
       return "Direktor";
     }

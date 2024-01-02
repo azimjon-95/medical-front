@@ -1,26 +1,26 @@
-import axios from "../../../api";
 import React, { useState } from "react";
-import { Col, Form, Input, message, Row } from 'antd';
-import './style.css'
+import { Col, Form, Input, message, Row } from "antd";
+import "./style.css";
 
+import { useCreateDoctorMutation } from "../../../redux/doctorApi";
 
 const Reception = () => {
+  let [createDoctor] = useCreateDoctorMutation();
 
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [phone, setPhone] = useState("")
-  const [email, setEmail] = useState("")
-  const [address, setAddress] = useState("")
-  const [login, setLogin] = useState("")
-  const [password, setPassword] = useState("")
-  const [specialization] = useState("000")
-  const [experience] = useState("000")
-  const [feesPerCunsaltation] = useState("")
-  const [docORrecep] = useState("reception")
-  const [checkList] = useState("")
-  const [percent] = useState("")
-  const [salary] = useState("")
-
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState("");
+  const [specialization] = useState("000");
+  const [experience] = useState("000");
+  const [feesPerCunsaltation] = useState("");
+  const [docORrecep] = useState("reception");
+  const [checkList] = useState("");
+  const [percent] = useState("");
+  const [salary] = useState("");
 
   const AllInfo = {
     firstName,
@@ -37,43 +37,37 @@ const Reception = () => {
     checkList,
     percent: +percent,
     salary: +salary,
-  }
+  };
 
-
-
-  const handleFinish = async (values) => {
-    console.log(values);
-
-    try {
-      const res = await axios.post("/admin/register", AllInfo);
-      if (res.data.success) {
-        message.success("Register Successfully!");
-      } else {
-        message.error(res.data.message);
-      }
-    } catch (error) {
-      console.log(error);
-      message.error("Something Went Wrrong")
-    }
-  }
-
+  const handleFinish = async () => {
+    createDoctor(AllInfo)
+      .then((res) => {
+        if (res.data.success) {
+          message.success("Register Successfully!");
+        } else {
+          message.error(res.data.message);
+        }
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <Form layout="vertical" onFinish={handleFinish} className="FormApply">
       <Row className="Row">
-        <Col className="Col-Form" >
+        <Col className="Col-Form">
           <Form.Item
             label="Ism"
             name="firstName"
             required
-
             rules={[{ required: true }]}
           >
             <Input
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               type="text"
-              placeholder="first name" />
+              placeholder="first name"
+            />
           </Form.Item>
         </Col>
         <Col className="Col-Form">
@@ -87,10 +81,11 @@ const Reception = () => {
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               type="text"
-              placeholder="last name" />
+              placeholder="last name"
+            />
           </Form.Item>
         </Col>
-      </Row >
+      </Row>
 
       <Row className="Row">
         <Col className="Col-Form">
@@ -104,10 +99,11 @@ const Reception = () => {
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               type="text"
-              placeholder="phone number" />
+              placeholder="phone number"
+            />
           </Form.Item>
-        </Col >
-        <Col className="Col-Form" >
+        </Col>
+        <Col className="Col-Form">
           <Form.Item
             label="Elektron pochta"
             name="email"
@@ -118,7 +114,8 @@ const Reception = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               type="text"
-              placeholder="email address" />
+              placeholder="email address"
+            />
           </Form.Item>
         </Col>
         <Col className="Col-Form">
@@ -132,10 +129,11 @@ const Reception = () => {
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               type="text"
-              placeholder="address" />
+              placeholder="address"
+            />
           </Form.Item>
         </Col>
-      </Row >
+      </Row>
 
       <Row className="Row">
         <Col className="Col-Form">
@@ -149,7 +147,8 @@ const Reception = () => {
               value={login}
               onChange={(e) => setLogin(e.target.value)}
               type="text"
-              placeholder="username" />
+              placeholder="username"
+            />
           </Form.Item>
         </Col>
         <Col className="Col-Form">
@@ -163,26 +162,21 @@ const Reception = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               type="text"
-              placeholder="password" />
+              placeholder="password"
+            />
           </Form.Item>
-        </Col >
-
-      </Row >
-      <Col className="Col-Form" >
+        </Col>
+      </Row>
+      <Col className="Col-Form">
         <button className="btn btn-primary" type="submit">
           Yuborish
         </button>
       </Col>
-    </Form >
+    </Form>
   );
 };
 
 export default Reception;
-
-
-
-
-
 
 // Azimov	Faxriddin	Nevrolog	934566676	100000
 // Melikulov	Alisher	Kardioxirurg	904445434	150000

@@ -1,18 +1,18 @@
-import axios from "../../../api";
 import React, { useState } from "react";
 import Layout from "../../../components/layout/Layout";
 import { Col, Form, Input, message, Row, Tabs, Modal } from "antd";
 import "./style.css";
-import { useDispatch } from "react-redux";
-import { showLoading, hideLoading } from "../../../redux/features/indexSlice";
 import imgNoData from "../../../assets/nodata.png";
 import { NumberFormat, PhoneNumberFormat } from "../../../hook/NumberFormat";
 import Reception from "./Reception";
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { useGetAllDoctorsQuery } from "../../../redux/doctorApi";
+import {
+  useGetAllDoctorsQuery,
+  useCreateDoctorMutation,
+  useDeleteDoctorMutation,
+} from "../../../redux/doctorApi";
 
 const AddDoctors = () => {
-  const dispatch = useDispatch();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
@@ -31,6 +31,8 @@ const AddDoctors = () => {
 
   let { data: allDoctor } = useGetAllDoctorsQuery();
   let doctor = allDoctor?.data;
+  let [createDoctor] = useCreateDoctorMutation();
+  let [deleteDoctor] = useDeleteDoctorMutation();
 
   const AllInfo = {
     firstName,
@@ -49,26 +51,19 @@ const AddDoctors = () => {
     salary: +salary,
   };
 
-  const handleFinish = async (values) => {
-    console.log(AllInfo);
-    try {
-      dispatch(showLoading());
-      const res = await axios.post("/admin/register", AllInfo);
-      dispatch(hideLoading());
-      if (res.data.success) {
-        message.success("Register Successfully!");
-      } else {
-        message.error(res.data.message);
-      }
-    } catch (error) {
-      dispatch(hideLoading());
-      console.log(error);
-      message.error("Something Went Wrrong");
-    }
+  const handleFinish = () => {
+    createDoctor(AllInfo)
+      .then((res) => {
+        if (res.data.success) {
+          message.success("Register Successfully!");
+        } else {
+          message.error(res.data.message);
+        }
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
   };
 
-  
-  console.log(doctor);
   let filterData1 = doctor?.filter((i) => i.docORrecep === "doctor");
   let filterData2 = doctor?.filter((i) => i.docORrecep === "reception");
 
@@ -76,18 +71,16 @@ const AddDoctors = () => {
 
   const showDeleteConfirm = (_id) => {
     confirm({
-      title: "Oʻchirib tashlaysizmi?",
+      title: "O'chirib tashlaysizmi?",
       icon: <ExclamationCircleFilled />,
       okText: "Ha",
       okType: "danger",
       cancelText: "Yo'q",
       onOk() {
-        axios
-        .delete(`/admin/delete/${_id}`)
+        deleteDoctor(_id)
           .then((res) => {
             if (res.data.success) {
               message.success("Doktor o'chirildi!");
-              window.location.reload();
             } else {
               message.error(res.data.message);
             }
@@ -122,7 +115,7 @@ const AddDoctors = () => {
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     type="text"
-                    placeholder="first name"
+                    placeholder="Ismingiz"
                   />
                 </Form.Item>
               </Col>
@@ -137,7 +130,7 @@ const AddDoctors = () => {
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     type="text"
-                    placeholder="last name"
+                    placeholder="Familiyangiz"
                   />
                 </Form.Item>
               </Col>
@@ -152,7 +145,7 @@ const AddDoctors = () => {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     type="text"
-                    placeholder="phone number"
+                    placeholder="Tel: raqamingiz"
                   />
                 </Form.Item>
               </Col>
@@ -169,7 +162,7 @@ const AddDoctors = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     type="text"
-                    placeholder="email address"
+                    placeholder="Elektron pochta manzilingiz"
                   />
                 </Form.Item>
               </Col>
@@ -184,7 +177,7 @@ const AddDoctors = () => {
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     type="text"
-                    placeholder="address"
+                    placeholder="Manzilingiz"
                   />
                 </Form.Item>
               </Col>
@@ -235,7 +228,7 @@ const AddDoctors = () => {
                         value={percent}
                         onChange={(e) => setPercent(e.target.value)}
                         type="number"
-                        placeholder="percent"
+                        placeholder="Foiz"
                       />
                     </Form.Item>
                   </Col>
@@ -251,7 +244,7 @@ const AddDoctors = () => {
                         value={salary}
                         onChange={(e) => setSalary(e.target.value)}
                         type="number"
-                        placeholder="salary"
+                        placeholder="Oylik"
                       />
                     </Form.Item>
                   </Col>
@@ -271,7 +264,7 @@ const AddDoctors = () => {
                     value={login}
                     onChange={(e) => setLogin(e.target.value)}
                     type="text"
-                    placeholder="username"
+                    placeholder="Foydalanuvchi nomingiz"
                   />
                 </Form.Item>
               </Col>
@@ -286,13 +279,13 @@ const AddDoctors = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     type="text"
-                    placeholder="password"
+                    placeholder="Parolingiz"
                   />
                 </Form.Item>
               </Col>
               <Col className="Col-Form">
                 <Form.Item
-                  label="Kunsaltatsia uchun to'lovlar"
+                  label="Konsultatsia to'lov miqdori"
                   name="feesPerCunsaltation"
                   rules={[{ required: true }]}
                 >
@@ -300,7 +293,7 @@ const AddDoctors = () => {
                     value={feesPerCunsaltation}
                     onChange={(e) => setFeesPerCunsaltation(e.target.value)}
                     type="number"
-                    placeholder="fees Per Cunsaltation "
+                    placeholder="Qabul uchun to'lov miqdori"
                   />
                 </Form.Item>
               </Col>
@@ -317,7 +310,7 @@ const AddDoctors = () => {
                     value={specialization}
                     onChange={(e) => setSpecialization(e.target.value)}
                     type="text"
-                    placeholder="your specialization"
+                    placeholder="Mutaxassisligingiz"
                   />
                 </Form.Item>
               </Col>
@@ -331,14 +324,14 @@ const AddDoctors = () => {
                     value={experience}
                     onChange={(e) => setExperience(e.target.value)}
                     type="text"
-                    placeholder="experience"
+                    placeholder="Tajribangiz"
                   />
                 </Form.Item>
               </Col>
             </Row>
             <Col className="Col-Form">
               <button className="btn btn-primary" type="submit">
-                Yuborish
+                Saqlash
               </button>
             </Col>
           </Form>
@@ -370,7 +363,7 @@ const AddDoctors = () => {
                   <th>Ismi</th>
                   <th>Familiyasi</th>
                   <th>Kasbi</th>
-                  <th>Tel No</th>
+                  <th>Tel raqam</th>
                   <th>Qabuli</th>
                   <th>Oylik</th>
                   <th>O'chirish</th>
@@ -428,7 +421,7 @@ const AddDoctors = () => {
                 <tr>
                   <th>Ismi</th>
                   <th>Familiyasi</th>
-                  <th>Tel No</th>
+                  <th>Tel raqam</th>
                   <th>O'chirish</th>
                 </tr>
               </thead>

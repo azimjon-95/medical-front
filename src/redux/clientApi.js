@@ -7,19 +7,34 @@ export const clientApi = api.injectEndpoints({
       providesTags: ["GetClients"],
     }),
 
-    getDailyReports: builder.query({
-      query: () => `dailiyReports/doctorsMoney`,
-    }),
-
     getSingleUser: builder.query({
       query: (id) => `client/${id}`,
     }),
 
-    // POST
+    // POST || CREATE CLIENT
     createClient: builder.mutation({
       query: (body) => ({
         url: "client",
         method: "POST",
+        body,
+      }),
+      invalidatesTags: ["GetClients"],
+    }),
+
+    // DELETE CLIENT
+    deleteClient: builder.mutation({
+      query: (id) => ({
+        url: `client/remove/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["GetClients"],
+    }),
+
+    // PUT || UPDATE CLIENT
+    updateClient: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `/client/${id}`,
+        method: "PUT",
         body,
       }),
       invalidatesTags: ["GetClients"],
@@ -29,7 +44,8 @@ export const clientApi = api.injectEndpoints({
 
 export const {
   useGetAllUsersQuery,
-  useGetDailyReportsQuery,
   useGetSingleUserQuery,
   useCreateClientMutation,
+  useDeleteClientMutation,
+  useUpdateClientMutation,
 } = clientApi;

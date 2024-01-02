@@ -4,7 +4,7 @@ export const doctorApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getAllDoctors: builder.query({
       query: () => `admin/getAllDoctors`,
-      providesTags: "GetDoctors",
+      providesTags: ["GetDoctors"],
     }),
 
     getDoctorInfo: builder.query({
@@ -17,7 +17,29 @@ export const doctorApi = api.injectEndpoints({
         },
       }),
     }),
+
+    createDoctor: builder.mutation({
+      query: (body) => ({
+        url: "admin/register",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["GetDoctors"],
+    }),
+
+    deleteDoctor: builder.mutation({
+      query: (id) => ({
+        url: `admin/delete/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["GetDoctors"],
+    }),
   }),
 });
 
-export const { useGetAllDoctorsQuery, useGetDoctorInfoQuery } = doctorApi;
+export const {
+  useGetAllDoctorsQuery,
+  useGetDoctorInfoQuery,
+  useCreateDoctorMutation,
+  useDeleteDoctorMutation,
+} = doctorApi;

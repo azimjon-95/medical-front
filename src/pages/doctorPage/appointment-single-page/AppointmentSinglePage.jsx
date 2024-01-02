@@ -3,12 +3,16 @@ import "./AppointmentSinglePage.css";
 import { useParams, useNavigate } from "react-router-dom";
 import Layout from "../../../components/layout/Layout";
 import { useState } from "react";
-import { useGetSingleUserQuery } from "../../../redux/clientApi";
+import {
+  useGetSingleUserQuery,
+  useUpdateClientMutation,
+} from "../../../redux/clientApi";
 import { message } from "antd";
-import axios from "../../../api/";
 import { useDispatch } from "react-redux";
 import { setInfo } from "../../../redux/recordList/recordList";
+
 function AppointmentSinglePage() {
+  const [updateClient] = useUpdateClientMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -27,13 +31,12 @@ function AppointmentSinglePage() {
       view: true,
       room: { ...user.room, dayOfTreatment: "" + user.room.dayOfTreatment },
     };
-    axios
-      .put("/client/" + id, newUser)
+    updateClient({ id: id, body: newUser })
       .then((res) => {
         console.log(res);
         if (res.data.success) {
           message.success("malumotlar saqlandi");
-          navigate(`/doctor/patients_history`)
+          navigate(`/doctor/patients_history`);
         }
       })
       .catch((err) => console.log(err));
@@ -50,7 +53,7 @@ function AppointmentSinglePage() {
             <h3>{user?.firstname + " " + user?.lastname} </h3>
           </span>
           <span>
-            <b>Tel No</b>
+            <b>Tel raqam</b>
             <h3>{user?.phone}</h3>
           </span>
         </div>

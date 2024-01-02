@@ -1,12 +1,3 @@
-// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-// export const api = createApi({
-//   reducerPath: "allInfoApi",
-//   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5500/" }),
-//   tagTypes: ["GetDoctors", "GetClients", "GetRooms"],
-//   endpoints: (builder) => ({}),
-// });
-
 import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 
 const baseQuery = fetchBaseQuery({
@@ -20,7 +11,7 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-const baseQueryWithRetry = retry(baseQuery, { maxRetries: 6 });
+const baseQueryWithRetry = retry(baseQuery, { maxRetries: 2 });
 
 export const api = createApi({
   reducerPath: "splitApi",

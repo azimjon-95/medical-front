@@ -1,10 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./style.css";
 import Layout from "../../../components/layout/Layout";
-import { useDispatch } from "react-redux";
-import { hideLoading, showLoading } from "../../../redux/features/indexSlice";
-import axios from "../../../api";
-import { useNavigate } from "react-router-dom";
 import { Col, Form, Input, message, Row, Tabs } from "antd";
 import Door from "../../../assets/door.png";
 import UpdateRoom from "./updateRoom/UpdateRoom";
@@ -15,11 +11,12 @@ import { GiMoneyStack } from "react-icons/gi";
 import { NumberFormat } from "../../../hook/NumberFormat";
 import EnterRoom from "./enterRoom/EnterRoom";
 
-import { useGetAllRoomsQuery } from "../../../redux/roomApi";
+import {
+  useGetAllRoomsQuery,
+  useAddRoomMutation,
+} from "../../../redux/roomApi";
 
 const Cabins = () => {
-  const dispatch = useDispatch();
-
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openRoom, setOpenRoom] = useState(false);
   // ---------------------------
@@ -32,6 +29,8 @@ const Cabins = () => {
   let { data: rooms } = useGetAllRoomsQuery();
   let data = rooms?.innerData;
 
+  let [addRoom] = useAddRoomMutation();
+
   // -------Add Rooms----------
 
   const AllInfo = {
@@ -43,21 +42,15 @@ const Cabins = () => {
     capacity: [],
   };
 
-  const handleFinish = async () => {
-    try {
-      dispatch(showLoading());
-      const res = await axios.post("/rooms/addRoom", AllInfo);
-      dispatch(hideLoading());
-      if (res.data.success) {
-        message.success("Register Successfully!");
-      } else {
+  const handleFinish = () => {
+    addRoom(AllInfo)
+      .then((res) => {
+        if (res.data.success) {
+          return message.success(res.data.message);
+        }
         message.error(res.data.message);
-      }
-    } catch (error) {
-      dispatch(hideLoading());
-      console.log(error);
-      message.error(error?.response?.data?.slice(5));
-    }
+      })
+      .catch((res) => console.log("err=>>>", res));
   };
 
   return (
@@ -151,7 +144,7 @@ const Cabins = () => {
             <Row className="Row">
               <Col className="Col-Form">
                 <Form.Item
-                  label="Doctor yoki Receptoin"
+                  label="Lyuks yoki Pollyuks"
                   name="luxury or noluxury"
                   required
                   rules={[{ required: true }]}
@@ -194,7 +187,7 @@ const Cabins = () => {
                     value={roomNumber}
                     onChange={(e) => setRoomNumber(e.target.value)}
                     type="number"
-                    placeholder="Number room"
+                    placeholder="Xona raqami"
                   />
                 </Form.Item>
               </Col>
@@ -209,7 +202,7 @@ const Cabins = () => {
                     value={pricePerDay}
                     onChange={(e) => setPricePerDay(e.target.value)}
                     type="number"
-                    placeholder="Price per day"
+                    placeholder="1 kunlik to'lovi"
                   />
                 </Form.Item>
               </Col>
@@ -246,8 +239,8 @@ const Cabins = () => {
               </Col>
               <Col className="Col-Form">
                 <button className="btn btn-primary" type="submit">
-                  Yuborish
-                </button>
+                  Saqlash
+                  </button>
               </Col>
             </Row>
           </Form>
