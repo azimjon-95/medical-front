@@ -3,7 +3,7 @@ import "./style.css";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { LuEye } from "react-icons/lu";
-import { Tabs, Button } from "antd";
+import { Tabs } from "antd";
 import imgNoData from "../../../../assets/nodata.png";
 import ReactToPrint from "react-to-print";
 import { SearchOutlined, LeftOutlined } from "@ant-design/icons";
@@ -12,6 +12,7 @@ import { setInfo } from "../../../../redux/recordList/recordList";
 
 import RecordList from "../../../../components/checkLists/patientRecordList/RecordList";
 import { useGetAllUsersQuery } from "../../../../redux/clientApi";
+
 const GetPatients = () => {
   const componentRef = useRef();
   const { _id } = useParams();
@@ -37,7 +38,6 @@ const GetPatients = () => {
   let day =
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
   let filterarxiv = clients?.filter((i) => i.day == day);
-
 
   return (
     <div className="Search-Box">
@@ -86,7 +86,9 @@ const GetPatients = () => {
               </thead>
               <tbody>
                 {clients
-                  ?.filter((asd) => asd?.firstname?.toLowerCase().includes(query))
+                  ?.filter((asd) =>
+                    asd?.firstname?.toLowerCase().includes(query)
+                  )
                   .map(
                     (
                       {

@@ -1,13 +1,12 @@
-import axios from "../../../api";
 import React, { useState } from "react";
 import Layout from "../../../components/layout/Layout";
 import { Col, Form, Input, message, Row } from "antd";
 import "./style.css";
-import { useDispatch } from "react-redux";
-import { showLoading, hideLoading } from "../../../redux/features/indexSlice";
+
+import { useCreateDoctorMutation } from "../../../redux/doctorApi";
 
 const RegisterOwner = () => {
-  const dispatch = useDispatch();
+  let [createDoctor] = useCreateDoctorMutation();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -41,23 +40,17 @@ const RegisterOwner = () => {
     salary: +salary,
   };
 
-  const handleFinish = async (values) => {
-    console.log(values);
-
-    try {
-      dispatch(showLoading());
-      const res = await axios.post("/admin/register", AllInfo);
-      dispatch(hideLoading());
-      if (res.data.success) {
-        message.success("Register Successfully!");
-      } else {
-        message.error(res.data.message);
-      }
-    } catch (error) {
-      dispatch(hideLoading());
-      console.log(error);
-      message.error("Something Went Wrrong");
-    }
+  const handleFinish = async () => {
+    createDoctor(AllInfo)
+      .then((res) => {
+        if (res.data.success) {
+          message.success("Register Successfully!");
+        } else {
+          message.error(res.data.message);
+        }
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -77,7 +70,7 @@ const RegisterOwner = () => {
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 type="text"
-                placeholder="first name"
+                placeholder="Ism"
               />
             </Form.Item>
           </Col>
@@ -92,7 +85,7 @@ const RegisterOwner = () => {
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 type="text"
-                placeholder="last name"
+                placeholder="Familiya"
               />
             </Form.Item>
           </Col>
@@ -107,7 +100,7 @@ const RegisterOwner = () => {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 type="text"
-                placeholder="phone number"
+                placeholder="Tel raqam"
               />
             </Form.Item>
           </Col>
@@ -124,7 +117,7 @@ const RegisterOwner = () => {
                 value={login}
                 onChange={(e) => setLogin(e.target.value)}
                 type="text"
-                placeholder="username"
+                placeholder="Foydalanuvchi nomi"
               />
             </Form.Item>
           </Col>
@@ -139,7 +132,7 @@ const RegisterOwner = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 type="text"
-                placeholder="password"
+                placeholder="parol"
               />
             </Form.Item>
           </Col>

@@ -7,7 +7,7 @@ import { FaUsers } from "react-icons/fa6";
 import { TbFilePercent } from "react-icons/tb";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { Link } from "react-router-dom";
-import { useGetDailyReportsQuery } from "../../../redux/clientApi";
+import { useGetDailyReportsQuery } from "../../../redux/dailyReportApi";
 
 function DoctorsSlite() {
   let { data: dailyReports } = useGetDailyReportsQuery();

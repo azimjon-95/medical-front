@@ -6,12 +6,11 @@ import { useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../redux/features/indexSlice";
 
 import wave from "../assets/img/wave.png";
-import avatar from "../assets/img/avatar.svg";
 import bg from "../assets/img/bg.svg";
 import { FaUser } from "react-icons/fa";
 import { PiLockKeyFill } from "react-icons/pi";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
-import imgDoc from '../assets/img/singleImg1.png'
+import imgDoc from "../assets/img/singleImg1.png";
 import { Link } from "react-router-dom";
 
 const Login = () => {
@@ -23,7 +22,9 @@ const Login = () => {
   const onfinishHandler = async (e) => {
     e.preventDefault();
     if (!login || !password)
-      return message.warning("Please enter your username and password");
+      return message.warning(
+        "Marhamat, Foydalanuvchinomingiz va parolingizni kiriting!"
+      );
     try {
       dispatch(showLoading());
       const res = await axios.post("/admin/login", { login, password });
@@ -61,7 +62,7 @@ const Login = () => {
           <img src={bg} alt="login" />
         </div>
         <div className="login-content">
-          <form  className="FormLogin" onSubmit={onfinishHandler}>
+          <form className="FormLogin" onSubmit={onfinishHandler}>
             <img src={imgDoc} alt="login LOGO" />
             <h2 className="title">Welcome</h2>
             <div className="input-div one">
@@ -94,7 +95,7 @@ const Login = () => {
                   {eye ? (
                     <AiFillEye onClick={() => setEye(!eye)} />
                   ) : (
-                    < AiFillEyeInvisible onClick={() => setEye(!eye)} />
+                    <AiFillEyeInvisible onClick={() => setEye(!eye)} />
                   )}
                 </button>
               </div>

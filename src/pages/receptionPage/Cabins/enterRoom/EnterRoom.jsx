@@ -1,24 +1,24 @@
 import React, { useState, useRef } from "react";
 import "./style.css";
 import { NumberFormat } from "../../../../hook/NumberFormat";
-import axios from "../../../../api";
 import { message, Tabs, Modal } from "antd";
 import { FiX } from "react-icons/fi";
 import { GiEntryDoor } from "react-icons/gi";
 import { PiPrinterFill } from "react-icons/pi";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { useGetAllUsersQuery } from "../../../../redux/clientApi";
-import ReactToPrint from 'react-to-print';
-import CheckList from '../../../../components/checkLists/checkList/CheckList'
+import ReactToPrint from "react-to-print";
+import CheckList from "../../../../components/checkLists/checkList/CheckList";
+import { useDeleteUserFromRoomMutation } from "../../../../redux/roomApi";
 
 function EnterRoom({ none, setOpenRoom, room }) {
+  const [deleteUserFromRoom] = useDeleteUserFromRoomMutation();
   const [list, setList] = useState(false);
   const componentRef = useRef();
 
   let { data: allClients } = useGetAllUsersQuery();
   let clients = allClients?.data;
   let time = new Date();
-  console.log(clients);
 
   const CountingDay = (value) => {
     let date1 = new Date(value);
@@ -34,9 +34,9 @@ function EnterRoom({ none, setOpenRoom, room }) {
     }
   };
 
-  let todaysTime = time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear()
+  let todaysTime =
+    time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
   let Hours = time.getHours() + ":" + time.getMinutes();
-
 
   const CountingMoney = (value) => {
     // setClientsRoom(dayCountingMoney)
@@ -53,21 +53,20 @@ function EnterRoom({ none, setOpenRoom, room }) {
     }
   };
 
-  function updatePatients(id) {
-    console.log(id);
-    let update = clients?.find((i) => i._id === id);
-    update.room.day = true;
-    update.room.total = true;
-    axios
-      .put("/client/" + update)
-      .then((res) => message.success(res.data.message))
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        window.location.reload();
-      });
-  }
+  // function updatePatients(id) {
+  //   console.log("okkk>>", id);
+  //   let update = clients?.find((i) => i._id === id);
+  //   // update.room.day = true;
+  //   // update.room.total = true;
+  //   let a = { ...update, room: { ...update?.room, day: true, total: true } };
+  //   axios
+  //     .put("/client/" + a)
+  //     // .then((res) => message.success(res.data.message))
+  //     .then((res) => console.log(res))
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
 
   // --------------------------------
 
@@ -80,14 +79,12 @@ function EnterRoom({ none, setOpenRoom, room }) {
       okType: "danger",
       cancelText: "Yo'q",
       onOk() {
-        setList(true)
-        axios
-          .patch(
-            `/rooms/deletefromroom/?clientID=${clientID}&roomID=${roomID}`,
-            userRoomPay
+        setList(true);
+        deleteUserFromRoom({ clientID, roomID, body: userRoomPay })
+          .then(
+            (res) => res.data.success && message.success(res.data.message),
+            setOpenRoom(false)
           )
-          .then((res) => console.log(res))
-          // .then((res) => res.data.success && message.success(res.data.message))
           .catch((err) => console.log(err));
       },
       onCancel() {
@@ -114,173 +111,207 @@ function EnterRoom({ none, setOpenRoom, room }) {
                 </tr>
               </thead>
               <tbody>
-                {room.capacity?.map((
-                  {
-                    _id,
-                    firstname,
-                    lastname,
-                    phone,
-                    year,
-                    doctorFirstName,
-                    dayOfTreatment
-                  }, inx) => (
-                  <tr key={inx}>
-                    <td data-label="Bemor">
-                      {firstname} {lastname}
-                    </td>
-                    <td data-label="Yoshi">
-                      {!(time.getFullYear() - + year?.slice(0, 4)) &&
-                        "noma'lum"}
-                    </td>
-                    <td data-label="Tel No">{phone}</td>
-                    <td data-label="Kun">{CountingDay(dayOfTreatment)}</td>
-                    <td data-label="To'lov">
-                      {" "}
-                      {NumberFormat(CountingMoney(dayOfTreatment))} so'm
-                    </td>
-                    <td style={none} data-label="Chiqish">
-                      <button
-                        onClick={() => {
-                          OutInRoom(phone, room._id, {
-                            dayOfTreatment: CountingMoney(dayOfTreatment),
-                            payForRoom: CountingDay(dayOfTreatment),
-                            id: _id,
-                          });
-                          updatePatients(_id);
-                        }}
-                        button="true"
-                        className="btn btn-primary"
-                      >
-                        <GiEntryDoor id="EntryDoor" />
-                      </button>
-                    </td>
-
-                    <td className={`${list ? "viewCheckList" : "ListNone"}`}>
-                      <button onClick={() => setList(false)} className="OutCheck">+</button>
-                      <div className="viewBox">
-                        <ReactToPrint trigger={() =>
-                          <button className="PrintChekList" type="submit"> <PiPrinterFill /></button>}
-                          content={() => componentRef.current}
+                {room.capacity?.map(
+                  (
+                    {
+                      _id,
+                      firstname,
+                      lastname,
+                      phone,
+                      year,
+                      doctorFirstName,
+                      dayOfTreatment,
+                    },
+                    inx
+                  ) => (
+                    <tr key={inx}>
+                      <td data-label="Bemor">
+                        {firstname} {lastname}
+                      </td>
+                      <td data-label="Yoshi">
+                        {!(time.getFullYear() - +year?.slice(0, 4)) &&
+                          "noma'lum"}
+                      </td>
+                      <td data-label="Tel No">{phone}</td>
+                      <td data-label="Kun">{CountingDay(dayOfTreatment)}</td>
+                      <td data-label="To'lov">
+                        {" "}
+                        {NumberFormat(CountingMoney(dayOfTreatment))} so'm
+                      </td>
+                      <td style={none} data-label="Chiqish">
+                        <button
+                          onClick={() => {
+                            OutInRoom(phone, room._id, {
+                              dayOfTreatment: CountingMoney(dayOfTreatment),
+                              payForRoom: CountingDay(dayOfTreatment),
+                              id: _id,
+                              outDay: todaysTime,
+                            });
+                            // updatePatients(_id);
+                          }}
+                          button="true"
+                          className="btn btn-primary"
                         >
-                        </ReactToPrint>
-                        <div className="waveList">
-                          <center id="top">
-                            <div className="logo"></div>
-                            <div className="info">
-                              <h2 className="item-h2">Har doim siz bilan!</h2>
-                            </div>
-                          </center>
+                          <GiEntryDoor id="EntryDoor" />
+                        </button>
+                      </td>
 
-                          <div id="mid">
-                            <div className="info">
-                              <h2 className="item-h2">Aloqa uchun malumot</h2>
-                              <p className="text_p">
-                                Manzil : Pop Tinchlik ko'chasi 7-uy<br />
-                                Email : JohnDoe@gmail.com<br />
-                                Tel No : +998(94)432-44-45<br />
-                              </p>
+                      <td className={`${list ? "viewCheckList" : "ListNone"}`}>
+                        <button
+                          onClick={() => setList(false)}
+                          className="OutCheck"
+                        >
+                          +
+                        </button>
+                        <div className="viewBox">
+                          <ReactToPrint
+                            trigger={() => (
+                              <button className="PrintChekList" type="submit">
+                                {" "}
+                                <PiPrinterFill />
+                              </button>
+                            )}
+                            content={() => componentRef.current}
+                          ></ReactToPrint>
+                          <div className="waveList">
+                            <center id="top">
+                              <div className="logo"></div>
+                              <div className="info">
+                                <h2 className="item-h2">Har doim siz bilan!</h2>
+                              </div>
+                            </center>
+
+                            <div id="mid">
+                              <div className="info">
+                                <h2 className="item-h2">Aloqa uchun malumot</h2>
+                                <p className="text_p">
+                                  Manzil : Pop Tinchlik ko'chasi 7-uy
+                                  <br />
+                                  Email : JohnDoe@gmail.com
+                                  <br />
+                                  Tel raqam : +998(94)432-44-45
+                                  <br />
+                                </p>
+                              </div>
+                            </div>
+
+                            <div id="bot">
+                              <div id="table">
+                                <div className="tabletitle">
+                                  <div className="item_check">
+                                    <h2 className="item-h2">Element</h2>
+                                  </div>
+                                  <div className="Hours">
+                                    <h2 className="item-h2"></h2>
+                                  </div>
+                                  <div className="Rate">
+                                    <h2 className="item-h2"></h2>
+                                  </div>
+                                </div>
+
+                                <div className="service">
+                                  <div className="tableitem">
+                                    <p className="itemtext">
+                                      Xonaning nomeri :
+                                    </p>
+                                  </div>
+
+                                  <div className="tableitem">
+                                    <p className="itemtext">
+                                      {" "}
+                                      {room.roomNumber}
+                                    </p>
+                                  </div>
+                                </div>
+
+                                <div className="service">
+                                  <div className="tableitem">
+                                    <p className="itemtext">
+                                      Davolanish kuni :
+                                    </p>
+                                  </div>
+                                  <div className="tableitem">
+                                    <p className="itemtext">
+                                      {CountingDay(dayOfTreatment)} kun
+                                    </p>
+                                  </div>
+                                </div>
+
+                                <div className="service">
+                                  <div className="tableitem">
+                                    <p className="itemtext">1 kunlik narxi :</p>
+                                  </div>
+
+                                  <div className="tableitem">
+                                    <p className="itemtext">
+                                      {NumberFormat(room.pricePerDay)} so'm
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="service">
+                                  <div className="tableitem">
+                                    <p className="itemtext">Bemor:</p>
+                                  </div>
+                                  <div className="tableitem">
+                                    <p className="itemtext">
+                                      {firstname} {lastname}
+                                    </p>
+                                  </div>
+                                </div>
+
+                                <div className="service">
+                                  <div className="tableitem">
+                                    <p className="itemtext text_p">Sana :</p>
+                                  </div>
+                                  <div className="tableitem">
+                                    <p className="itemtext text_p">
+                                      {Hours} {todaysTime}
+                                    </p>
+                                  </div>
+                                </div>
+
+                                <div className="tabletitle">
+                                  <div className="tableitem">
+                                    <p>To'landi: </p>
+                                  </div>
+
+                                  <div className="payment">
+                                    <h2 className="item-h1">
+                                      {NumberFormat(
+                                        CountingMoney(dayOfTreatment)
+                                      )}{" "}
+                                      so'm
+                                    </h2>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           </div>
-
-                          <div id="bot">
-                            <div id="table">
-                              <div className="tabletitle">
-                                <div className="item_check">
-                                  <h2 className="item-h2">Element</h2>
-                                </div>
-                                <div className="Hours">
-                                  <h2 className="item-h2"></h2>
-                                </div>
-                                <div className="Rate">
-                                  <h2 className="item-h2"></h2>
-                                </div>
-                              </div>
-
-                              <div className="service">
-                                <div className="tableitem">
-                                  <p className="itemtext">Xonaning nomeri :</p>
-                                </div>
-
-                                <div className="tableitem">
-                                  <p className="itemtext"> {room.roomNumber}</p>
-                                </div>
-                              </div>
-
-                              <div className="service">
-                                <div className="tableitem">
-                                  <p className="itemtext">Davolanish kuni :</p>
-                                </div>
-                                <div className="tableitem">
-                                  <p className="itemtext">{CountingDay(dayOfTreatment)} kun</p>
-                                </div>
-                              </div>
-
-                              <div className="service">
-                                <div className="tableitem">
-                                  <p className="itemtext">1 kunlik narxi :</p>
-                                </div>
-
-                                <div className="tableitem">
-                                  <p className="itemtext">{NumberFormat(room.pricePerDay)} so'm</p>
-                                </div>
-                              </div>
-                              <div className="service">
-                                <div className="tableitem">
-                                  <p className="itemtext">Bemor:</p>
-                                </div>
-                                <div className="tableitem">
-                                  <p className="itemtext">{firstname} {lastname}</p>
-                                </div>
-                              </div>
-
-                              <div className="service">
-                                <div className="tableitem">
-                                  <p className="itemtext text_p">Sana :</p>
-                                </div>
-                                <div className="tableitem">
-                                  <p className="itemtext text_p">{Hours} {todaysTime}</p>
-                                </div>
-                              </div>
-
-                              <div className="tabletitle">
-                                <div className="tableitem">
-                                  <p>To'landi: </p>
-                                </div>
-
-                                <div className="payment">
-                                  <h2 className="item-h1">{NumberFormat(CountingMoney(dayOfTreatment))} so'm</h2>
-                                </div>
-                              </div>
-                            </div>
-
-                          </div>
-
                         </div>
-                      </div>
-                    </td>
-                    <td style={{ display: "none" }}>
-                      <CheckList
-                        componentRef={componentRef}
-                        firstname={firstname}
-                        lastname={lastname}
-                        payState={CountingDay(dayOfTreatment)}
-                        doctorFirstName={doctorFirstName}
-                        doctorLastName={room.roomNumber}
-                        doctorSpecialization={CountingMoney(dayOfTreatment)}
-                        todaysTime={todaysTime}
-                        Hours={Hours}
-                        doctorPhone={room.pricePerDay}
-                        filterarxiv={true}
-                      />
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td style={{ display: "none" }}>
+                        <CheckList
+                          componentRef={componentRef}
+                          firstname={firstname}
+                          lastname={lastname}
+                          payState={CountingDay(dayOfTreatment)}
+                          doctorFirstName={doctorFirstName}
+                          doctorLastName={room.roomNumber}
+                          doctorSpecialization={CountingMoney(dayOfTreatment)}
+                          todaysTime={todaysTime}
+                          Hours={Hours}
+                          doctorPhone={room.pricePerDay}
+                          filterarxiv={true}
+                        />
+                      </td>
+                    </tr>
+                  )
+                )}
               </tbody>
             </table>
           </Tabs.TabPane>
         </Tabs>
       </div>
-
     </div>
   );
 }

@@ -8,14 +8,14 @@ import imgNoData from "../../../assets/nodata.png";
 import { useGetAllUsersQuery } from "../../../redux/clientApi";
 
 function Appointments() {
-  //   const audioPlayer = useRef(null);
+  // const audioPlayer = useRef(null);
 
-  let { data: allClients } = useGetAllUsersQuery();
+  let { data: allClients, isSuccess } = useGetAllUsersQuery();
   let data = allClients?.data;
-  //   {
-  //     allClients.success &&
-  //       `${(<audio controls ref={audioPlayer} src={NotificationSound} />)}`;
-  //   }
+  // {
+  //   isSuccess &&
+  //     `${(<audio controls ref={audioPlayer} src={NotificationSound} />)}`;
+  // }
 
   let category = localStorage.getItem("category");
   let clients = data?.filter(

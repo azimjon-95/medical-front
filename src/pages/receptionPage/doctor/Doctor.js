@@ -35,7 +35,7 @@ const Doctor = () => {
             <tr>
               <th>Doktor</th>
               <th>Darajasi</th>
-              <th>Tel No</th>
+              <th>Tel raqam</th>
               <th>Konsultatsiya to'lovi</th>
               <th>Bemorlari</th>
             </tr>

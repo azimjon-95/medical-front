@@ -8,7 +8,8 @@ import CheckList from "../../../components/checkLists/checkList/CheckList";
 import { useGetAllDoctorsQuery } from "../../../redux/doctorApi";
 import { useCreateClientMutation } from "../../../redux/clientApi";
 import { useGetAllUsersQuery } from "../../../redux/clientApi";
-import {PiPrinterFill} from 'react-icons/pi'
+import { PiPrinterFill } from "react-icons/pi";
+
 const Register = () => {
   const componentRef = useRef();
   const [firstname, setFirstName] = useState("");
@@ -25,10 +26,6 @@ const Register = () => {
   const [doctorSpecialization, setDoctorSpecialization] = useState("");
   const [list, setList] = useState(false);
 
-
-
-
-
   let { data: users, isLoading: loading } = useGetAllUsersQuery();
   let { data: all_Doctor } = useGetAllDoctorsQuery();
   let allDoctor = all_Doctor?.data || [];
@@ -36,7 +33,6 @@ const Register = () => {
   const [CreateNewClient, { isLoading, isSuccess }] = useCreateClientMutation();
 
   let sortedData = allDoctor?.filter((i) => i.specialization.length > 3);
-
 
   useEffect(() => {
     let doctor_info = allDoctor?.find((d) => d._id === choseDoctor);
@@ -56,9 +52,10 @@ const Register = () => {
   }
 
   let time = new Date();
-  let todaysTime = time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear()
+  let todaysTime =
+    time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
   let Hours = time.getHours() + ":" + time.getMinutes();
-  let filterarxiv = users?.data?.filter(i => i.day == todaysTime)
+  let filterarxiv = users?.data?.filter((i) => i.day == todaysTime);
   const handleFinish = async () => {
     let doctor_price = allDoctor?.find((d) => d._id === choseDoctor);
 
@@ -75,8 +72,7 @@ const Register = () => {
       doctorLastName: doctor_price.lastName,
       doctorPhone: doctor_price.phone,
       day: todaysTime,
-      month: time.toLocaleString("default", { month: 'long' }),
-
+      month: time.toLocaleString("default", { month: "long" }),
     };
 
     CreateNewClient(AllInfo)
@@ -90,8 +86,6 @@ const Register = () => {
   const onChange = (date, dateString) => {
     setYear(dateString);
   };
-
-
 
   return (
     <Layout>
@@ -139,7 +133,7 @@ const Register = () => {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 type="number"
-                placeholder="Tel No"
+                placeholder="Tel raqam"
               />
             </Form.Item>
           </Col>
@@ -243,25 +237,40 @@ const Register = () => {
         </Row>
 
         <Col className="Col-Form">
-          {payState && payState
-            ?
-            <button onClick={(e) => {
-              handleFinish(e)
-              setList(true)
-            }} className="btn btn-primary" type="submit"> Yuborishk</button>
-            :
-            <button className="btn btn-primary" type="submit"> Yuborish</button>
-          }
+          {payState && payState ? (
+            <button
+              onClick={(e) => {
+                handleFinish(e);
+                setList(true);
+              }}
+              className="btn btn-primary"
+              type="submit"
+            >
+              {" "}
+              Yuborishk
+            </button>
+          ) : (
+            <button className="btn btn-primary" type="submit">
+              {" "}
+              Yuborish
+            </button>
+          )}
         </Col>
       </Form>
       <div className={`${list ? "viewCheckList" : "ListNone"}`}>
-        <button onClick={() => setList(false)} className="OutCheck">+</button>
+        <button onClick={() => setList(false)} className="OutCheck">
+          +
+        </button>
         <div className="viewBox">
-          <ReactToPrint trigger={() =>
-            <button className="PrintChekList" type="submit"> <PiPrinterFill /></button>}
+          <ReactToPrint
+            trigger={() => (
+              <button className="PrintChekList" type="submit">
+                {" "}
+                <PiPrinterFill />
+              </button>
+            )}
             content={() => componentRef.current}
-          >
-          </ReactToPrint>
+          ></ReactToPrint>
           <div className="waveList">
             <center id="top">
               <div className="logo"></div>
@@ -274,9 +283,12 @@ const Register = () => {
               <div className="info">
                 <h2 className="item-h2">Aloqa uchun malumot</h2>
                 <p className="text_p">
-                  Manzil : Pop Tinchlik ko'chasi 7-uy<br />
-                  Email : JohnDoe@gmail.com<br />
-                  Tel No : +998(94)432-44-45<br />
+                  Manzil : Pop Tinchlik ko'chasi 7-uy
+                  <br />
+                  Email : JohnDoe@gmail.com
+                  <br />
+                  Tel raqam : +998(94)432-44-45
+                  <br />
                 </p>
               </div>
             </div>
@@ -297,11 +309,16 @@ const Register = () => {
 
                 <div className="service">
                   <div className="tableitem">
-                    <p className="itemtext">{doctorSpecialization}: Oliy toifali shifokor</p>
+                    <p className="itemtext">
+                      {doctorSpecialization}: Oliy toifali shifokor
+                    </p>
                   </div>
 
                   <div className="tableitem">
-                    <p className="itemtext"> {doctorLastName} {doctorFirstName}</p>
+                    <p className="itemtext">
+                      {" "}
+                      {doctorLastName} {doctorFirstName}
+                    </p>
                   </div>
                 </div>
 
@@ -328,7 +345,9 @@ const Register = () => {
                     <p className="itemtext">Bemor:</p>
                   </div>
                   <div className="tableitem">
-                    <p className="itemtext">{firstname} {lastname}</p>
+                    <p className="itemtext">
+                      {firstname} {lastname}
+                    </p>
                   </div>
                 </div>
 
@@ -337,7 +356,9 @@ const Register = () => {
                     <p className="itemtext text_p">Sana :</p>
                   </div>
                   <div className="tableitem">
-                    <p className="itemtext text_p">{Hours} {todaysTime}</p>
+                    <p className="itemtext text_p">
+                      {Hours} {todaysTime}
+                    </p>
                   </div>
                 </div>
 
@@ -354,11 +375,9 @@ const Register = () => {
 
               <div id="legalcopy">
                 <h2>{filterarxiv?.length + 1}</h2>
-                <p >Sizning navbatingiz!</p>
+                <p>Sizning navbatingiz!</p>
               </div>
-
             </div>
-
           </div>
         </div>
       </div>

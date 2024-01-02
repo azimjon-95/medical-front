@@ -38,9 +38,9 @@ const Layout = ({ children }) => {
     if (admin === "doctor") {
       return "Doktor";
     } else if (admin === "reception") {
-      return "Resepshin";
+      return "Adminstrator";
     } else if (admin === "owner") {
-      return "Derektor";
+      return "Direktor";
     }
   }
 
