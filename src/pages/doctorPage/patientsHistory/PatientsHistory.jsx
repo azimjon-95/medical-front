@@ -12,6 +12,7 @@ import { setInfo } from "../../../redux/recordList/recordList";
 import { useDispatch } from "react-redux";
 import { FaUsers } from "react-icons/fa";
 import { SearchOutlined } from "@ant-design/icons";
+import { LuEye } from "react-icons/lu";
 
 function PatientsHistory() {
   const componentRef = useRef();
@@ -35,10 +36,9 @@ function PatientsHistory() {
   );
 
   let time = new Date();
-  let day =
-    time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
+  let day = time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
   let filterarxiv = clients?.filter((i) => i.day == day);
-
+  console.log(clients);
   const [query, setQuery] = useState("");
   return (
     <Layout>
@@ -67,111 +67,117 @@ function PatientsHistory() {
               </div>
             </div>
           ) : (
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>№</th>
-                  <th>Bemor</th>
-                  <th>Tashxis</th>
-                  <th>Tel</th>
-                  <th>Chop etish </th>
-                </tr>
-              </thead>
-              <tbody>
-                {filterarxiv
-                  ?.filter((asd) => asd.firstname.toLowerCase().includes(query))
-                  .map(
-                    (
-                      {
-                        _id,
-                        choseDoctor,
-                        day,
-                        address,
-                        doctorFirstName,
-                        doctorLastName,
-                        firstname,
-                        lastname,
-                        phone,
-                        retsept,
-                        sickname,
-                        year,
-                        doctorPhone,
-                      },
-                      inx
-                    ) => (
-                      <tr key={inx}>
-                        <td>{inx + 1}</td>
-                        <td className="Bem" data-label="Bemor">
-                          {lastname} {firstname}
-                        </td>
-                        <td data-label="Tashxis">{sickname}</td>
-                        <td data-label="Tel No">+998{phone}</td>
+            <main class="tableMain" id="customers_table">
+              <section class="table__body">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>№</th>
+                      <th>Bemor</th>
+                      <th>Tashxis</th>
+                      <th>Tel</th>
+                      <th>Ko'rish</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filterarxiv
+                      ?.filter((asd) =>
+                        asd?.firstname?.toLowerCase().includes(query)
+                      )
+                      .map(
+                        (
+                          {
+                            _id,
+                            choseDoctor,
+                            day,
+                            address,
+                            doctorFirstName,
+                            doctorLastName,
+                            firstname,
+                            lastname,
+                            phone,
+                            retsept,
+                            sickname,
+                            year,
+                            doctorPhone,
+                          },
+                          inx
+                        ) => {
+                          return !lastname?.includes("Mavjud") ? (
+                            <tr key={inx}>
+                              <td>{inx + 1}</td>
+                              <td> {lastname} {firstname}</td>
+                              <td>{sickname}</td>
+                              <td>+998{phone}</td>
 
-                        <td type="primary">
-                          <Button>
-                            <ReactToPrint
-                              trigger={() => (
-                                <button
-                                  onFocus={() =>
-                                    checkID({
-                                      _id,
-                                      choseDoctor,
-                                      day,
-                                      address,
-                                      doctorFirstName,
-                                      doctorLastName,
-                                      firstname,
-                                      lastname,
-                                      phone,
-                                      retsept,
-                                      sickname,
-                                      year,
-                                      doctorPhone,
-                                    })
-                                  }
-                                  style={{
-                                    border: "none",
-                                    background: "transparent",
-                                    fontSize: "14px",
-                                    display: "flex",
-                                    justifyContent: "center",
+                              <td type="primary">
+                                <Button>
+                                  <ReactToPrint
+                                    trigger={() => (
+                                      <button
+                                        onFocus={() =>
+                                          checkID({
+                                            _id,
+                                            choseDoctor,
+                                            day,
+                                            address,
+                                            doctorFirstName,
+                                            doctorLastName,
+                                            firstname,
+                                            lastname,
+                                            phone,
+                                            retsept,
+                                            sickname,
+                                            year,
+                                            doctorPhone,
+                                          })
+                                        }
+                                        style={{
+                                          border: "none",
+                                          background: "transparent",
+                                          fontSize: "14px",
+                                          display: "flex",
+                                          justifyContent: "center",
+                                        }}
+                                      >
+                                        {" "}
+                                        <PiPrinterFill className="Printer" />
+                                      </button>
+                                    )}
+                                    content={() => componentRef.current}
+                                  />
+                                </Button>
+                              </td>
+
+                              <td style={{ display: "none" }}>
+                                <RecordList
+                                  obj={{
+                                    id,
+                                    componentRef,
+                                    choseDoctor,
+                                    day,
+                                    address,
+                                    doctorFirstName,
+                                    doctorLastName,
+                                    firstname,
+                                    lastname,
+                                    phone,
+                                    retsept,
+                                    sickname,
+                                    year,
+                                    doctorPhone,
                                   }}
-                                >
-                                  {" "}
-                                  <PiPrinterFill className="Printer" />
-                                </button>
-                              )}
-                              content={() => componentRef.current}
-                            />
-                          </Button>
-                        </td>
+                                  componentRef={componentRef}
+                                />
+                              </td>
+                            </tr>
+                          ) : ""
+                        })}
 
-                        <td style={{ display: "none" }}>
-                          <RecordList
-                            obj={{
-                              id,
-                              componentRef,
-                              choseDoctor,
-                              day,
-                              address,
-                              doctorFirstName,
-                              doctorLastName,
-                              firstname,
-                              lastname,
-                              phone,
-                              retsept,
-                              sickname,
-                              year,
-                              doctorPhone,
-                            }}
-                            componentRef={componentRef}
-                          />
-                        </td>
-                      </tr>
-                    )
-                  )}
-              </tbody>
-            </table>
+                  </tbody>
+                </table>
+              </section>
+            </main>
           )}
         </Tabs.TabPane>
         <Tabs.TabPane tab="Jammi" key={1}>
@@ -182,111 +188,118 @@ function PatientsHistory() {
               </div>
             </div>
           ) : (
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>№</th>
-                  <th>Bemor</th>
-                  <th>Tashxis</th>
-                  <th>Tel</th>
-                  <th>Chop etish </th>
-                </tr>
-              </thead>
-              <tbody>
-                {clients
-                  ?.filter((asd) => asd.firstname.toLowerCase().includes(query))
-                  .map(
-                    (
-                      {
-                        _id,
-                        choseDoctor,
-                        day,
-                        address,
-                        doctorFirstName,
-                        doctorLastName,
-                        firstname,
-                        lastname,
-                        phone,
-                        retsept,
-                        sickname,
-                        year,
-                        doctorPhone,
-                      },
-                      inx
-                    ) => (
-                      <tr key={inx}>
-                        <td>{inx + 1}</td>
-                        <td className="Bem" data-label="Bemor">
-                          {lastname} {firstname}
-                        </td>
-                        <td data-label="Tashxis">{sickname}</td>
-                        <td data-label="Tel No">+998{phone}</td>
 
-                        <td type="primary">
-                          <Button>
-                            <ReactToPrint
-                              trigger={() => (
-                                <button
-                                  onFocus={() =>
-                                    checkID({
-                                      _id,
-                                      choseDoctor,
-                                      day,
-                                      address,
-                                      doctorFirstName,
-                                      doctorLastName,
-                                      firstname,
-                                      lastname,
-                                      phone,
-                                      retsept,
-                                      sickname,
-                                      year,
-                                      doctorPhone,
-                                    })
-                                  }
-                                  style={{
-                                    border: "none",
-                                    background: "transparent",
-                                    fontSize: "14px",
-                                    display: "flex",
-                                    justifyContent: "center",
+            <main class="tableMain" id="customers_table">
+              <section class="table__body">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>№</th>
+                      <th>Bemor</th>
+                      <th>Tashxis</th>
+                      <th>Tel</th>
+                      <th>Ko'rish</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {clients
+                      ?.filter((asd) =>
+                        asd?.firstname?.toLowerCase().includes(query)
+                      )
+                      .map(
+                        (
+                          {
+                            _id,
+                            choseDoctor,
+                            day,
+                            address,
+                            doctorFirstName,
+                            doctorLastName,
+                            firstname,
+                            lastname,
+                            phone,
+                            retsept,
+                            sickname,
+                            year,
+                            doctorPhone,
+                          },
+                          inx
+                        ) => {
+                          return !lastname?.includes("Mavjud") ? (
+                            <tr key={inx}>
+                              <td>{inx + 1}</td>
+                              <td> {lastname} {firstname}</td>
+                              <td>{sickname}</td>
+                              <td>+998{phone}</td>
+
+                              <td type="primary">
+                                <Button>
+                                  <ReactToPrint
+                                    trigger={() => (
+                                      <button
+                                        onFocus={() =>
+                                          checkID({
+                                            _id,
+                                            choseDoctor,
+                                            day,
+                                            address,
+                                            doctorFirstName,
+                                            doctorLastName,
+                                            firstname,
+                                            lastname,
+                                            phone,
+                                            retsept,
+                                            sickname,
+                                            year,
+                                            doctorPhone,
+                                          })
+                                        }
+                                        style={{
+                                          border: "none",
+                                          background: "transparent",
+                                          fontSize: "14px",
+                                          display: "flex",
+                                          justifyContent: "center",
+                                        }}
+                                      >
+                                        {" "}
+                                        <PiPrinterFill className="Printer" />
+                                      </button>
+                                    )}
+                                    content={() => componentRef.current}
+                                  />
+                                </Button>
+                              </td>
+
+                              <td style={{ display: "none" }}>
+                                <RecordList
+                                  obj={{
+                                    id,
+                                    componentRef,
+                                    choseDoctor,
+                                    day,
+                                    address,
+                                    doctorFirstName,
+                                    doctorLastName,
+                                    firstname,
+                                    lastname,
+                                    phone,
+                                    retsept,
+                                    sickname,
+                                    year,
+                                    doctorPhone,
                                   }}
-                                >
-                                  {" "}
-                                  <PiPrinterFill className="Printer" />
-                                </button>
-                              )}
-                              content={() => componentRef.current}
-                            />
-                          </Button>
-                        </td>
+                                  componentRef={componentRef}
+                                />
+                              </td>
+                            </tr>
+                          ) : ""
+                        })}
 
-                        <td style={{ display: "none" }}>
-                          <RecordList
-                            obj={{
-                              id,
-                              componentRef,
-                              choseDoctor,
-                              day,
-                              address,
-                              doctorFirstName,
-                              doctorLastName,
-                              firstname,
-                              lastname,
-                              phone,
-                              retsept,
-                              sickname,
-                              year,
-                              doctorPhone,
-                            }}
-                            componentRef={componentRef}
-                          />
-                        </td>
-                      </tr>
-                    )
-                  )}
-              </tbody>
-            </table>
+                  </tbody>
+                </table>
+              </section>
+            </main>
           )}
         </Tabs.TabPane>
       </Tabs>

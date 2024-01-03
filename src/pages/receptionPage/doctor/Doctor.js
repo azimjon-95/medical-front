@@ -30,46 +30,57 @@ const Doctor = () => {
           </div>
         </div>
       ) : (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Doktor</th>
-              <th>Darajasi</th>
-              <th>Tel raqam</th>
-              <th>Konsultatsiya to'lovi</th>
-              <th>Bemorlari</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data?.map((item, inx) => (
-              <tr key={inx}>
-                <td data-label="Doktor">
-                  {item.firstName} {item.lastName}
-                </td>
-                <td data-label="Darajasi">{item.specialization}</td>
-                <td data-label="Tel No">{PhoneNumberFormat(item.phone)}</td>
-                <td data-label="Konsultatsiya">
-                  {NumberFormat(item.feesPerCunsaltation)} so'm
-                </td>
-                <td data-label="Bemorlari">
-                  <Link to={`/doctorSinglePageAdmin/${item.specialization}`}>
-                    <Button
-                      style={{
-                        background: "transparent",
-                        fontSize: "18px",
-                        border: "none",
-                        padding: "0px 10pxpx",
-                        boxShadow: "none",
-                      }}
-                    >
-                      <IoEyeOutline style={{ marginBottom: "10px" }} />
-                    </Button>
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+
+
+        <main class="tableMain" id="customers_table">
+          <section class="table__body">
+            <table>
+              <thead>
+                <tr>
+                  <th>№</th>
+                  <th>Doktor</th>
+                  <th>Darajasi</th>
+                  <th>Tel raqam</th>
+                  <th>Konsultatsiya to'lovi</th>
+                  <th>Bemorlari</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data?.map((item, inx) => {
+                  return (
+                    <tr key={inx}>
+                      <td>{inx + 1}</td>
+                      <td data-label="Doktor">
+                        {item.firstName} {item.lastName}
+                      </td>
+                      <td data-label="Darajasi">{item.specialization}</td>
+                      <td data-label="Tel No">{PhoneNumberFormat(item.phone)}</td>
+                      <td data-label="Konsultatsiya">
+                        {NumberFormat(item.feesPerCunsaltation)} so'm
+                      </td>
+                      <td data-label="Bemorlari">
+                        <Link to={`/doctorSinglePageAdmin/${item.specialization}`}>
+                          <Button
+                            style={{
+                              background: "transparent",
+                              fontSize: "18px",
+                              border: "none",
+                              padding: "0px 10pxpx",
+                              boxShadow: "none",
+                            }}
+                          >
+                            <IoEyeOutline style={{ marginBottom: "10px" }} />
+                          </Button>
+                        </Link>
+                      </td>
+                    </tr>
+                  )
+                })}
+
+              </tbody>
+            </table>
+          </section>
+        </main>
       )}
     </Layout>
   );

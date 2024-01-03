@@ -60,7 +60,7 @@ const Register = () => {
 
   let Hours = time.getHours() + ":" + time.getMinutes();
   let filterarxiv = users?.data?.filter((i) => i.day == todaysTime);
-  const handleFinish = async () => {
+  const handleFinish = async (e) => {
     let doctor_price = allDoctor?.find((d) => d._id === choseDoctor);
 
     const AllInfo = {
@@ -89,12 +89,8 @@ const Register = () => {
       })
       .catch((err) => console.log(err));
 
+    e.target.clear()
 
-    setFirstName(" ")
-    setLastName(" ")
-    setAddress(" ");
-    setYear(" ");
-    setPhone(" ");
   };
   const onChange = (date, dateString) => {
     setYear(dateString);
@@ -103,7 +99,7 @@ const Register = () => {
   return (
     <Layout>
       <h3 className="text-center">Bemorni ro'yhatga olish</h3>
-      <Form layout="vertical" className="FormApply">
+      <Form onFinish={handleFinish} layout="vertical" className="FormApply">
         <Row className="Row">
           <Col className="Col-Form">
             <Form.Item
@@ -250,24 +246,13 @@ const Register = () => {
         </Row>
 
         <Col className="Col-Form">
-          {payState && payState ? (
-            <button
-              onClick={(e) => {
-                handleFinish(e);
-                // setList(true);
-              }}
-              className="btn btn-primary"
-              type="submit"
-            >
-              {" "}
-              Yuborishk
-            </button>
-          ) : (
-            <button className="btn btn-primary" type="submit">
-              {" "}
-              Yuborish
-            </button>
-          )}
+          <button
+            className="button"
+            type="submit"
+          >
+            {" "}
+            Yuborish
+          </button>
         </Col>
       </Form>
       <div className={`${list ? "viewCheckList" : "ListNone"}`}>
@@ -406,7 +391,7 @@ const Register = () => {
           todaysTime={todaysTime}
           Hours={Hours}
           doctorPhone={doctorPhone}
-          filterarxiv={filterarxiv + 1}
+          filterarxiv={queueNumber}
         />
       </div>
     </Layout>

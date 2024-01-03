@@ -7,7 +7,7 @@
 .Search-Box {
     width: 100%;
     height: 100vh;
-    padding: 20px;
+    padding: 10px 10px 0 10px;
 }
 
 .Printer {
@@ -77,11 +77,11 @@
         flex-direction: column;
     }
 
-    
-.Search-Box {
-    width: 100%;
-    height: 100vh;
-    padding: 5px;
-}
+
+    .Search-Box {
+        width: 100%;
+        height: 100vh;
+        padding: 5px;
+    }
 
 }

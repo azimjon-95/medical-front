@@ -31,52 +31,59 @@ function SingleReports() {
     time.getDate() - 1 + "." + (time.getMonth() + 1) + "." + time.getFullYear();
   let dayMonth = time.toLocaleString("default", { month: "long" });
   let filterarxiv = clients?.filter((i) => i.day == day);
-  let getMonth = client?.filter((i) => i.month == dayMonth);
+  let getMonth = clients?.filter((i) => i.month == dayMonth);
+  const totalMoney = getMonth?.reduce((a, b) => a + b.paySumm, 0);
 
   return (
     <div className="Search-Box">
-      <div className="containerWallet">
-        {filterDoctors?.map((value, inx) => {
+      {
+        filterDoctors?.map((value, inx) => {
           return (
-            <div key={inx} className="Wallet" style={{ height: "96.5vh" }}>
+            <div key={inx} className="WalletSNG">
               <div className="headerWallet">
                 <div className="header-summary">
-                  <div className="summary-text">Bir kunlik tushim</div>
-                  {value.percent ? (
-                    <div className="summary-balance">
-                      {value.specialization === 0 ? (
-                        ""
-                      ) : (
-                        <>
-                          {" "}
-                          {NumberFormat(
-                            (dailyMoney[value.specialization] * value.percent) /
-                              100
-                          )}{" "}
-                          so'm
-                        </>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="summary-balance">
-                      {NumberFormat(value.salary)} so'm
-                    </div>
-                  )}
-                </div>
-                <div className="imgBox_doc">
-                  {value.lastName?.endsWith("v") ? (
-                    <div className="user-profileOv">
-                      <img src={img1} alt="" />
-                    </div>
-                  ) : (
-                    <div className="user-profileOv">
-                      <img src={img2} alt="" />
-                    </div>
-                  )}
-                  <div className="summary-textOv">
-                    {value.firstName + " " + value.lastName}
+                  <div className="summary-text">
+                    Bir kunlik tushim
                   </div>
-                  <span>{value.specialization}</span>
+                  <div className="summary-balance">
+                    {
+                      value?.percent ?
+                        <>
+                          {value.specialization === 0 ? (
+                            ""
+                          ) : (<>
+                            {" "}
+                            {NumberFormat(
+                              (dailyMoney[value?.specialization] *
+                                value?.percent) /
+                              100
+                            )}{" "}
+
+                          </>
+
+                          )}
+                        </>
+                        :
+                        NumberFormat(value?.salary)
+                    } so'm
+                  </div>
+
+
+                </div>
+
+                <div className="imgBoxProfile">
+                  {
+                    value.lastName?.endsWith("a") ?
+                      <div className="user-profile">
+                        <img src={img2} alt="" />
+                      </div>
+                      :
+                      <div className="user-profile">
+                        <img src={img1} alt="" />
+                      </div>
+                  }
+                  <div>{value?.firstName} {value?.lastName}</div>
+                  <p>{value?.specialization}</p>
                 </div>
               </div>
               <div className="contentWallet">
@@ -85,63 +92,47 @@ function SingleReports() {
                     <div className="card-item">
                       <span>Bugungi balans</span>
 
-                      <span>
-                        {" "}
-                        {" " +
-                          NumberFormat(dailyMoney[value.specialization])}{" "}
-                        so'm
-                      </span>
+                      <span> {" " + NumberFormat(dailyMoney[value?.specialization])}{" "}so'm</span>
                     </div>
-                    {value?.salary ? (
-                      ""
-                    ) : (
-                      <div className="card-item">
-                        <span>Oylik foizda</span>
-                        <span>{value.percent}%</span>
-                      </div>
-                    )}
+                    {
+                      value?.percent ?
+
+                        <div className="card-item">
+                          <span>Oylik foizda</span>
+                          <span>{value?.percent}%</span>
+                        </div> :
+                        ""
+                    }
                   </div>
                   <div className="lower-row">
                     <div className="icon-item">
-                      <div className="icon">{filterarxiv.length}</div>
+                      <div className="icon">{filterarxiv?.length}</div>
                       <div className="icon-text">Bugun</div>
                     </div>
                     <div className="icon-item">
-                      <div className="icon">{getMonth.length}</div>
-                      <div className="icon-text">
-                        {time.toLocaleString("default", { month: "long" })}
-                      </div>
+                      <div className="icon">{getMonth?.length}</div>
+                      <div className="icon-text">{time.toLocaleString("default", { month: 'long' })}</div>
                     </div>
-                    {value?.salary ? (
-                      ""
-                    ) : (
-                      <div className="icon-item">
-                        <div className="icon">
-                          <i className="fal fa-paper-plane"></i>
-                        </div>
-                        <div className="icon-text">Bir oylik tushim</div>
-                      </div>
-                    )}
-                    {value?.salary ? (
-                      ""
-                    ) : (
-                      <div className="icon-item">
-                        <div className="icon">
-                          {NumberFormat(value.feesPerCunsaltation)} so'm
-                        </div>
-                        <div className="icon-text">Qabul</div>
-                      </div>
-                    )}
+                    <div className="icon-item">
+                      <div className="icon">{NumberFormat(totalMoney)} so'm</div>
+                      <div className="icon-text">Bir oylik tushim</div>
+                    </div>
+                    <div className="icon-item">
+                      <div className="icon">{NumberFormat(value?.feesPerCunsaltation)} so'm</div>
+                      <div className="icon-text">Qabul</div>
+                    </div>
                   </div>
                 </div>
+
               </div>
               <div className="drawer">
                 <img width={200} src={LogoMedme} alt="" />
               </div>
+
             </div>
-          );
-        })}
-      </div>
+          )
+        })
+      }
     </div>
   );
 }

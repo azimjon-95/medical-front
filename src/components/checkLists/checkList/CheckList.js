@@ -191,7 +191,7 @@ const CheckList = ({
           </div>
 
           <div id="legalcopy">
-            <h2>{filterarxiv?.length}</h2>
+            <h2>{filterarxiv}</h2>
             <p>Sizning navbatingiz!</p>
           </div>
         </div>

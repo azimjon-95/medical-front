@@ -131,266 +131,259 @@ const Patients = () => {
               </div>
             </div>
           ) : (
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Bemor</th>
-                  <th>Tel raqam</th>
-                  <th>Yo'naltirildi</th>
-                  <th>Doktor</th>
-                  <th>To'lov</th>
-                  <th>Faollashtirish</th>
-                  <th>O'chirish</th>
-                </tr>
-              </thead>
-              <tbody>
-                {dataFalse
-                  ?.filter((asd) =>
-                    asd?.firstname.toLowerCase().includes(query)
-                  )
-                  .map(
-                    (
-                      {
-                        _id,
-                        firstname,
-                        lastname,
-                        phone,
-                        doctorPhone,
-                        paySumm,
-                        paySum,
-                        payState,
-                        choseDoctor,
-                        doctorFirstName,
-                        doctorLastName,
-                        doctorSpecialization,
-                      },
-                      inx
-                    ) => (
-                      <tr key={inx}>
-                        <td data-label="Bemor">
-                          {lastname} {firstname}
-                        </td>
-                        <td data-label="Tel No">{PhoneNumberFormat(phone)}</td>
-                        <td data-label="Yo'naltirildi">{choseDoctor}</td>
-                        <td data-label="Doktor">
-                          {doctorLastName} {doctorFirstName}
-                        </td>
-                        <td data-label="To'landi">
-                          <div className="PayContainer">
-                            <div className="PayPatients">
-                              {/* <label className="containerChe PayCHe">
-                              {payState ? (
-                                <AiOutlineCheckCircle className="Md" />
-                              ) : (
-                                <MdOutlineDoNotDisturbAlt className="Ai" />
-                              )}
-                              <input
-                                value="Reception"
-                                onChange={(e) => updatePayState(e, _id)}
-                                name="o"
-                                id="chi"
-                                type="radio"
-                              />
-                              <span className="checkmark"></span>
-                            </label> */}
-                              <Button
-                                onClick={(e) => {
-                                  setList(true);
-                                  setTimeout(() => {
-                                    updatePayState(e, _id);
-                                  }, 2000);
-                                }}
-                              >
-                                Qabul qilish
-                              </Button>
-                            </div>
-                            {payState ? (
-                              <i className="Tolanmadi lee">{paySumm} so'm</i>
-                            ) : (
-                              <del className="Tolanmadi lii">
-                                {NumberFormat(
-                                  doctors.data?.find(
-                                    (i) =>
-                                      i.specialization?.toLowerCase() ===
-                                      choseDoctor?.toLowerCase()
-                                  )?.feesPerCunsaltation
-                                )}{" "}
-                                so'm
-                              </del>
-                            )}
-                          </div>
-                        </td>
-                        <td data-label="O'chirish">
-                          <button
-                            onClick={() => showDeleteClients(_id)}
-                            button="true"
-                            className="btn btn-danger"
-                          >
-                            Del
-                          </button>
-                        </td>
+            <main class="tableMain" id="customers_table">
+              <section class="table__body">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Bemor</th>
+                      <th>Tel raqam</th>
+                      <th>Yo'naltirildi</th>
+                      <th>Doktor</th>
+                      <th>To'lov</th>
+                      <th>Faollashtirish</th>
+                      <th>O'chirish</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {dataFalse
+                      ?.filter((asd) =>
+                        asd?.firstname.toLowerCase().includes(query)
+                      )
+                      .map(
+                        (
+                          {
+                            _id,
+                            firstname,
+                            lastname,
+                            phone,
+                            doctorPhone,
+                            paySumm,
+                            paySum,
+                            payState,
+                            choseDoctor,
+                            doctorFirstName,
+                            doctorLastName,
+                            doctorSpecialization,
+                          },
+                          inx
+                        ) => {
+                          return !lastname?.includes("Mavjud") ? (
+                            <tr key={inx}>
 
-                        <td
-                          className={`${list ? "viewCheckList" : "ListNone"}`}
-                        >
-                          <button
-                            onClick={() => setList(false)}
-                            className="OutCheck"
-                          >
-                            +
-                          </button>
-                          <div className="viewBox">
-                            <ReactToPrint
-                              trigger={() => (
-                                <button className="PrintChekList" type="submit">
-                                  {" "}
-                                  <PiPrinterFill />
+                              <td>
+                                {lastname} {firstname}
+                              </td>
+                              <td >{PhoneNumberFormat(phone)}</td>
+                              <td>{choseDoctor}</td>
+                              <td>
+                                {doctorLastName} {doctorFirstName}
+                              </td>
+                              <td>
+                                <div className="PayContainer">
+                                  <div className="PayPatients">
+
+                                    <Button
+                                      onClick={(e) => {
+                                        setList(true);
+                                        setTimeout(() => {
+                                          updatePayState(e, _id);
+                                        }, 2000);
+                                      }}
+                                    >
+                                      Qabul qilish
+                                    </Button>
+                                  </div>
+                                  {payState ? (
+                                    <i className="Tolanmadi lee">{paySumm} so'm</i>
+                                  ) : (
+                                    <del className="Tolanmadi lii">
+                                      {NumberFormat(
+                                        doctors.data?.find(
+                                          (i) =>
+                                            i.specialization?.toLowerCase() ===
+                                            choseDoctor?.toLowerCase()
+                                        )?.feesPerCunsaltation
+                                      )}{" "}
+                                      so'm
+                                    </del>
+                                  )}
+                                </div>
+                              </td>
+                              <td data-label="O'chirish">
+                                <button
+                                  onClick={() => showDeleteClients(_id)}
+                                  button="true"
+                                  className="btn btn-danger"
+                                >
+                                  Del
                                 </button>
-                              )}
-                              content={() => componentRef.current}
-                            ></ReactToPrint>
-                            <div className="waveList">
-                              <center id="top">
-                                <div className="logo"></div>
-                                <div className="info">
-                                  <h2 className="item-h2">
-                                    Har doim siz bilan!
-                                  </h2>
-                                </div>
-                              </center>
-
-                              <div id="mid">
-                                <div className="info">
-                                  <h2 className="item-h2">
-                                    Aloqa uchun malumot
-                                  </h2>
-                                  <p className="text_p">
-                                    Manzil : Pop Tinchlik ko'chasi 7-uy
-                                    <br />
-                                    Email : JohnDoe@gmail.com
-                                    <br />
-                                    Tel raqam : +998(94)432-44-45
-                                    <br />
-                                  </p>
-                                </div>
-                              </div>
-
-                              <div id="bot">
-                                <div id="table">
-                                  <div className="tabletitle">
-                                    <div className="item_check">
-                                      <h2 className="item-h2">Element</h2>
-                                    </div>
-                                    <div className="Hours">
-                                      <h2 className="item-h2"></h2>
-                                    </div>
-                                    <div className="Rate">
-                                      <h2 className="item-h2"></h2>
-                                    </div>
-                                  </div>
-
-                                  <div className="service">
-                                    <div className="tableitem">
-                                      <p className="itemtext">
-                                        {choseDoctor}: Oliy toifali shifokor
-                                      </p>
-                                    </div>
-
-                                    <div className="tableitem">
-                                      <p className="itemtext">
+                              </td>
+                              <td
+                                className={`${list ? "viewCheckList" : "ListNone"}`}
+                              >
+                                <button
+                                  onClick={() => setList(false)}
+                                  className="OutCheck"
+                                >
+                                  +
+                                </button>
+                                <div className="viewBox">
+                                  <ReactToPrint
+                                    trigger={() => (
+                                      <button className="PrintChekList" type="submit">
                                         {" "}
-                                        {doctorLastName} {doctorFirstName}
-                                      </p>
-                                    </div>
-                                  </div>
-
-                                  <div className="service">
-                                    <div className="tableitem">
-                                      <p className="itemtext">Doktor Tel :</p>
-                                    </div>
-                                    <div className="tableitem">
-                                      <p className="itemtext">
-                                        +998{doctorPhone}
-                                      </p>
-                                    </div>
-                                  </div>
-
-                                  <div className="service">
-                                    <div className="tableitem">
-                                      <p className="itemtext">Qabul :</p>
-                                    </div>
-
-                                    <div className="tableitem">
-                                      <p className="itemtext">
-                                        {NumberFormat(paySum)} so'm
-                                      </p>
-                                    </div>
-                                  </div>
-                                  <div className="service">
-                                    <div className="tableitem">
-                                      <p className="itemtext">Bemor:</p>
-                                    </div>
-                                    <div className="tableitem">
-                                      <p className="itemtext">
-                                        {firstname} {lastname}
-                                      </p>
-                                    </div>
-                                  </div>
-
-                                  <div className="service">
-                                    <div className="tableitem">
-                                      <p className="itemtext text_p">Sana :</p>
-                                    </div>
-                                    <div className="tableitem">
-                                      <p className="itemtext text_p">
-                                        {Hours} {todaysTime}
-                                      </p>
-                                    </div>
-                                  </div>
-
-                                  <div className="tabletitle">
-                                    <div className="tableitem">
-                                      <p>To'landi: </p>
+                                        <PiPrinterFill />
+                                      </button>
+                                    )}
+                                    content={() => componentRef.current}
+                                  ></ReactToPrint>
+                                  <div className="waveList">
+                                    <center id="top">
+                                      <div className="logo"></div>
+                                      <div className="info">
+                                        <h2 className="item-h2">
+                                          Har doim siz bilan!
+                                        </h2>
+                                      </div>
+                                    </center>
+                                    <div id="mid">
+                                      <div className="info">
+                                        <h2 className="item-h2">
+                                          Aloqa uchun malumot
+                                        </h2>
+                                        <p className="text_p">
+                                          Manzil : Pop Tinchlik ko'chasi 7-uy
+                                          <br />
+                                          Email : JohnDoe@gmail.com
+                                          <br />
+                                          Tel raqam : +998(94)432-44-45
+                                          <br />
+                                        </p>
+                                      </div>
                                     </div>
 
-                                    <div className="payment">
-                                      <h2 className="item-h1">
-                                        {NumberFormat(paySum)} so'm
-                                      </h2>
+                                    <div id="bot">
+                                      <div id="table">
+                                        <div className="tabletitle">
+                                          <div className="item_check">
+                                            <h2 className="item-h2">Element</h2>
+                                          </div>
+                                          <div className="Hours">
+                                            <h2 className="item-h2"></h2>
+                                          </div>
+                                          <div className="Rate">
+                                            <h2 className="item-h2"></h2>
+                                          </div>
+                                        </div>
+
+                                        <div className="service">
+                                          <div className="tableitem">
+                                            <p className="itemtext">
+                                              {choseDoctor}: Oliy toifali shifokor
+                                            </p>
+                                          </div>
+
+                                          <div className="tableitem">
+                                            <p className="itemtext">
+                                              {" "}
+                                              {doctorLastName} {doctorFirstName}
+                                            </p>
+                                          </div>
+                                        </div>
+
+                                        <div className="service">
+                                          <div className="tableitem">
+                                            <p className="itemtext">Doktor Tel :</p>
+                                          </div>
+                                          <div className="tableitem">
+                                            <p className="itemtext">
+                                              +998{doctorPhone}
+                                            </p>
+                                          </div>
+                                        </div>
+
+                                        <div className="service">
+                                          <div className="tableitem">
+                                            <p className="itemtext">Qabul :</p>
+                                          </div>
+
+                                          <div className="tableitem">
+                                            <p className="itemtext">
+                                              {NumberFormat(paySum)} so'm
+                                            </p>
+                                          </div>
+                                        </div>
+                                        <div className="service">
+                                          <div className="tableitem">
+                                            <p className="itemtext">Bemor:</p>
+                                          </div>
+                                          <div className="tableitem">
+                                            <p className="itemtext">
+                                              {firstname} {lastname}
+                                            </p>
+                                          </div>
+                                        </div>
+
+                                        <div className="service">
+                                          <div className="tableitem">
+                                            <p className="itemtext text_p">Sana :</p>
+                                          </div>
+                                          <div className="tableitem">
+                                            <p className="itemtext text_p">
+                                              {Hours} {todaysTime}
+                                            </p>
+                                          </div>
+                                        </div>
+
+                                        <div className="tabletitle">
+                                          <div className="tableitem">
+                                            <p>To'landi: </p>
+                                          </div>
+
+                                          <div className="payment">
+                                            <h2 className="item-h1">
+                                              {NumberFormat(paySum)} so'm
+                                            </h2>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <div id="legalcopy">
+                                        <h2>{filterarxiv?.length}</h2>
+                                        <p>Sizning navbatingiz!</p>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
+                              </td>
+                              <td style={{ display: "none" }}>
+                                <CheckList
+                                  componentRef={componentRef}
+                                  firstname={firstname}
+                                  lastname={lastname}
+                                  payState={paySum}
+                                  doctorFirstName={doctorFirstName}
+                                  doctorLastName={doctorLastName}
+                                  doctorSpecialization={doctorSpecialization}
+                                  todaysTime={todaysTime}
+                                  Hours={Hours}
+                                  doctorPhone={doctorPhone}
+                                  filterarxiv={filterarxiv}
+                                />
+                              </td>
 
-                                <div id="legalcopy">
-                                  <h2>{filterarxiv?.length}</h2>
-                                  <p>Sizning navbatingiz!</p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                        <td style={{ display: "none" }}>
-                          <CheckList
-                            componentRef={componentRef}
-                            firstname={firstname}
-                            lastname={lastname}
-                            payState={paySum}
-                            doctorFirstName={doctorFirstName}
-                            doctorLastName={doctorLastName}
-                            doctorSpecialization={doctorSpecialization}
-                            todaysTime={todaysTime}
-                            Hours={Hours}
-                            doctorPhone={doctorPhone}
-                            filterarxiv={filterarxiv}
-                          />
-                        </td>
-                      </tr>
-                    )
-                  )}
-              </tbody>
-            </table>
+                            </tr>
+                          ) : ""
+                        })}
+
+                  </tbody >
+                </table >
+              </section >
+            </main >
+
           )}
-        </Tabs.TabPane>
+        </Tabs.TabPane >
         <Tabs.TabPane defaultActiveKey="1" tab="Bemorlar" key={1}>
           {dataTrue == 0 ? (
             <div className="NoData">
@@ -399,54 +392,62 @@ const Patients = () => {
               </div>
             </div>
           ) : (
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Bemor</th>
-                  <th>Tel No</th>
-                  <th>Yo'naltirildi</th>
-                  <th>Doktor</th>
-                  <th>To'landi</th>
-                  <th>O'chirish</th>
-                </tr>
-              </thead>
-              <tbody>
-                {dataTrue
-                  ?.filter((asd) =>
-                    asd.firstname?.toLowerCase().includes(query)
-                  )
-                  .map((item, inx) => (
-                    <tr key={inx}>
-                      <td data-label="Bemor">
-                        {item?.lastname} {item?.firstname}
-                      </td>
-                      <td data-label="Tel No">
-                        {PhoneNumberFormat(item?.phone)}
-                      </td>
-                      <td data-label="Yo'naltirildi">{item?.choseDoctor}</td>
-                      <td data-label="Doktor">
-                        {item?.doctorLastName} {item?.doctorFirstName}
-                      </td>
-                      <td data-label="To'landi">
-                        {NumberFormat(item?.paySumm)} so'm
-                      </td>
-                      <td data-label="O'chirish">
-                        <button
-                          onClick={() => showDeleteClients(item?._id)}
-                          button="true"
-                          className="btn btn-danger"
-                        >
-                          Del
-                        </button>
-                      </td>
+
+            <main class="tableMain" id="customers_table">
+              <section class="table__body">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Bemor</th>
+                      <th>Tel No</th>
+                      <th>Yo'naltirildi</th>
+                      <th>Doktor</th>
+                      <th>To'landi</th>
+                      <th>O'chirish</th>
                     </tr>
-                  ))}
-              </tbody>
-            </table>
+                  </thead>
+                  <tbody>
+                    {dataTrue
+                      ?.filter((asd) =>
+                        asd.firstname?.toLowerCase().includes(query)
+                      )
+                      .map((item, inx) => {
+                        return (
+                          <tr key={inx}>
+                            <td >
+                              {item?.lastname} {item?.firstname}
+                            </td>
+                            <td >
+                              {PhoneNumberFormat(item?.phone)}
+                            </td>
+                            <tbody>{item?.choseDoctor}</tbody>
+                            <td >
+                              {item?.doctorLastName} {item?.doctorFirstName}
+                            </td>
+                            <td>
+                              {NumberFormat(item?.paySumm)} so'm
+                            </td>
+                            <td >
+                              <button
+                                onClick={() => showDeleteClients(item?._id)}
+                                button="true"
+                                className="btn btn-danger"
+                              >
+                                Del
+                              </button>
+                            </td>
+                          </tr>
+                        )
+                      })}
+
+                  </tbody>
+                </table>
+              </section>
+            </main>
           )}
         </Tabs.TabPane>
-      </Tabs>
-    </Layout>
+      </Tabs >
+    </Layout >
   );
 };
 

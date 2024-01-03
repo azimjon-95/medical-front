@@ -48,7 +48,7 @@ const GetPatients = () => {
             Medme
           </h4>
         </Link>
-        {clients >= 10 ? (
+        {clients.length >= 10 ? (
           <div className="search">
             <div>
               <FaUsers />-{clients.length}
@@ -65,16 +65,19 @@ const GetPatients = () => {
           <></>
         )}
       </div>
-      <Tabs>
-        <Tabs>
-          {clients == 0 ? (
-            <div className="NoData">
-              <div className="NoDataImg">
-                <img src={imgNoData} alt="No Data" />
-              </div>
-            </div>
-          ) : (
-            <table className="table">
+      
+
+
+      {clients.length === 0 ? (
+        <div className="NoData">
+          <div className="NoDataImg">
+            <img src={imgNoData} alt="No Data" />
+          </div>
+        </div>
+      ) : (
+        <main class="tableMain" id="customers_table">
+          <section class="table__body">
+            <table>
               <thead>
                 <tr>
                   <th>№</th>
@@ -111,11 +114,10 @@ const GetPatients = () => {
                       return !lastname?.includes("Mavjud") ? (
                         <tr key={inx}>
                           <td>{inx + 1}</td>
-                          <td className="Bem" data-label="Bemor">
-                            {lastname} {firstname}
-                          </td>
-                          <td data-label="Tashxis">{sickname}</td>
-                          <td data-label="Tel No">+998{phone}</td>
+                          <td> {lastname} {firstname}</td>
+                          <td>{sickname}</td>
+                          <td>+998{phone}</td>
+
                           <td>
                             <div className="LuEyeBtn">
                               <ReactToPrint
@@ -174,18 +176,158 @@ const GetPatients = () => {
                             />
                           </td>
                         </tr>
-                      ) : (
-                        <></>
-                      );
-                    }
-                  )}
+                      ) : ""
+                    })}
+
               </tbody>
             </table>
-          )}
-        </Tabs>
-      </Tabs>
+          </section>
+        </main>
+      )}
+
+
     </div>
   );
 };
 
 export default GetPatients;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// <table className="table">
+//   <thead>
+//     <tr>
+//       <th>№</th>
+//       <th>Bemor</th>
+//       <th>Tashxis</th>
+//       <th>Tel</th>
+//       <th>Ko'rish</th>
+//     </tr>
+//   </thead>
+//   <tbody>
+//     {clients
+//       ?.filter((asd) =>
+//         asd?.firstname?.toLowerCase().includes(query)
+//       )
+//       .map(
+//         (
+//           {
+//             _id,
+//             choseDoctor,
+//             day,
+//             address,
+//             doctorFirstName,
+//             doctorLastName,
+//             firstname,
+//             lastname,
+//             phone,
+//             retsept,
+//             sickname,
+//             year,
+//             doctorPhone,
+//           },
+//           inx
+//         ) => {
+//           return !lastname?.includes("Mavjud") ? (
+//             <tr key={inx}>
+//               <td>{inx + 1}</td>
+//               <td className="Bem" data-label="Bemor">
+//                 {lastname} {firstname}
+//               </td>
+//               <td data-label="Tashxis">{sickname}</td>
+//               <td data-label="Tel No">+998{phone}</td>
+//               <td>
+//                 <div className="LuEyeBtn">
+//                   <ReactToPrint
+//                     trigger={() => (
+//                       <button
+//                         onFocus={() =>
+//                           checkID({
+//                             _id,
+//                             choseDoctor,
+//                             day,
+//                             address,
+//                             doctorFirstName,
+//                             doctorLastName,
+//                             firstname,
+//                             lastname,
+//                             phone,
+//                             retsept,
+//                             sickname,
+//                             year,
+//                             doctorPhone,
+//                           })
+//                         }
+//                         style={{
+//                           border: "none",
+//                           background: "transparent",
+//                           fontSize: "14px",
+//                         }}
+//                       >
+//                         <LuEye className="Printer" />
+//                       </button>
+//                     )}
+//                     // trigger={() => <button onClick={() => checkID(_id)} style={{ border: "none", background: "transparent", fontSize: "14px" }}>< LuEye className='Printer' /></button>}
+//                     content={() => componentRef.current}
+//                   />
+//                 </div>
+//               </td>
+//               <td style={{ display: "none" }}>
+//                 <RecordList
+//                   obj={{
+//                     id,
+//                     componentRef,
+//                     choseDoctor,
+//                     day,
+//                     address,
+//                     doctorFirstName,
+//                     doctorLastName,
+//                     firstname,
+//                     lastname,
+//                     phone,
+//                     retsept,
+//                     sickname,
+//                     year,
+//                     doctorPhone,
+//                   }}
+//                   componentRef={componentRef}
+//                 />
+//               </td>
+//             </tr>
+//           ) : (
+//             <></>
+//           );
+//         }
+//       )}
+//   </tbody>
+// </table>

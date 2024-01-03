@@ -36,38 +36,45 @@ function Appointments() {
           </div>
         </div>
       ) : (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>№</th>
-              <th>Bemor</th>
-              <th>Tel No</th>
-              <th>Ko'rish</th>
-            </tr>
-          </thead>
-          <tbody>
-            {clients?.map((item, inx) => (
-              <tr key={inx}>
-                <td>{inx + 1}</td>
-                <td className="Bem" data-label="Bemor">
-                  <p className="newMsg">new</p>
-                  {item.lastname} {item.firstname}
-                </td>
-                <td data-label="Tel No">{PhoneNumberFormat(item.phone)}</td>
-                <td>
-                  <Link to={`/appointments/${item._id}`}>
-                    <button button="true" className="btn btn-secondary">
-                      Qabul qilish
-                    </button>
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+
+        <main class="tableMain" id="customers_table">
+          <section class="table__body">
+            <table>
+              <thead>
+                <tr>
+                  <th>№</th>
+                  <th>Bemor</th>
+                  <th>Tel No</th>
+                  <th>Ko'rish</th>
+                </tr>
+              </thead>
+              <tbody>
+                {clients?.map((item, inx) => {
+                  return (
+                    <tr key={inx}>
+                      <td>{inx + 1}</td>
+                      <td> {item.lastname} {item.firstname}</td>
+                      <td>+998{PhoneNumberFormat(item.phone)}</td>
+
+                      <td>
+                        <Link to={`/appointments/${item._id}`}>
+                          <button button="true" className="btn btn-secondary">
+                            Qabul qilish
+                          </button>
+                        </Link>
+                      </td>
+
+
+
+                    </tr>
+                  )
+                })}
+
+              </tbody>
+            </table>
+          </section>
+        </main>
       )}
-      {/* <audio controls ref={audioPlayer} src={NotificationSound} />
-            <audio src={NotificationSound}></audio> */}
     </Layout>
   );
 }
