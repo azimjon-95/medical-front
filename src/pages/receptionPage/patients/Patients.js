@@ -34,21 +34,25 @@ const Patients = () => {
 
   localStorage.setItem("dataFalse", dataFalse?.length);
 
-
   function updatePayState(e, id) {
     e.preventDefault();
     let update = dataFalse?.find((i) => i._id === id);
+    let doctorSum = doctors?.data.filter(
+      (i) => i.specialization === update.choseDoctor
+    )[0].feesPerCunsaltation;
 
-    let doctorSum = doctors?.data?.filter(
-      (i) => i.specialization.toLowerCase() === update.choseDoctor.toLowerCase()
-    ).feesPerCunsaltation;
+    let doctorInfo = doctors?.data.filter(
+      (i) => i.specialization === update.choseDoctor
+    )[0];
 
     let newInfo = {
       ...update,
       payState: true,
       paySumm: doctorSum,
       room: { ...update.room, dayOfTreatment: "0" },
+      doctorPhone: doctorInfo?.phone,
     };
+
     uppdate({ id: id, body: newInfo })
       .then((res) => {
         if (res?.data?.success) {
@@ -57,21 +61,20 @@ const Patients = () => {
       })
       .catch((err) => console.log("err", err));
 
-
-
-    // setTimeout(() => {
-    //   let dataList = dataTrue?.find((i) => i._id === id);
-    //   setData(dataList)
-    //   setList(true)
-    // }, 3000)
+    setTimeout(() => {
+      setData({
+        ...newInfo,
+        feesPerCunsaltation: doctorInfo?.feesPerCunsaltation,
+        phone: doctorInfo?.phone,
+      });
+      setList(true);
+    }, 3000);
   }
   // console.log(data);
   let time = new Date();
   let todaysTime =
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
   let Hours = time.getHours() + ":" + time.getMinutes();
-
-
 
   // -----------Delete-------------
   const { confirm } = Modal;
@@ -110,9 +113,7 @@ const Patients = () => {
     position: "fixed",
     top: "0",
     left: "0",
-  }
-
-
+  };
 
   return (
     <Layout>
@@ -145,8 +146,8 @@ const Patients = () => {
               </div>
             </div>
           ) : (
-            <main class="tableMain" id="customers_table">
-              <section class="table__body">
+            <main className="tableMain" id="customers_table">
+              <section className="table__body">
                 <table>
                   <thead>
                     <tr>
@@ -170,12 +171,12 @@ const Patients = () => {
                             <td>
                               {item?.lastname} {item?.firstname}
                             </td>
-                            <td >{PhoneNumberFormat(item?.phone)}</td>
+                            <td>{PhoneNumberFormat(item?.phone)}</td>
                             <td>{item?.choseDoctor}</td>
                             <td>
                               {item?.doctorLastName} {item?.doctorFirstName}
                             </td>
-                            <td >
+                            <td>
                               <del className="Tolanmadi lee">
                                 {NumberFormat(
                                   doctors.data?.find(
@@ -183,20 +184,21 @@ const Patients = () => {
                                       i.specialization?.toLowerCase() ===
                                       item.choseDoctor?.toLowerCase()
                                   )?.feesPerCunsaltation
-                                )} so'm
+                                )}{" "}
+                                so'm
                               </del>
                             </td>
                             <td>
                               <div className="PayContainer">
-                                <div >
-
+                                <div>
                                   <Button
-                                    onClick={(e) => updatePayState(e, item?._id)}
+                                    onClick={(e) =>
+                                      updatePayState(e, item?._id)
+                                    }
                                   >
                                     Qabul qilish
                                   </Button>
                                 </div>
-
                               </div>
                             </td>
                             <td data-label="O'chirish">
@@ -208,11 +210,13 @@ const Patients = () => {
                                 Del
                               </button>
                             </td>
-
                           </tr>
-                        )
+                        );
                       })}
-                    <td style={list ? viewCheckListOnline : { display: "none" }} className="viewCheckList">
+                    <td
+                      style={list ? viewCheckListOnline : { display: "none" }}
+                      className="viewCheckList"
+                    >
                       <button
                         onClick={() => setList(false)}
                         className="OutCheck"
@@ -233,16 +237,12 @@ const Patients = () => {
                           <center id="top">
                             <div className="logo"></div>
                             <div className="info">
-                              <h2 className="item-h2">
-                                Har doim siz bilan!
-                              </h2>
+                              <h2 className="item-h2">Har doim siz bilan!</h2>
                             </div>
                           </center>
                           <div id="mid">
                             <div className="info">
-                              <h2 className="item-h2">
-                                Aloqa uchun malumot
-                              </h2>
+                              <h2 className="item-h2">Aloqa uchun malumot</h2>
                               <p className="text_p">
                                 Manzil : Pop Tinchlik ko'chasi 7-uy
                                 <br />
@@ -278,7 +278,8 @@ const Patients = () => {
                                 <div className="tableitem">
                                   <p className="itemtext">
                                     {" "}
-                                    {data?.doctorLastName} {data?.doctorFirstName}
+                                    {data?.doctorLastName}{" "}
+                                    {data?.doctorFirstName}
                                   </p>
                                 </div>
                               </div>
@@ -288,9 +289,7 @@ const Patients = () => {
                                   <p className="itemtext">Doktor Tel :</p>
                                 </div>
                                 <div className="tableitem">
-                                  <p className="itemtext">
-                                    +998{data?.doctorPhone}
-                                  </p>
+                                  <p className="itemtext">+998{data?.phone}</p>
                                 </div>
                               </div>
 
@@ -301,7 +300,8 @@ const Patients = () => {
 
                                 <div className="tableitem">
                                   <p className="itemtext">
-                                    {NumberFormat(data?.paySum)} so'm
+                                    {NumberFormat(data?.feesPerCunsaltation)}{" "}
+                                    so'm
                                   </p>
                                 </div>
                               </div>
@@ -334,7 +334,7 @@ const Patients = () => {
 
                                 <div className="payment">
                                   <h2 className="item-h1">
-                                    {NumberFormat(data?.paySum)} so'm
+                                    {NumberFormat(data?.paySumm)} so'm
                                   </h2>
                                 </div>
                               </div>
@@ -353,7 +353,7 @@ const Patients = () => {
                         componentRef={data?.componentRef}
                         firstname={data?.firstname}
                         lastname={data?.lastname}
-                        payState={data?.paySum}
+                        payState={data?.paySumm}
                         doctorFirstName={data?.doctorFirstName}
                         doctorLastName={data?.doctorLastName}
                         doctorSpecialization={data?.doctorSpecialization}
@@ -361,15 +361,16 @@ const Patients = () => {
                         Hours={data?.Hours}
                         doctorPhone={data?.doctorPhone}
                         filterarxiv={data?.queueNumber}
+                        phone={data?.phone}
+                        feesPerCunsaltation={data?.feesPerCunsaltation}
                       />
                     </td>
-                  </tbody >
-                </table >
-              </section >
-            </main >
-
+                  </tbody>
+                </table>
+              </section>
+            </main>
           )}
-        </Tabs.TabPane >
+        </Tabs.TabPane>
         <Tabs.TabPane defaultActiveKey="1" tab="Bemorlar" key={1}>
           {dataTrue == 0 ? (
             <div className="NoData">
@@ -378,9 +379,8 @@ const Patients = () => {
               </div>
             </div>
           ) : (
-
-            <main class="tableMain" id="customers_table">
-              <section class="table__body">
+            <main className="tableMain" id="customers_table">
+              <section className="table__body">
                 <table>
                   <thead>
                     <tr>
@@ -400,20 +400,16 @@ const Patients = () => {
                       .map((item, inx) => {
                         return (
                           <tr key={inx}>
-                            <td >
+                            <td>
                               {item?.lastname} {item?.firstname}
                             </td>
-                            <td >
-                              {PhoneNumberFormat(item?.phone)}
-                            </td>
+                            <td>{PhoneNumberFormat(item?.phone)}</td>
                             <tbody>{item?.choseDoctor}</tbody>
-                            <td >
+                            <td>
                               {item?.doctorLastName} {item?.doctorFirstName}
                             </td>
+                            <td>{NumberFormat(item?.paySumm)} so'm</td>
                             <td>
-                              {NumberFormat(item?.paySumm)} so'm
-                            </td>
-                            <td >
                               <button
                                 onClick={() => showDeleteClients(item?._id)}
                                 button="true"
@@ -423,9 +419,8 @@ const Patients = () => {
                               </button>
                             </td>
                           </tr>
-                        )
+                        );
                       })}
-
                   </tbody>
                 </table>
               </section>
@@ -433,10 +428,8 @@ const Patients = () => {
           )}
         </Tabs.TabPane>
       </Tabs>
-    </Layout >
-
+    </Layout>
   );
 };
 
 export default Patients;
-

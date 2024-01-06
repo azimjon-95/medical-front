@@ -36,7 +36,8 @@ function PatientsHistory() {
   );
 
   let time = new Date();
-  let day = time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
+  let day =
+    time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
   let filterarxiv = clients?.filter((i) => i.day == day);
   console.log(clients);
   const [query, setQuery] = useState("");
@@ -67,8 +68,8 @@ function PatientsHistory() {
               </div>
             </div>
           ) : (
-            <main class="tableMain" id="customers_table">
-              <section class="table__body">
+            <main className="tableMain" id="customers_table">
+              <section className="table__body">
                 <table>
                   <thead>
                     <tr>
@@ -106,7 +107,10 @@ function PatientsHistory() {
                           return !lastname?.includes("Mavjud") ? (
                             <tr key={inx}>
                               <td>{inx + 1}</td>
-                              <td> {lastname} {firstname}</td>
+                              <td>
+                                {" "}
+                                {lastname} {firstname}
+                              </td>
                               <td>{sickname}</td>
                               <td>+998{phone}</td>
 
@@ -171,9 +175,11 @@ function PatientsHistory() {
                                 />
                               </td>
                             </tr>
-                          ) : ""
-                        })}
-
+                          ) : (
+                            ""
+                          );
+                        }
+                      )}
                   </tbody>
                 </table>
               </section>
@@ -188,9 +194,8 @@ function PatientsHistory() {
               </div>
             </div>
           ) : (
-
-            <main class="tableMain" id="customers_table">
-              <section class="table__body">
+            <main className="tableMain" id="customers_table">
+              <section className="table__body">
                 <table>
                   <thead>
                     <tr>
@@ -228,7 +233,10 @@ function PatientsHistory() {
                           return !lastname?.includes("Mavjud") ? (
                             <tr key={inx}>
                               <td>{inx + 1}</td>
-                              <td> {lastname} {firstname}</td>
+                              <td>
+                                {" "}
+                                {lastname} {firstname}
+                              </td>
                               <td>{sickname}</td>
                               <td>+998{phone}</td>
 
@@ -293,9 +301,11 @@ function PatientsHistory() {
                                 />
                               </td>
                             </tr>
-                          ) : ""
-                        })}
-
+                          ) : (
+                            ""
+                          );
+                        }
+                      )}
                   </tbody>
                 </table>
               </section>

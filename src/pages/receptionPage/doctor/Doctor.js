@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import imgNoData from "../../../assets/nodata.png";
 import { IoEyeOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import '../../../styles/table.css'
+import "../../../styles/table.css";
 import { useGetAllDoctorsQuery } from "../../../redux/doctorApi";
 
 const Doctor = () => {
@@ -30,10 +30,8 @@ const Doctor = () => {
           </div>
         </div>
       ) : (
-
-
-        <main class="tableMain" id="customers_table">
-          <section class="table__body">
+        <main className="tableMain" id="customers_table">
+          <section className="table__body">
             <table>
               <thead>
                 <tr>
@@ -54,12 +52,16 @@ const Doctor = () => {
                         {item.firstName} {item.lastName}
                       </td>
                       <td data-label="Darajasi">{item.specialization}</td>
-                      <td data-label="Tel No">{PhoneNumberFormat(item.phone)}</td>
+                      <td data-label="Tel No">
+                        {PhoneNumberFormat(item.phone)}
+                      </td>
                       <td data-label="Konsultatsiya">
                         {NumberFormat(item.feesPerCunsaltation)} so'm
                       </td>
                       <td data-label="Bemorlari">
-                        <Link to={`/doctorSinglePageAdmin/${item.specialization}`}>
+                        <Link
+                          to={`/doctorSinglePageAdmin/${item.specialization}`}
+                        >
                           <Button
                             style={{
                               background: "transparent",
@@ -74,9 +76,8 @@ const Doctor = () => {
                         </Link>
                       </td>
                     </tr>
-                  )
+                  );
                 })}
-
               </tbody>
             </table>
           </section>

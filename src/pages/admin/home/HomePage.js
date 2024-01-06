@@ -29,8 +29,6 @@ const HomePage = () => {
     ?.filter((i) => i?.day?.split(".")[1] == currentMonth)
     ?.sort((a, b) => a?.day?.split(".")[2] < b?.day?.split(".")[2]);
 
-  console.log(allUserForChart);
-
   let week1 = allUserForChart
     ?.filter((i) => i.day.split(".")[0] >= 1 && i.day.split(".")[0] <= 7)
     ?.reduce((a, b) => a + b.paySumm, 0);

@@ -1,25 +1,17 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Link } from "react-router-dom"
-import "./style.css"
-import logo from "../../assets/img/logo.png"
-import {
-    Button,
-    DatePicker,
-    Form,
-    Input,
-    Modal,
-    message,
-} from 'antd';
+import React, { useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
+import "./style.css";
+import logo from "../../assets/img/logo.png";
+import { Button, DatePicker, Form, Input, Modal, message } from "antd";
 import { NumberFormat } from "../../hook/NumberFormat";
 import { useCreateClientMutation } from "../../redux/clientApi";
 import { PiPrinterFill } from "react-icons/pi";
 import CheckList from "../../components/checkLists/checkList/CheckList";
 import { useGetAllDoctorsQuery } from "../../redux/doctorApi";
-import html2canvas from 'html2canvas';
-
+import html2canvas from 'html2canvas'
 function Home() {
     const [modal2Open, setModal2Open] = useState(false);
-    const [componentSize, setComponentSize] = useState('default');
+    const [componentSize, setComponentSize] = useState("default");
     const onFormLayoutChange = ({ size }) => {
         setComponentSize(size);
     };
@@ -35,10 +27,8 @@ function Home() {
     const [doctorLastName, setDoctorLastName] = useState("");
     const [doctorSpecialization, setDoctorSpecialization] = useState("");
     const [queueNumber, setQueueNumber] = useState(0);
-    const [list, setList] = useState(false);;
+    const [list, setList] = useState(false);
     const [choseDoctor, setChoseDoctor] = useState(null);
-
-
 
     let { data: all_Doctor } = useGetAllDoctorsQuery();
     let allDoctor = all_Doctor?.data || [];
@@ -50,7 +40,6 @@ function Home() {
         setDoctorSpecialization(doctor_info?.specialization);
         setDoctorPhone(doctor_info?.phone);
     }, [choseDoctor]);
-
 
     let time = new Date();
     let Hours = time.getHours() + ":" + time.getMinutes();
@@ -94,8 +83,6 @@ function Home() {
         setYear(dateString);
     };
 
-
-
     // -------------------------------------
 
     const screenshotRef = useRef(null);
@@ -112,36 +99,33 @@ function Home() {
     };
 
 
-
-
     return (
         <div className="homeBoxCont">
-            <div className='home'>
+            <div className="home">
                 <div className="home__navbar">
                     <div className="home__logo">
                         <img src={logo} alt="" />
                     </div>
-                    <div className='nav__btns nav__btnsShow'>
+                    <div className="nav__btns nav__btnsShow">
                         <Link to={`/login`}>Tizimga kirish</Link>
                         <Button type="primary" onClick={() => setModal2Open(true)}>
                             Ro'yhatdan o'tish
                         </Button>
                     </div>
                 </div>
-                <h1 className='home__title'>
+                <h1 className="home__title">
                     <span>HAYOTLAR</span>
                     <span>SIFATINI </span>
                     <span>O'ZGARTIRISHGA</span>
                     <span>HARAKAT</span>
                     <span>QILAMIZ!</span>
                 </h1>
-                <div className='nav__btns nav__btnsHide'>
+                <div className="nav__btns nav__btnsHide">
                     <Link to={`/login`}>Tizimga kirish</Link>
                     <Button type="primary" onClick={() => setModal2Open(true)}>
                         Ro'yhatdan o'tish
                     </Button>
                 </div>
-
 
                 <Modal
                     title="Do'ktor qabuliga yozilish uchun maydonlarni toldiring!"
@@ -166,21 +150,22 @@ function Home() {
                         style={{
                             maxWidth: 700,
                         }}
-
-
                     >
-
                         <Form.Item label="Ism" name="firstname" direction="vertical">
-                            <Input value={firstname}
+                            <Input
+                                value={firstname}
                                 onChange={(e) => setFirstName(e.target.value)}
                                 type="text"
-                                placeholder="Ismi" />
+                                placeholder="Ismi"
+                            />
                         </Form.Item>
                         <Form.Item label="Familiya" name="lastname">
-                            <Input value={lastname}
+                            <Input
+                                value={lastname}
                                 onChange={(e) => setLastName(e.target.value)}
                                 type="text"
-                                placeholder="Familiya" />
+                                placeholder="Familiya"
+                            />
                         </Form.Item>
                         <Form.Item
                             label="Yil:"
@@ -196,16 +181,21 @@ function Home() {
                             />
                         </Form.Item>
                         <Form.Item label="Address" name="address" direction="vertical">
-                            <Input value={address}
+                            <Input
+                                value={address}
                                 onChange={(e) => setAddress(e.target.value)}
                                 type="text"
-                                placeholder="Manzili" />
+                                placeholder="Manzili"
+                            />
                         </Form.Item>
-                        <Form.Item label="Tel:" name="phone" >
-                            <Input value={phone}
+                        <Form.Item label="Tel:" name="phone">
+                            <Input
+                                value={phone}
                                 onChange={(e) => setPhone(e.target.value)}
                                 type="number"
-                                placeholder="Tel raqam" style={{ width: "100%" }} />
+                                placeholder="Tel raqam"
+                                style={{ width: "100%" }}
+                            />
                         </Form.Item>
                         <Form.Item
                             label="Doctor"
@@ -213,8 +203,12 @@ function Home() {
                             required
                             rules={[{ required: true }]}
                         >
-                            <select className='SelectBar' required onChange={(e) => setChoseDoctor(e.target.value)}>
-                                <option >doctor tanlash</option>
+                            <select
+                                className="SelectBar"
+                                required
+                                onChange={(e) => setChoseDoctor(e.target.value)}
+                            >
+                                <option>doctor tanlash</option>
                                 {allDoctor
                                     ?.filter((i) => i.docORrecep === "doctor")
                                     .map((item, index) => (
@@ -226,12 +220,11 @@ function Home() {
                             </select>
                         </Form.Item>
                         <Form.Item label="To'lov:">
-                            {
-                                paySum ?
-                                    <div style={{ width: "100%" }} >{NumberFormat(paySum)} so'm</div>
-                                    :
-                                    ""
-                            }
+                            {paySum ? (
+                                <div style={{ width: "100%" }}>{NumberFormat(paySum)} so'm</div>
+                            ) : (
+                                ""
+                            )}
                         </Form.Item>
                     </Form>
                     <div className={`${list ? "viewCheckList" : "ListNone"}`}>
@@ -244,7 +237,7 @@ function Home() {
                                 <PiPrinterFill />
                             </button>
 
-                            <div ref={screenshotRef} className="waveList">
+                            <div className="waveList">
                                 <center id="top">
                                     <div className="logo"></div>
                                     <div className="info">
@@ -337,7 +330,10 @@ function Home() {
 
                                         <div className="tabletitle">
                                             <div className="payment">
-                                                <div className="item-h1">Do'ktor qabuliga kirishdan avval to'lovni amalga oshirin</div>
+                                                <div className="item-h1">
+                                                    Do'ktor qabuliga kirishdan avval to'lovni amalga
+                                                    oshirin
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -367,19 +363,9 @@ function Home() {
                         />
                     </div>
                 </Modal>
-
             </div>
         </div>
     )
 }
 
-export default Home
-
-
-
-
-
-
-
-
-
+export default Home;

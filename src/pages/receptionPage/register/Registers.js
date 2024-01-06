@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Layout from "../../../components/layout/Layout";
-import { Col, Form, Input, message, Row, Select, DatePicker } from "antd";
+import { Col, Checkbox, Form, Input, message, Row, Select, DatePicker } from "antd";
 import "./style.css";
 import { NumberFormat } from "../../../hook/NumberFormat";
 import ReactToPrint from "react-to-print";
@@ -17,7 +17,6 @@ const Register = () => {
   const [address, setAddress] = useState("");
   const [year, setYear] = useState("");
   const [phone, setPhone] = useState("");
-  const [doctorPhone, setDoctorPhone] = useState("");
   const [paySum, setPaySum] = useState(0);
   const [payState, setPaid] = useState("");
   const [choseDoctor, setChoseDoctor] = useState("");
@@ -25,13 +24,22 @@ const Register = () => {
   const [doctorLastName, setDoctorLastName] = useState("");
   const [doctorSpecialization, setDoctorSpecialization] = useState("");
   const [list, setList] = useState(false);
-
   const [queueNumber, setQueueNumber] = useState(0);
+
+  const [idNumber, setIdNumber] = useState("");
+  const [temperature, setTemperature] = useState("");
+  const [weight, setWeight] = useState("");
+  const [height, setHeight] = useState("");
+  const [doctorPhone, setDoctorPhone] = useState("");
+  const [urgentCheck, setUrgentCheck] = useState("");
+  const [diagnostics, setDiagnostics] = useState("");
+  const [analysis, setAnalysis] = useState("");
+  const [urgent, setUrgent] = useState("");
+
 
   let { data: users, isLoading: loading } = useGetAllUsersQuery();
   let { data: all_Doctor } = useGetAllDoctorsQuery();
   let allDoctor = all_Doctor?.data || [];
-
   const [CreateNewClient, { isLoading, isSuccess }] = useCreateClientMutation();
   let sortedData = allDoctor?.filter((i) => i.specialization.length > 3);
 
@@ -52,6 +60,24 @@ const Register = () => {
     });
   }
 
+  const Diagnostics = [];
+  for (const item of sortedData) {
+    Diagnostics.push(
+      {
+        value: "EKG",
+        label: "EKG"
+      },
+      {
+        value: "UTT",
+        label: "UTT"
+      },
+      {
+        value: "MRT",
+        label: "MRT"
+      }
+    );
+  }
+
   let time = new Date();
 
   let todaysTime =
@@ -68,6 +94,14 @@ const Register = () => {
       phone,
       address,
       year,
+      idNumber,
+      temperature,
+      weight,
+      height,
+      diagnostics,
+      urgentCheck,
+      analysis,
+      urgent,
       payState,
       choseDoctor: doctor_price.specialization,
       paySumm: doctor_price.feesPerCunsaltation,
@@ -96,6 +130,16 @@ const Register = () => {
     setYear(dateString);
   };
 
+
+  // ----------ID number-------------
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    const regexPattern = /^[a-zA-Z]{2}\d{7}$/;
+    if (regexPattern.test(value)) {
+      setIdNumber(value);
+    }
+  };
+
   return (
     <Layout>
       <h3 className="text-center">Bemorni ro'yhatga olish</h3>
@@ -103,7 +147,22 @@ const Register = () => {
         <Row className="Row">
           <Col className="Col-Form">
             <Form.Item
-              label="First name"
+              label="Shaxsiy raqami"
+              name="ID number"
+              required
+              rules={[{ required: true }]}
+            >
+              <Input
+                value={idNumber}
+                onChange={handleInputChange}
+                type="string"
+                placeholder="ID number"
+              />
+            </Form.Item>
+          </Col>
+          <Col className="Col-Form">
+            <Form.Item
+              label="Ismi"
               name="firstname"
               required
               rules={[{ required: true }]}
@@ -112,13 +171,13 @@ const Register = () => {
                 value={firstname}
                 onChange={(e) => setFirstName(e.target.value)}
                 type="text"
-                placeholder="Ismi"
+                placeholder="First name"
               />
             </Form.Item>
           </Col>
           <Col className="Col-Form">
             <Form.Item
-              label="Last Name"
+              label="Familiya"
               name="lastname"
               required
               rules={[{ required: true }]}
@@ -127,13 +186,16 @@ const Register = () => {
                 value={lastname}
                 onChange={(e) => setLastName(e.target.value)}
                 type="text"
-                placeholder="Familiya"
+                placeholder="Last Name"
               />
             </Form.Item>
           </Col>
+
+        </Row>
+        <Row className="Row">
           <Col className="Col-Form">
             <Form.Item
-              label="Phone number"
+              label="Tel raqami"
               name="number"
               required
               rules={[{ required: true }]}
@@ -142,31 +204,14 @@ const Register = () => {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 type="number"
-                placeholder="Tel raqam"
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row className="Row">
-          <Col className="Col-Form">
-            <Form.Item
-              label="Address"
-              name="Address"
-              required
-              rules={[{ required: true }]}
-            >
-              <Input
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                type="text"
-                placeholder="Manzili"
+                placeholder="Phone number"
               />
             </Form.Item>
           </Col>
 
           <Col className="Col-Form">
             <Form.Item
-              label="Year"
+              label="Tug'ilgan sana:"
               name="year"
               required
               rules={[{ required: true }]}
@@ -176,13 +221,14 @@ const Register = () => {
                 style={{ width: "100%" }}
                 value={year}
                 onChange={onChange}
+                placeholder="yil/oy/kun"
               />
             </Form.Item>
           </Col>
 
           <Col className="Col-Form">
             <Form.Item
-              label="Doctor"
+              label="Doktor"
               name="doctor"
               required
               rules={[{ required: true }]}
@@ -190,7 +236,7 @@ const Register = () => {
               <Select
                 showSearch
                 // style={{ width: 200 }}
-                placeholder="Doctorni tanlang..."
+                placeholder="Doktorni tanlang"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
                   (option?.label ?? "").includes(input)
@@ -207,6 +253,121 @@ const Register = () => {
           </Col>
         </Row>
         <Row className="Row">
+          <Col className="Col-Form">
+            <Form.Item
+              label="Doimiy yashash joyi:"
+              name="Address"
+              required
+              rules={[{ required: true }]}
+            >
+              <Input
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                type="text"
+                placeholder="Address"
+              />
+            </Form.Item>
+          </Col>
+
+          <div className="Col-Form_Box">
+            <Col className="Col-Form">
+              <Form.Item
+                label="Bo'yi"
+                name="height"
+              >
+                <Input
+                  value={height}
+                  onChange={(e) => setHeight(e.target.value)}
+                  type="number"
+                  placeholder="Height"
+                />
+              </Form.Item>
+            </Col>
+            <Col className="Col-Form">
+              <Form.Item
+                label="Vazni"
+                name="weight"
+
+              >
+                <Input
+                  value={weight}
+                  onChange={(e) => setWeight(e.target.value)}
+                  type="number"
+                  placeholder="Weight"
+                />
+              </Form.Item>
+            </Col>
+            <Col className="Col-Form">
+              <Form.Item
+                label="Tana harorati"
+                name="Temperature"
+              >
+                <Input
+                  value={temperature}
+                  onChange={(e) => setTemperature(e.target.value)}
+                  type="text"
+                  placeholder="Temperature"
+                />
+              </Form.Item>
+            </Col>
+          </div>
+          <Col className="Col-Form">
+            <Form.Item
+              label="Shoshilinch tarzda yuborildi"
+              name="false"
+            >
+              <div className="doctorName">
+                <Checkbox className="onChecked" onChange={(e) => setUrgentCheck(e.target.checked)}>{urgentCheck ? "Ha" : "Yo'q"} </Checkbox>
+                {
+                  urgentCheck ? <Input
+                    value={urgent}
+                    onChange={(e) => setUrgent(e.target.value)}
+                    type="text"
+                    placeholder="Malumot..."
+                    className="urgent"
+                  /> : ""
+                }
+              </div>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row className="Row">
+          <div className="Col-Form_Box">
+            <Col style={{ width: "100%" }} className="Col-Form">
+              <Form.Item
+                label="Diagnostika"
+                name="doctor"
+              >
+                <Select
+                  showSearch
+                  // style={{ width: 200 }}
+                  placeholder="Diagnostika"
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "").includes(input)
+                  }
+                  filterSort={(optionA, optionB) =>
+                    (optionA?.label ?? "")
+                      .toLowerCase()
+                      .localeCompare((optionB?.label ?? "").toLowerCase())
+                  }
+                  onChange={(e) => setDiagnostics(e)}
+                  options={Diagnostics}
+                />
+              </Form.Item>
+            </Col>
+            <Col style={{ width: "100%" }} className="Col-Form">
+              <Form.Item
+                label="Analiz"
+                name="analiz"
+              >
+                <div className="doctorName">
+                  <Checkbox className="onChecked" onChange={(e) => setAnalysis(e.target.checked)}>{analysis ? "Ha" : "Yo'q"} </Checkbox>
+
+                </div>
+              </Form.Item>
+            </Col>
+          </div>
           <Col className="Col-Form">
             <Form.Item label="Do'ktor FIO" name="Do'ktor FIO">
               <div className="doctorName">
@@ -243,6 +404,8 @@ const Register = () => {
               </div>
             </Form.Item>
           </Col>
+
+
         </Row>
 
         <Col className="Col-Form">
@@ -399,3 +562,5 @@ const Register = () => {
 };
 
 export default Register;
+
+
