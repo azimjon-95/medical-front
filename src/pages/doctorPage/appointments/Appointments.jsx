@@ -36,9 +36,8 @@ function Appointments() {
           </div>
         </div>
       ) : (
-
-        <main class="tableMain" id="customers_table">
-          <section class="table__body">
+        <main className="tableMain" id="customers_table">
+          <section className="table__body">
             <table>
               <thead>
                 <tr>
@@ -53,7 +52,10 @@ function Appointments() {
                   return (
                     <tr key={inx}>
                       <td>{inx + 1}</td>
-                      <td> {item.lastname} {item.firstname}</td>
+                      <td>
+                        {" "}
+                        {item.lastname} {item.firstname}
+                      </td>
                       <td>+998{PhoneNumberFormat(item.phone)}</td>
 
                       <td>
@@ -63,13 +65,9 @@ function Appointments() {
                           </button>
                         </Link>
                       </td>
-
-
-
                     </tr>
-                  )
+                  );
                 })}
-
               </tbody>
             </table>
           </section>
