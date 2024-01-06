@@ -18,6 +18,7 @@ function AppointmentSinglePage() {
   const { id } = useParams();
   const [sickname, setSickname] = useState("");
   const [retsept, setRetsept] = useState("");
+  const [patientStatus, setPatientStatus] = useState("");
 
   let { data: singleUser } = useGetSingleUserQuery(id);
   let user = singleUser?.data;
@@ -27,6 +28,7 @@ function AppointmentSinglePage() {
     let newUser = {
       ...user,
       sickname,
+      patientStatus,
       retsept,
       view: true,
       room: { ...user.room, dayOfTreatment: "" + user.room.dayOfTreatment },
@@ -65,6 +67,12 @@ function AppointmentSinglePage() {
               value={sickname}
               onChange={(e) => setSickname(e.target.value)}
             />
+            <label htmlFor="">Bemor holati*</label>
+            <input
+              type="text"
+              value={patientStatus}
+              onChange={(e) => setPatientStatus(e.target.value)}
+            />
             <label htmlFor="" className="label">
               Retsept(dorilar)*
             </label>
@@ -93,6 +101,7 @@ function AppointmentSinglePage() {
               </p>
             </div>
             <p>Tashxis : Bosh og'rigi</p>
+            <p>Bemor holati : Bosh og'rigi</p>
             <ol>
               <li>trimol</li>
               <li>analgin</li>
