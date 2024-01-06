@@ -15,7 +15,7 @@
 // const Balans = ({ dataTrue }) => {
 //   let { data: users, isLoading: loading } = useGetAllUsersQuery();
 //   let { data: rooms } = useGetAllRoomsQuery();
-//   const [selectedDate, setSelectedDate] = useState(moment().startOf("day"));
+//   const [selectedDate, setSelectedDate] = u~seState(moment().startOf("day"));
 //   let time = new Date();
 //   let dateChane =
 //     time.getDate() - 1 + "." + (time.getMonth() + 1) + "." + time.getFullYear();
@@ -209,8 +209,6 @@ const Balans = () => {
     (i) => i.outDay === change && i.view === true
   );
 
-  console.log(baseRoom);
-
   let TreatmentsFees = baseRoom?.reduce(function (prev, cur) {
     return prev + cur.room.payForRoom;
   }, 0);
@@ -255,9 +253,10 @@ const Balans = () => {
               <div className="">
                 <CountUp
                   className="lg-value1"
-                  end={NumberFormat(total)}
+                  // end={NumberFormat(total)}
+                  end={total}
                   decimals="3"
-                  suffix=" so'm"
+                  suffix=""
                 />
               </div>
             </div>
@@ -274,9 +273,10 @@ const Balans = () => {
               <div className="">
                 <CountUp
                   className="lg-value1"
-                  end={NumberFormat(result)}
+                  // end={NumberFormat(result)}
+                  end={result}
                   decimals="3"
-                  suffix=" so'm"
+                  suffix=""
                 />
               </div>
             </div>

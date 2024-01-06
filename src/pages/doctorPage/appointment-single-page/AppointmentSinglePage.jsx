@@ -33,7 +33,6 @@ function AppointmentSinglePage() {
     };
     updateClient({ id: id, body: newUser })
       .then((res) => {
-   
         if (res.data.success) {
           message.success("malumotlar saqlandi");
           navigate(`/doctor/patients_history`);
@@ -80,6 +79,28 @@ function AppointmentSinglePage() {
               Saqlash
             </button>
           </form>
+        </div>
+
+        <div className="retsept_history">
+          <h3>Tarix:</h3>
+          <div className="retsept_history_item">
+            <div className="retsept_history_item_caption">
+              <p>
+                Sana: <span>6.1.2024</span>{" "}
+              </p>
+              <p>
+                Doctor: <span>Fozilbekov Roziqul</span>{" "}
+              </p>
+            </div>
+            <p>Tashxis : Bosh og'rigi</p>
+            <ol>
+              <li>trimol</li>
+              <li>analgin</li>
+              <li>analgin</li>
+              <li>trimol</li>
+              <li>fastungel</li>
+            </ol>
+          </div>
         </div>
       </div>
 
