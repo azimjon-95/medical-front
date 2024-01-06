@@ -14,8 +14,10 @@ const CheckList = ({
   todaysTime,
   doctorPhone,
   filterarxiv,
+  customersTableRef
 }) => {
   return (
+
     <div ref={componentRef} id="invoice-POS">
       <center id="top">
         <div className="logo"></div>
@@ -180,13 +182,23 @@ const CheckList = ({
             </div>
 
             <div className="tabletitle">
-              <div className="tableitem">
-                <p>To'landi: </p>
-              </div>
+              {
+                customersTableRef ?
+                  <div >Do'ktor qabuliga kirishdan avval to'lovni amalga oshirin</div>
+                  :
+                  <>
 
-              <div className="payment">
-                <h2 className="item-h1">{NumberFormat(payState)} so'm</h2>
-              </div>
+                    <div className="tableitem">
+                      <p>To'landi: </p>
+                    </div>
+
+                    <div className="payment">
+                      <h2 className="item-h1">{NumberFormat(payState)} so'm</h2>
+                    </div>
+                  </>
+
+              }
+
             </div>
           </div>
 

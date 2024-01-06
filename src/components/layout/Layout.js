@@ -140,13 +140,22 @@ const Layout = ({ children }) => {
               <button>
                 <IoMdNotifications />
                 {admin === "doctor" ? (
-                  <p className={+category === 0 ? "NotifNone" : "NotifBlock"}>
-                    {category}
-                  </p>
+                  <>
+                    {category === 0 ? "" :
+                      <p className={+category === 0 ? "NotifNone" : "NotifBlock"}>
+                        {category}
+                      </p>
+                    }
+                  </>
                 ) : (
-                  <p className={+dataFalse === 0 ? "NotifNone" : "NotifBlock"}>
-                    {dataFalse}
-                  </p>
+                  <>
+                    {dataFalse === 0 ? "" :
+                      <p className={+dataFalse === 0 ? "NotifNone" : "NotifBlock"}>
+                        {dataFalse}
+                      </p>
+                    }
+
+                  </>
                 )}
               </button>
             )}
@@ -163,7 +172,7 @@ const Layout = ({ children }) => {
           )}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 export default Layout;

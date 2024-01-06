@@ -21,6 +21,7 @@ import PageNotFound from "./components/pageNotFound/PageNotFound";
 import GetPatients from "./pages/admin/singlePage/getPatients/GetPatients";
 import { useState, useEffect } from "react";
 import Wallet from "./pages/doctorPage/wallet/Wallet";
+import Home from "./components/home/Home";
 
 
 function App() {
@@ -60,7 +61,8 @@ function App() {
         <LoadingTik />
       ) : (
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/add-doctor" element={<AddDoctors />} />
           <Route path="/patients" element={<Patients />} />
           <Route path="reports/" element={<HomePage />} />

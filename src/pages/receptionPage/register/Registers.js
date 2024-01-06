@@ -78,7 +78,7 @@ const Register = () => {
       day: todaysTime,
       month: time.toLocaleString("default", { month: "long" }),
     };
-    console.log(AllInfo);
+
     CreateNewClient(AllInfo)
       .then((res) => {
         if (res?.data?.success) {
@@ -127,7 +127,7 @@ const Register = () => {
                 value={lastname}
                 onChange={(e) => setLastName(e.target.value)}
                 type="text"
-                placeholder="Familyasi"
+                placeholder="Familiya"
               />
             </Form.Item>
           </Col>

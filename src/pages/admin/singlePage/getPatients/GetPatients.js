@@ -38,7 +38,7 @@ const GetPatients = () => {
   let day =
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
   let filterarxiv = clients?.filter((i) => i.day == day);
-
+  console.log(clients);
   return (
     <div className="Search-Box">
       <div className="searchingBox">
@@ -48,10 +48,10 @@ const GetPatients = () => {
             Medme
           </h4>
         </Link>
-        {clients.length >= 10 ? (
+        {clients?.length >= 10 ? (
           <div className="search">
             <div>
-              <FaUsers />-{clients.length}
+              <FaUsers />-{clients?.length}
             </div>
             <input
               value={query}
@@ -65,18 +65,18 @@ const GetPatients = () => {
           <></>
         )}
       </div>
-      
 
 
-      {clients.length === 0 ? (
+
+      {clients?.length === 0 ? (
         <div className="NoData">
           <div className="NoDataImg">
             <img src={imgNoData} alt="No Data" />
           </div>
         </div>
       ) : (
-        <main class="tableMain" id="customers_table">
-          <section class="table__body">
+        <main className="tableMain" id="customers_table">
+          <section className="table__body">
             <table>
               <thead>
                 <tr>

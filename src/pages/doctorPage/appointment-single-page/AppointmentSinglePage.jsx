@@ -33,7 +33,7 @@ function AppointmentSinglePage() {
     };
     updateClient({ id: id, body: newUser })
       .then((res) => {
-        console.log(res);
+   
         if (res.data.success) {
           message.success("malumotlar saqlandi");
           navigate(`/doctor/patients_history`);

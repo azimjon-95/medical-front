@@ -87,7 +87,7 @@
 
 
 /* ------Table-------- */
-
+/* 
 .table {
     width: 100%;
     border-collapse: collapse;
@@ -101,25 +101,24 @@
     font-size: 14px;
 }
 
-
+ */
 .table th {
     background-color: dodgerblue;
     color: #ffffff;
 }
 
-.table tbody tr:nth-child(even) {
-    background-color: #f5f5f5;
-}
 
-.table>tbody {
+/* 
+table>tbody {
     overflow: auto;
     height: 100%;
     width: 100%;
 
-}
+} */
 
 
-@media(max-width: 900px) {
+
+/* @media(max-width: 900px) {
 
     .table,
     .table tbody,
@@ -131,10 +130,10 @@
     }
 
 
-}
+} */
 
 @media(max-width: 890px) {
-    .table thead {
+    /* .table thead {
         display: none;
     }
 
@@ -168,7 +167,7 @@
         font-size: 14px;
         font-weight: bold;
         text-align: left;
-    }
+    } */
 
     .TableD {
         text-align: center;

@@ -245,9 +245,11 @@
 .MobileSidText {
     display: none;
 }
-.supportBtn >svg{
+
+.supportBtn>svg {
     font-size: 18px;
 }
+
 .supportBtn {
     width: 97%;
     position: absolute;

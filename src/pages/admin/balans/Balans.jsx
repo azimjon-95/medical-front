@@ -36,7 +36,6 @@ const Balans = ({ dataTrue }) => {
   };
 
 
-
   // Calculation of payments from hospitals and patients
   let base = dataTrue?.filter((i) => i.day === change && i.view === true)
   let result = base?.reduce(function (prev, cur) {

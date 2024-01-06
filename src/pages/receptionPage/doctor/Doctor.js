@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import imgNoData from "../../../assets/nodata.png";
 import { IoEyeOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
-
+import '../../../styles/table.css'
 import { useGetAllDoctorsQuery } from "../../../redux/doctorApi";
 
 const Doctor = () => {

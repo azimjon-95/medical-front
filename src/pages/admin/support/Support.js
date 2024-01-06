@@ -8,19 +8,21 @@ import { SmileOutlined } from '@ant-design/icons';
 import { IoIosCall } from "react-icons/io";
 import { FaTelegram } from "react-icons/fa";
 import { BsInstagram } from "react-icons/bs";
+import { IoCallOutline } from "react-icons/io5";
 
 const Support = () => {
 
     const [openBor, setOpenBor] = useState(false)
     const [formData, setFormDate] = useState({
         fullname: '',
+        phone: '',
         question: ''
     })
 
     const sendMsgToBot = async (e) => {
         e.preventDefault()
 
-        let msg = `<b> Klent savol qoldirdi!</b>%0A%0A👤 <b>Ismi</b>: ${formData.fullname}%0A%0A✉️ <b>Savol:</b> ${formData.question}%0A`
+        let msg = `<b> Klent savol qoldirdi!</b>%0A%0A👤 <b>Ismi</b>: ${formData.fullname} %0A%0A 📞 <b>Tel</b>: ${formData.phone} %0A%0A ✉️ <b>Savol:</b> ${formData.question} %0A`
 
         let tokenBot = "6662523456:AAHLAjqjIyslOzbUfj-pcXSYPnV1cR1EOPI"
 
@@ -62,6 +64,7 @@ const Support = () => {
                     <h3>Qanday yordam bera olamiz?</h3>
 
                     <Input className={`${openBor ? "TextInpBor" : ""}`} onChange={(e) => setFormDate({ ...formData, fullname: e.target.value })} value={formData.fullname} size="large" placeholder="Ism Familya..." prefix={<UserOutlined />} />
+                    <Input className={`${openBor ? "TextInpBor" : ""}`} onChange={(e) => setFormDate({ ...formData, phone: e.target.value })} value={formData.phone} size="large" placeholder="Tel nomer..." prefix={<IoCallOutline />} />
 
                     <TextArea
                         className={`${openBor ? "TextAreaBor" : "TextArea"}`}

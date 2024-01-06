@@ -20,6 +20,9 @@ function DoctorsSlite() {
   let day =
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
 
+
+
+ 
   return (
     <div className="carousel">
       {doctors.length > 0 ? (
@@ -41,7 +44,7 @@ function DoctorsSlite() {
                 <div className="sDay">{day}</div>
                 <div className="CountDay-M">
                   <LiaMoneyBillWaveSolid />{" "}
-                  {value.specialization === 0 ? (
+                  {value.specialization !== 0 ? (
                     <>
                       {" " + NumberFormat(dailyMoney[value.specialization])}{" "}
                       so'm
@@ -52,7 +55,7 @@ function DoctorsSlite() {
                 </div>
                 <div className="CountDay-M">
                   <FaUsers />{" "}
-                  {value.specialization === 0 ? (
+                  {value.specialization !== 0 ? (
                     <>{todaysClients[value.specialization]}</>
                   ) : (
                     ""
@@ -63,28 +66,30 @@ function DoctorsSlite() {
                   {value.percent ? (
                     <div className="CountDay-Box">
                       <div className="CountDay-M">
-                        <TbFilePercent /> {value.percent}%
+                        <TbFilePercent /> {value?.percent}%
                       </div>
                       <div className="CountDay-M">
                         <GiTakeMyMoney />{" "}
                         {value.specialization === 0 ? (
+                          ""
+                        ) : (
                           <>
                             {" "}
                             {NumberFormat(
                               (dailyMoney[value.specialization] *
                                 value.percent) /
-                                100
+                              100
                             )}{" "}
-                            so'm
+
                           </>
-                        ) : (
-                          ""
                         )}
                       </div>
                     </div>
                   ) : (
                     <div className="CountDay-M">
-                      <GiTakeMyMoney /> {NumberFormat(value.salary)}
+                      <GiTakeMyMoney /> {
+                        NumberFormat(value.salary)
+                      } so'm
                     </div>
                   )}
                 </div>
