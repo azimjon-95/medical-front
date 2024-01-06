@@ -15,7 +15,7 @@ import { useCreateClientMutation } from "../../redux/clientApi";
 import { PiPrinterFill } from "react-icons/pi";
 import CheckList from "../../components/checkLists/checkList/CheckList";
 import { useGetAllDoctorsQuery } from "../../redux/doctorApi";
-
+import html2canvas from 'html2canvas';
 
 function Home() {
     const [modal2Open, setModal2Open] = useState(false);
@@ -97,32 +97,22 @@ function Home() {
 
 
     // -------------------------------------
-    const customersTableRef = useRef(null);
 
-    const toPDF = () => {
-        const htmlContent = `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <link rel="stylesheet" type="text/css" href="style.css">
-        </head>
-        <body>
-            <main class="table" id="customers_table">${customersTableRef.current.innerHTML}</main>
-        </body>
-        </html>`;
+    const screenshotRef = useRef(null);
 
-        const newWindow = window.open();
-        newWindow.document.write(htmlContent);
+    const takeScreenshot = () => {
+        const element = screenshotRef.current;
 
-        newWindow.onload = () => {
-            newWindow.print();
-            newWindow.onafterprint = () => {
-                newWindow.close();
-            };
-        };
+        if (element) {
+            html2canvas(element).then((canvas) => {
+                const screenshotUrl = canvas.toDataURL();
+                console.log(screenshotUrl);
+            });
+        }
     };
+
+
+
 
     return (
         <div className="homeBoxCont">
@@ -249,12 +239,12 @@ function Home() {
                             +
                         </button>
                         <div className="viewBox">
-                            <button onClick={toPDF} className="PrintChekList" type="submit">
+                            <button onClick={takeScreenshot} className="PrintChekList" type="submit">
                                 {" "}
                                 <PiPrinterFill />
                             </button>
 
-                            <div className="waveList">
+                            <div ref={screenshotRef} className="waveList">
                                 <center id="top">
                                     <div className="logo"></div>
                                     <div className="info">
@@ -362,8 +352,8 @@ function Home() {
                     </div>
                     <div style={{ display: "none" }}>
                         <CheckList
-                            componentRef={customersTableRef}
-                            customersTableRef={customersTableRef}
+                            componentRef={screenshotRef}
+                            customersTableRef={screenshotRef}
                             firstname={firstname}
                             lastname={lastname}
                             payState={paySum}

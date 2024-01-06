@@ -67,7 +67,7 @@ const RecordList = (props) => {
               <span className="Inf-box2">
                 <p>
                   [{" "}
-                  {userInfo?.year ? time.getFullYear() - +year?.slice(0, 4) : 0}
+                  {userInfo?.year ? time.getFullYear() - +userInfo?.year?.slice(0, 4) : 0}
                   ]
                 </p>
               </span>

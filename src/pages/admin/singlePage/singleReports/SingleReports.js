@@ -7,6 +7,8 @@ import LogoMedme from "../../../../assets/img/logo.png";
 import { useGetAllUsersQuery } from "../../../../redux/clientApi";
 import { useGetDailyReportsQuery } from "../../../../redux/dailyReportApi";
 import { useParams } from "react-router-dom";
+import { FaUsers } from "react-icons/fa";
+import { GiMoneyStack } from "react-icons/gi";
 
 function SingleReports() {
   const { _id } = useParams();
@@ -28,7 +30,7 @@ function SingleReports() {
 
   let time = new Date();
   let day =
-    time.getDate() - 1 + "." + (time.getMonth() + 1) + "." + time.getFullYear();
+    time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
   let dayMonth = time.toLocaleString("default", { month: "long" });
   let filterarxiv = clients?.filter((i) => i.day == day);
   let getMonth = clients?.filter((i) => i.month == dayMonth);
@@ -107,19 +109,19 @@ function SingleReports() {
                   <div className="lower-row">
                     <div className="icon-item">
                       <div className="icon">{filterarxiv?.length}</div>
-                      <div className="icon-text">Bugun</div>
+                      <div className="icon-text"><FaUsers /> Bugun</div>
                     </div>
                     <div className="icon-item">
                       <div className="icon">{getMonth?.length}</div>
-                      <div className="icon-text">{time.toLocaleString("default", { month: 'long' })}</div>
+                      <div className="icon-text"><FaUsers /> {time.toLocaleString("default", { month: 'long' })}</div>
                     </div>
                     <div className="icon-item">
                       <div className="icon">{NumberFormat(totalMoney)} so'm</div>
-                      <div className="icon-text">Bir oylik tushim</div>
+                      <div className="icon-text"><GiMoneyStack /> Bir oylik tushim</div>
                     </div>
                     <div className="icon-item">
                       <div className="icon">{NumberFormat(value?.feesPerCunsaltation)} so'm</div>
-                      <div className="icon-text">Qabul</div>
+                      <div className="icon-text"><GiMoneyStack /> Qabul</div>
                     </div>
                   </div>
                 </div>

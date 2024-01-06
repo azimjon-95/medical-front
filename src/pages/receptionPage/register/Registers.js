@@ -33,7 +33,6 @@ const Register = () => {
   let allDoctor = all_Doctor?.data || [];
 
   const [CreateNewClient, { isLoading, isSuccess }] = useCreateClientMutation();
-  const [isAnimating, setIsAnimating] = useState(false);
   let sortedData = allDoctor?.filter((i) => i.specialization.length > 3);
 
   useEffect(() => {
@@ -59,7 +58,7 @@ const Register = () => {
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
 
   let Hours = time.getHours() + ":" + time.getMinutes();
-  let filterarxiv = users?.data?.filter((i) => i.day == todaysTime);
+  let filterarxiv = users?.data?.filter((i) => i.day === todaysTime);
   const handleFinish = async (e) => {
     let doctor_price = allDoctor?.find((d) => d._id === choseDoctor);
 
@@ -78,6 +77,7 @@ const Register = () => {
       day: todaysTime,
       month: time.toLocaleString("default", { month: "long" }),
     };
+    console.log(AllInfo);
 
     CreateNewClient(AllInfo)
       .then((res) => {

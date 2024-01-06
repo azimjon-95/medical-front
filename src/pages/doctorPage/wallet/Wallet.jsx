@@ -14,7 +14,7 @@ function Wallet() {
   let data = dailyReports?.innerData;
   let doctors = data?.doctors || [];
   let dailyMoney = data?.doctorDailyMoney || [];
-  let todaysClients = data?.todaysClient || [];
+  // let todaysClients = data?.todaysClient || [];
 
 
   let { data: allClient } = useGetAllUsersQuery();
@@ -33,9 +33,8 @@ function Wallet() {
   let filterarxiv = clients?.filter(i => i.day === day)
   let getMonth = clients?.filter(i => i.month === dayMonth && i.view === true)
 
-
-
   const totalMoney = getMonth?.reduce((a, b) => a + b.paySumm, 0);
+  
   return (
     <Layout>
       <div className="containerWallet">
