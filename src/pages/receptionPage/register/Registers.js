@@ -50,6 +50,7 @@ const Register = () => {
   let allDoctor = all_Doctor?.data || [];
   const [CreateNewClient, { isLoading, isSuccess }] = useCreateClientMutation();
   let sortedData = allDoctor?.filter((i) => i.specialization.length > 3);
+  let diagnosticDoctors = allDoctor?.filter((i) => i.diagnostica);
 
   useEffect(() => {
     let doctor_info = allDoctor?.find((d) => d._id === choseDoctor);
@@ -68,22 +69,13 @@ const Register = () => {
     });
   }
 
+  console.log(diagnosticDoctors);
   const Diagnostics = [];
-  for (const item of sortedData) {
-    Diagnostics.push(
-      {
-        value: "EKG",
-        label: "EKG",
-      },
-      {
-        value: "UTT",
-        label: "UTT",
-      },
-      {
-        value: "MRT",
-        label: "MRT",
-      }
-    );
+  for (const item of diagnosticDoctors) {
+    Diagnostics.push({
+      value: item._id,
+      label: item.specialization,
+    });
   }
 
   let time = new Date();
@@ -121,15 +113,15 @@ const Register = () => {
     };
     console.log(AllInfo);
 
-    CreateNewClient(AllInfo)
-      .then((res) => {
-        if (res?.data?.success) {
-          setQueueNumber(res.data.data.queueNumber);
-          message.success(res?.data?.message);
-          setList(true);
-        }
-      })
-      .catch((err) => console.log(err));
+    // CreateNewClient(AllInfo)
+    //   .then((res) => {
+    //     if (res?.data?.success) {
+    //       setQueueNumber(res.data.data.queueNumber);
+    //       message.success(res?.data?.message);
+    //       setList(true);
+    //     }
+    //   })
+    //   .catch((err) => console.log(err));
   };
   const onChange = (date, dateString) => {
     setYear(dateString);
@@ -157,10 +149,11 @@ const Register = () => {
               rules={[{ required: true }]}
             >
               <Input
+                maxLength={9}
                 value={idNumber}
                 onChange={handleInputChange}
                 type="string"
-                placeholder="ID number"
+                placeholder="AA 1234567"
               />
             </Form.Item>
           </Col>
@@ -204,6 +197,7 @@ const Register = () => {
               rules={[{ required: true }]}
             >
               <Input
+                maxLength={9}
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 type="number"
@@ -348,6 +342,18 @@ const Register = () => {
                   onChange={(e) => setDiagnostics(e)}
                   options={Diagnostics}
                 />
+              </Form.Item>
+            </Col>
+            <Col style={{ width: "100%" }} className="Col-Form">
+              <Form.Item label="Analiz" name="analiz">
+                <div className="doctorName">
+                  <Checkbox
+                    className="onChecked"
+                    onChange={(e) => setAnalysis(e.target.checked)}
+                  >
+                    {analysis ? "Ha" : "Yo'q"}{" "}
+                  </Checkbox>
+                </div>
               </Form.Item>
             </Col>
             <Col style={{ width: "100%" }} className="Col-Form">
