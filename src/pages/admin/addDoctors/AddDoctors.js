@@ -31,9 +31,7 @@ const AddDoctors = () => {
   const [blood_analysis, setBlood] = useState("");
   const [urgent_analysis, setUrgent] = useState("");
   const [biochemical_analysis, setBiochemical] = useState("");
-
   const [salary, setSalary] = useState("");
-
   let { data: allDoctor } = useGetAllDoctorsQuery();
   let doctor = allDoctor?.data;
   let [createDoctor] = useCreateDoctorMutation();
