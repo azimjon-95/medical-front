@@ -1,6 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import Layout from "../../../components/layout/Layout";
-import { Col, Checkbox, Form, Input, message, Row, Select, DatePicker } from "antd";
+import {
+  Col,
+  Checkbox,
+  Form,
+  Input,
+  message,
+  Row,
+  Select,
+  DatePicker,
+} from "antd";
 import "./style.css";
 import { NumberFormat } from "../../../hook/NumberFormat";
 import ReactToPrint from "react-to-print";
@@ -36,7 +45,6 @@ const Register = () => {
   const [analysis, setAnalysis] = useState("");
   const [urgent, setUrgent] = useState("");
 
-
   let { data: users, isLoading: loading } = useGetAllUsersQuery();
   let { data: all_Doctor } = useGetAllDoctorsQuery();
   let allDoctor = all_Doctor?.data || [];
@@ -65,15 +73,15 @@ const Register = () => {
     Diagnostics.push(
       {
         value: "EKG",
-        label: "EKG"
+        label: "EKG",
       },
       {
         value: "UTT",
-        label: "UTT"
+        label: "UTT",
       },
       {
         value: "MRT",
-        label: "MRT"
+        label: "MRT",
       }
     );
   }
@@ -122,14 +130,10 @@ const Register = () => {
         }
       })
       .catch((err) => console.log(err));
-
- 
-
   };
   const onChange = (date, dateString) => {
     setYear(dateString);
   };
-
 
   // ----------ID number-------------
   const handleInputChange = (e) => {
@@ -190,7 +194,6 @@ const Register = () => {
               />
             </Form.Item>
           </Col>
-
         </Row>
         <Row className="Row">
           <Col className="Col-Form">
@@ -271,10 +274,7 @@ const Register = () => {
 
           <div className="Col-Form_Box">
             <Col className="Col-Form">
-              <Form.Item
-                label="Bo'yi"
-                name="height"
-              >
+              <Form.Item label="Bo'yi" name="height">
                 <Input
                   value={height}
                   onChange={(e) => setHeight(e.target.value)}
@@ -284,11 +284,7 @@ const Register = () => {
               </Form.Item>
             </Col>
             <Col className="Col-Form">
-              <Form.Item
-                label="Vazni"
-                name="weight"
-
-              >
+              <Form.Item label="Vazni" name="weight">
                 <Input
                   value={weight}
                   onChange={(e) => setWeight(e.target.value)}
@@ -298,10 +294,7 @@ const Register = () => {
               </Form.Item>
             </Col>
             <Col className="Col-Form">
-              <Form.Item
-                label="Tana harorati"
-                name="Temperature"
-              >
+              <Form.Item label="Tana harorati" name="Temperature">
                 <Input
                   value={temperature}
                   onChange={(e) => setTemperature(e.target.value)}
@@ -312,21 +305,25 @@ const Register = () => {
             </Col>
           </div>
           <Col className="Col-Form">
-            <Form.Item
-              label="Shoshilinch tarzda yuborildi"
-              name="false"
-            >
+            <Form.Item label="Shoshilinch tarzda yuborildi" name="false">
               <div className="doctorName">
-                <Checkbox className="onChecked" onChange={(e) => setUrgentCheck(e.target.checked)}>{urgentCheck ? "Ha" : "Yo'q"} </Checkbox>
-                {
-                  urgentCheck ? <Input
+                <Checkbox
+                  className="onChecked"
+                  onChange={(e) => setUrgentCheck(e.target.checked)}
+                >
+                  {urgentCheck ? "Ha" : "Yo'q"}{" "}
+                </Checkbox>
+                {urgentCheck ? (
+                  <Input
                     value={urgent}
                     onChange={(e) => setUrgent(e.target.value)}
                     type="text"
                     placeholder="Malumot..."
                     className="urgent"
-                  /> : ""
-                }
+                  />
+                ) : (
+                  ""
+                )}
               </div>
             </Form.Item>
           </Col>
@@ -334,10 +331,7 @@ const Register = () => {
         <Row className="Row">
           <div className="Col-Form_Box">
             <Col style={{ width: "100%" }} className="Col-Form">
-              <Form.Item
-                label="Diagnostika"
-                name="doctor"
-              >
+              <Form.Item label="Diagnostika" name="doctor">
                 <Select
                   showSearch
                   // style={{ width: 200 }}
@@ -357,13 +351,14 @@ const Register = () => {
               </Form.Item>
             </Col>
             <Col style={{ width: "100%" }} className="Col-Form">
-              <Form.Item
-                label="Analiz"
-                name="analiz"
-              >
+              <Form.Item label="Analiz" name="analiz">
                 <div className="doctorName">
-                  <Checkbox className="onChecked" onChange={(e) => setAnalysis(e.target.checked)}>{analysis ? "Ha" : "Yo'q"} </Checkbox>
-
+                  <Checkbox
+                    className="onChecked"
+                    onChange={(e) => setAnalysis(e.target.checked)}
+                  >
+                    {analysis ? "Ha" : "Yo'q"}{" "}
+                  </Checkbox>
                 </div>
               </Form.Item>
             </Col>
@@ -404,15 +399,10 @@ const Register = () => {
               </div>
             </Form.Item>
           </Col>
-
-
         </Row>
 
         <Col className="Col-Form">
-          <button
-            className="button"
-            type="submit"
-          >
+          <button className="button" type="submit">
             {" "}
             Yuborish
           </button>
@@ -562,5 +552,3 @@ const Register = () => {
 };
 
 export default Register;
-
-

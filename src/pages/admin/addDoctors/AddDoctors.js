@@ -54,19 +54,24 @@ const AddDoctors = () => {
     analis,
     percent: +percent,
     salary: +salary,
+    analisisPrices: {
+      blood_analysis: +blood_analysis,
+      urine_analysis: +urgent_analysis,
+      biochemical_analysis: +biochemical_analysis,
+    },
   };
 
   const handleFinish = () => {
+    console.log(AllInfo);
     createDoctor(AllInfo)
       .then((res) => {
-        if (res.data.success) {
+        if (res?.data?.success) {
           message.success("Register Successfully!");
         } else {
-          message.error(res.data.message);
+          message.error(res?.data?.message);
         }
-        console.log(res);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log("err=>>>", err));
   };
 
   let filterData1 = doctor?.filter((i) => i.docORrecep === "doctor");
@@ -292,7 +297,6 @@ const AddDoctors = () => {
                 <Form.Item
                   label="Konsultatsia to'lov miqdori"
                   name="feesPerCunsaltation"
-                  rules={[{ required: true }]}
                 >
                   <Input
                     value={feesPerCunsaltation}
@@ -335,10 +339,7 @@ const AddDoctors = () => {
               </Col>
               <div className="salaryBox">
                 <Col style={{ width: "100%" }}>
-                  <Form.Item
-                    label=" "
-                    name="doctor salary"
-                  >
+                  <Form.Item label=" " name="doctor salary">
                     <div className="docORrecep checkList">
                       <label className="containerChe">
                         Analiz
@@ -366,12 +367,11 @@ const AddDoctors = () => {
                     </div>
                   </Form.Item>
                 </Col>
-
               </div>
             </Row>
-            {analis ?
+            {analis ? (
               <Row className="Row RowBox_Col">
-                <Col className="Col-Form ColBox" >
+                <Col className="Col-Form ColBox">
                   <Form.Item
                     label="Qon taxlil"
                     name="Qon taxlil"
@@ -382,13 +382,11 @@ const AddDoctors = () => {
                       onChange={(e) => setBlood(e.target.value)}
                       type="text"
                       placeholder="Narxini kiriting"
-
                     />
                   </Form.Item>
-
                 </Col>
 
-                <Col className="Col-Form ColBox" >
+                <Col className="Col-Form ColBox">
                   <Form.Item
                     label="Peshob taxlil"
                     name="Peshob taxlil"
@@ -399,12 +397,10 @@ const AddDoctors = () => {
                       onChange={(e) => setUrgent(e.target.value)}
                       type="text"
                       placeholder="Narxini kiriting"
-
                     />
                   </Form.Item>
-
                 </Col>
-                <Col className="Col-Form ColBox" >
+                <Col className="Col-Form ColBox">
                   <Form.Item
                     label="Bioximik taxlil"
                     name="Bioximik taxlil"
@@ -417,27 +413,20 @@ const AddDoctors = () => {
                       placeholder="Narxini kiriting"
                     />
                   </Form.Item>
-
                 </Col>
               </Row>
-              :
+            ) : (
               ""
-            }
+            )}
             <Row className="Row">
               <Col className="Col-Form">
-                <Form.Item
-
-
-                >
+                <Form.Item>
                   <button className="btn btn-primary" type="submit">
                     Saqlash
                   </button>
                 </Form.Item>
-
               </Col>
             </Row>
-
-
           </Form>
         </Tabs.TabPane>
 
@@ -449,8 +438,9 @@ const AddDoctors = () => {
         </Tabs.TabPane>
 
         <Tabs.TabPane
-          tab={`${width > 450 ? "Doktorlar" : "D"} ${filterData1?.length === 0 ? "" : `- ${filterData1?.length}`
-            }`}
+          tab={`${width > 450 ? "Doktorlar" : "D"} ${
+            filterData1?.length === 0 ? "" : `- ${filterData1?.length}`
+          }`}
           key={2}
         >
           {filterData1 == 0 ? (
@@ -507,8 +497,9 @@ const AddDoctors = () => {
           )}
         </Tabs.TabPane>
         <Tabs.TabPane
-          tab={`${width > 450 ? "Administratorlar" : "A"}  ${filterData2?.length === 0 ? "" : `- ${filterData2?.length}`
-            }`}
+          tab={`${width > 450 ? "Administratorlar" : "A"}  ${
+            filterData2?.length === 0 ? "" : `- ${filterData2?.length}`
+          }`}
           key={3}
         >
           {filterData2 == 0 ? (
@@ -565,7 +556,6 @@ export default AddDoctors;
 // Babakulov	Abduaziz	Ortoped	902344344	120000
 // Umarova	Gulnora	Revmatolog	946609606	130000
 // Abdullayev	Oybek	Travmatolog	944324445	80000
-
 
 //                <div className="salaryBox">
 //                 <Col className="Col-Form">
