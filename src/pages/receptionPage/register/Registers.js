@@ -123,7 +123,7 @@ const Register = () => {
       })
       .catch((err) => console.log(err));
 
-    e.target.clear()
+ 
 
   };
   const onChange = (date, dateString) => {
