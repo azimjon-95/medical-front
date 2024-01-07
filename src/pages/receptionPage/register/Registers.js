@@ -40,10 +40,13 @@ const Register = () => {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [doctorPhone, setDoctorPhone] = useState("");
-  const [urgentCheck, setUrgentCheck] = useState("");
+  const [dispatchCheck, setDispatchCheck] = useState("");
   const [diagnostics, setDiagnostics] = useState("");
   const [analysis, setAnalysis] = useState("");
-  const [urgent, setUrgent] = useState("");
+  const [infoDispatch, setInfoDispatch] = useState("");
+  const [blood_analysis, setBlood] = useState("");
+  const [urgent_analysis, setUrgent] = useState("");
+  const [biochemical_analysis, setBiochemical] = useState("");
 
   let { data: users, isLoading: loading } = useGetAllUsersQuery();
   let { data: all_Doctor } = useGetAllDoctorsQuery();
@@ -79,7 +82,6 @@ const Register = () => {
   }
 
   let time = new Date();
-
   let todaysTime =
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
 
@@ -99,9 +101,9 @@ const Register = () => {
       weight,
       height,
       diagnostics,
-      urgentCheck,
       analysis,
-      urgent,
+      urgent_analysis,
+      infoDispatch,
       payState,
       choseDoctor: doctor_price.specialization,
       paySumm: doctor_price.feesPerCunsaltation,
@@ -303,14 +305,14 @@ const Register = () => {
               <div className="doctorName">
                 <Checkbox
                   className="onChecked"
-                  onChange={(e) => setUrgentCheck(e.target.checked)}
+                  onChange={(e) => setDispatchCheck(e.target.checked)}
                 >
-                  {urgentCheck ? "Ha" : "Yo'q"}{" "}
+                  {dispatchCheck ? "Ha" : "Yo'q"}{" "}
                 </Checkbox>
-                {urgentCheck ? (
+                {dispatchCheck ? (
                   <Input
-                    value={urgent}
-                    onChange={(e) => setUrgent(e.target.value)}
+                    value={infoDispatch}
+                    onChange={(e) => setInfoDispatch(e.target.value)}
                     type="text"
                     placeholder="Malumot..."
                     className="urgent"
@@ -356,28 +358,53 @@ const Register = () => {
                 </div>
               </Form.Item>
             </Col>
-            <Col style={{ width: "100%" }} className="Col-Form">
-              <Form.Item label="Analiz" name="analiz">
-                <div className="doctorName">
-                  <Checkbox
-                    className="onChecked"
-                    onChange={(e) => setAnalysis(e.target.checked)}
-                  >
-                    {analysis ? "Ha" : "Yo'q"}{" "}
-                  </Checkbox>
-                </div>
-              </Form.Item>
-            </Col>
+
           </div>
-          <Col className="Col-Form">
-            <Form.Item label="Do'ktor FIO" name="Do'ktor FIO">
-              <div className="doctorName">
-                <p>
-                  {doctorLastName} {doctorFirstName}
-                </p>
-              </div>
-            </Form.Item>
-          </Col>
+          {
+            analysis ? <div className="Col-Form_Box">
+              <Col style={{ width: "100%" }} className="Col-Form">
+                <Form.Item
+                  label="Qon taxlil"
+                  name="Qon taxlil">
+                  <div className="doctorName">
+                    <Checkbox
+                      className="onChecked"
+                      onChange={(e) => setBlood(e.target.checked)}
+                    >
+                      {blood_analysis ? "Ha" : "Yo'q"}{" "}
+                    </Checkbox>
+                  </div>
+                </Form.Item>
+              </Col>
+              <Col style={{ width: "100%" }} className="Col-Form">
+                <Form.Item label="Peshob taxlil" name="Peshob taxlil">
+                  <div className="doctorName">
+                    <Checkbox
+                      className="onChecked"
+                      onChange={(e) => setUrgent(e.target.checked)}
+                    >
+                      {urgent_analysis ? "Ha" : "Yo'q"}{" "}
+                    </Checkbox>
+                  </div>
+                </Form.Item>
+              </Col>
+              <Col style={{ width: "100%" }} className="Col-Form">
+                <Form.Item label="Bioximik taxlil" name="Bioximik taxlil">
+                  <div className="doctorName">
+                    <Checkbox
+                      className="onChecked"
+                      onChange={(e) => setBiochemical(e.target.checked)}
+                    >
+                      {biochemical_analysis ? "Ha" : "Yo'q"}{" "}
+                    </Checkbox>
+                  </div>
+                </Form.Item>
+              </Col>
+
+            </div>
+              : ""
+          }
+
           <Col className="Col-Form">
             <Form.Item
               label="To'landi"
@@ -393,6 +420,9 @@ const Register = () => {
                       ? `${paySum ? "so'm  to'landi" : "Doctorni tanlang "}`
                       : ""}
                   </p>
+                  {/* <p>
+                    {doctorLastName} {doctorFirstName}
+                  </p> */}
                   <input
                     value="Reception"
                     onChange={(e) => setPaid(e.target.checked)}
