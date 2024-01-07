@@ -66,10 +66,14 @@ table,
 th,
 td {
     border-collapse: collapse;
-    padding: .5rem;
+    height: 30px;
     text-align: left;
+    font-size: 14px;
 }
+td {
+    padding: .2rem;
 
+}
 thead th {
     position: sticky;
     top: 0;
@@ -139,7 +143,7 @@ thead th span.icon-arrow {
     border: 1.4px solid transparent;
 
     text-align: center;
-    font-size: 1rem;
+    font-size: 15px;
 
     margin-left: .5rem;
     transition: .2s ease-in-out;
@@ -164,7 +168,7 @@ thead th.asc span.icon-arrow {
 
 thead th.active,
 tbody td.active {
-    color: #6c00bd;
+    color: #00ccff;
 }
 
 .export__file {

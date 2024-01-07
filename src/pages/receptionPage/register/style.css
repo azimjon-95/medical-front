@@ -58,7 +58,11 @@
         width: 100%;
     }
 
-
+    .Col-Form_Box {
+        width: 100%;;
+        display: flex;
+        gap: 7px;
+    }
 }
 
 

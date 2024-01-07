@@ -3,9 +3,14 @@ import Layout from "../../../components/layout/Layout";
 import "./Appointments.css";
 import { Link } from "react-router-dom";
 import { PhoneNumberFormat } from "../../../hook/NumberFormat";
-// import NotificationSound from "../../../assets/ayfon-sms.mp3";
+import { GiWeightScale } from "react-icons/gi";
 import imgNoData from "../../../assets/nodata.png";
 import { useGetAllUsersQuery } from "../../../redux/clientApi";
+import { GiBodyHeight } from "react-icons/gi";
+import { LiaTemperatureHighSolid } from "react-icons/lia";
+import { MdOutlineBloodtype } from "react-icons/md";
+import { BiAnalyse } from "react-icons/bi";
+import { BsDiagram3 } from "react-icons/bs";
 
 function Appointments() {
   // const audioPlayer = useRef(null);
@@ -44,6 +49,10 @@ function Appointments() {
                   <th>№</th>
                   <th>Bemor</th>
                   <th>Tel No</th>
+                  <th>Analiz</th>
+                  <th>diagnostika</th>
+                  <th>Tana massa indeksi</th>
+                  <th>Tashrifi</th>
                   <th>Ko'rish</th>
                 </tr>
               </thead>
@@ -57,7 +66,40 @@ function Appointments() {
                         {item.lastname} {item.firstname}
                       </td>
                       <td>+998{PhoneNumberFormat(item.phone)}</td>
+                      <td>
+                        <div className="box-bmi">
+                          <span>
+                            <div><MdOutlineBloodtype /> {false ? "" : "Topshirmagan"}</div>
+                          </span>
+                          <span>
+                            <div><BiAnalyse /> {false ? "" : "Topshirmagan"}</div>
+                          </span>
+                        </div>
+                      </td>
+                      <td>
+                        <div className="box-bmi">
+                          <span>
+                            <div><BsDiagram3 /></div>
+                          </span>
+                          <span>
+                            <div><BsDiagram3 /></div>
+                          </span>
+                        </div>
+                      </td>
+                      <td>
+                        <div className="box-bmi">
+                          <span>
+                            <div><GiWeightScale /> 80 kg</div>
+                            <div><GiBodyHeight /> 180 m</div>
+                          </span>
+                          <span>
+                            <div><LiaTemperatureHighSolid /> 30/40</div>
+                            <div> BMI 24.56</div>
+                          </span>
 
+                        </div>
+                      </td>
+                      <td>1</td>
                       <td>
                         <Link to={`/appointments/${item._id}`}>
                           <button button="true" className="btn btn-secondary">
@@ -78,3 +120,5 @@ function Appointments() {
 }
 
 export default Appointments;
+
+

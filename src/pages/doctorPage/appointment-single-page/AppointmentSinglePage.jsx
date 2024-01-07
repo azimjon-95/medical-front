@@ -10,6 +10,13 @@ import {
 import { message } from "antd";
 import { useDispatch } from "react-redux";
 import { setInfo } from "../../../redux/recordList/recordList";
+import { useGetAllUsersQuery } from "../../../redux/clientApi";
+import { GiBodyHeight } from "react-icons/gi";
+import { LiaTemperatureHighSolid } from "react-icons/lia";
+import { MdOutlineBloodtype } from "react-icons/md";
+import { BiAnalyse } from "react-icons/bi";
+import { BsDiagram3 } from "react-icons/bs";
+import { GiWeightScale } from "react-icons/gi";
 
 function AppointmentSinglePage() {
   const [updateClient] = useUpdateClientMutation();
@@ -50,13 +57,43 @@ function AppointmentSinglePage() {
       <div className="appointmentSinglePage">
         <div className="appointmentSinglePage_info">
           <span>
-            <b>Bemor:</b>
-            <h3>{user?.firstname + " " + user?.lastname} </h3>
+            <span>
+              <b>Bemor:</b>
+              <h3>{user?.firstname + " " + user?.lastname} </h3>
+            </span>
+            <span>
+              <b>Tel raqam</b>
+              <h3>{user?.phone}</h3>
+            </span>
           </span>
-          <span>
-            <b>Tel raqam</b>
-            <h3>{user?.phone}</h3>
-          </span>
+          <div>
+            <div className="box-bmi_Sing">
+              <b>Tana Massa Indeksi:</b>
+              <span>
+                <div><GiWeightScale /> 80 kg</div>
+                <div><GiBodyHeight /> 180 m</div>
+              </span>
+              <span>
+                <div><LiaTemperatureHighSolid /> 30/40</div>
+                <div> BMI 24.56</div>
+              </span>
+
+            </div>
+          </div>
+          <div>
+            <div className="box-bmi_Sing">
+              <b>Analiz / Diagnostika</b>
+              <span>
+                <div><GiWeightScale /> 80 kg</div>
+                <div><GiBodyHeight /> 180 m</div>
+              </span>
+              <span>
+                <div><LiaTemperatureHighSolid /> 30/40</div>
+                <div> BMI 24.56</div>
+              </span>
+
+            </div>
+          </div>
         </div>
 
         <div className="extraInfo">
