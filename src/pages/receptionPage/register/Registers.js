@@ -52,12 +52,15 @@ const Register = () => {
   let { data: all_Doctor } = useGetAllDoctorsQuery();
   let allDoctor = all_Doctor?.data || [];
   const [CreateNewClient, { isLoading, isSuccess }] = useCreateClientMutation();
+
   let sortedData = allDoctor?.filter((i) => i.specialization.length > 3);
-  let diagnosticDoctors = allDoctor?.filter((i) => i.diagnostica);
+  let diagnosticDoctors = allDoctor?.filter(
+    (i) => i.diagnostica === "diagnostica"
+  );
 
   useEffect(() => {
     let doctor_info = allDoctor?.find((d) => d._id === choseDoctor);
-    setPaySum(doctor_info?.feesPerCunsaltation);
+    setPaySum(doctor_info?.feesPerCunsaltation || 0);
     setDoctorFirstName(doctor_info?.firstName);
     setDoctorLastName(doctor_info?.lastName);
     setDoctorSpecialization(doctor_info?.specialization);
@@ -72,14 +75,19 @@ const Register = () => {
     });
   }
 
-  console.log(diagnosticDoctors);
-  const Diagnostics = [];
-  for (const item of diagnosticDoctors) {
-    Diagnostics.push({
-      value: item._id,
-      label: item.specialization,
-    });
-  }
+  let changeDiagnostic = () => {
+    const Diagnostics = [];
+    for (const item of diagnosticDoctors) {
+      Diagnostics.push({
+        value: item._id,
+        label: item.specialization,
+      });
+    }
+
+    return Diagnostics;
+  };
+
+  let Diagnostics = changeDiagnostic();
 
   let time = new Date();
   let todaysTime =
@@ -98,8 +106,8 @@ const Register = () => {
       year,
       idNumber,
       temperature,
-      weight,
-      height,
+      weight: +weight,
+      height: +height,
       diagnostics,
       analysis,
       urgent_analysis,
@@ -115,15 +123,17 @@ const Register = () => {
     };
     console.log(AllInfo);
 
-    // CreateNewClient(AllInfo)
-    //   .then((res) => {
-    //     if (res?.data?.success) {
-    //       setQueueNumber(res.data.data.queueNumber);
-    //       message.success(res?.data?.message);
-    //       setList(true);
-    //     }
-    //   })
-    //   .catch((err) => console.log(err));
+    CreateNewClient(AllInfo)
+      .then((res) => {
+        if (res?.data?.success) {
+          setQueueNumber(res.data.data.queueNumber);
+          message.success(res?.data?.message);
+          setList(true);
+          document.querySelector(".FormApply").reset();
+        }
+        console.log("res>>", res);
+      })
+      .catch((err) => console.log(err));
   };
   const onChange = (date, dateString) => {
     setYear(dateString);
@@ -327,8 +337,8 @@ const Register = () => {
         <Row className="Row">
           <div className="Col-Form_Box">
             <Col style={{ width: "100%" }} className="Col-Form">
-              <Form.Item label="Diagnostika" name="doctor">
-                <Select
+              <Form.Item label="Diagnostika" name="docto">
+                {/* <Select
                   showSearch
                   // style={{ width: 200 }}
                   placeholder="Diagnostika"
@@ -341,35 +351,88 @@ const Register = () => {
                       .toLowerCase()
                       .localeCompare((optionB?.label ?? "").toLowerCase())
                   }
-                  onChange={(e) => setDiagnostics(e)}
+                  onChange={(e) => (
+                    setDiagnostics(e),
+                    setPaySum(
+                      (sum) =>
+                        sum +
+                        diagnosticDoctors?.filter((i) => i._id === e)[0]
+                          ?.feesPerCunsaltation
+                    )
+                  )}
+                  options={Diagnostics}
+                /> */}
+
+                {/* ---------------------------- */}
+
+                <Select
+                  labelInValue
+                  style={{
+                    width: 200,
+                  }}
+                  placeholder="Diagnostica"
+                  // onChange={(value) => console.log(value.key)}
+                  onChange={(e) => (
+                    setDiagnostics(e.label),
+                    setPaySum(
+                      (sum) =>
+                        sum +
+                        diagnosticDoctors?.filter((i) => i._id === e.key)[0]
+                          ?.feesPerCunsaltation
+                    )
+                  )}
                   options={Diagnostics}
                 />
               </Form.Item>
             </Col>
+
+            {/* ---------------------------- */}
+
             <Col style={{ width: "100%" }} className="Col-Form">
               <Form.Item label="Analiz" name="analiz">
                 <div className="doctorName">
                   <Checkbox
                     className="onChecked"
-                    onChange={(e) => setAnalysis(e.target.checked)}
+                    onChange={(e) => (
+                      setAnalysis(e.target.checked),
+                      analysis && setPaySum(0),
+                      setBlood(0),
+                      setUrgent(0),
+                      setBiochemical(0),
+                      setDiagnostics(""),
+                      changeDiagnostic(),
+                      setChoseDoctor("")
+                    )}
                   >
                     {analysis ? "Ha" : "Yo'q"}{" "}
                   </Checkbox>
                 </div>
               </Form.Item>
             </Col>
-
           </div>
-          {
-            analysis ? <div className="Col-Form_Box">
+          {analysis ? (
+            <div className="Col-Form_Box">
               <Col style={{ width: "100%" }} className="Col-Form">
-                <Form.Item
-                  label="Qon taxlil"
-                  name="Qon taxlil">
+                <Form.Item label="Qon taxlil" name="Qon taxlil">
                   <div className="doctorName">
                     <Checkbox
                       className="onChecked"
-                      onChange={(e) => setBlood(e.target.checked)}
+                      onChange={(e) => (
+                        setBlood(e.target.checked),
+                        blood_analysis
+                          ? setPaySum(
+                              (p) =>
+                                p -
+                                allDoctor?.filter((i) => i.analis)[0]
+                                  ?.analisisPrices?.blood_analysis
+                            )
+                          : setPaySum(
+                              (p) =>
+                                p +
+                                allDoctor?.filter((i) => i.analis)[0]
+                                  ?.analisisPrices?.blood_analysis
+                            )
+                      )}
                     >
                       {blood_analysis ? "Ha" : "Yo'q"}{" "}
                     </Checkbox>
@@ -381,7 +444,22 @@ const Register = () => {
                   <div className="doctorName">
                     <Checkbox
                       className="onChecked"
-                      onChange={(e) => setUrgent(e.target.checked)}
+                      onChange={(e) => (
+                        setUrgent(e.target.checked),
+                        urgent_analysis
+                          ? setPaySum(
+                              (p) =>
+                                p -
+                                allDoctor?.filter((i) => i.analis)[0]
+                                  ?.analisisPrices?.urine_analysis
+                            )
+                          : setPaySum(
+                              (p) =>
+                                p +
+                                allDoctor?.filter((i) => i.analis)[0]
+                                  ?.analisisPrices?.urine_analysis
+                            )
+                      )}
                     >
                       {urgent_analysis ? "Ha" : "Yo'q"}{" "}
                     </Checkbox>
@@ -393,17 +471,32 @@ const Register = () => {
                   <div className="doctorName">
                     <Checkbox
                       className="onChecked"
-                      onChange={(e) => setBiochemical(e.target.checked)}
+                      onChange={(e) => (
+                        setBiochemical(e.target.checked),
+                        biochemical_analysis
+                          ? setPaySum(
+                              (p) =>
+                                p -
+                                allDoctor?.filter((i) => i.analis)[0]
+                                  ?.analisisPrices?.biochemical_analysis
+                            )
+                          : setPaySum(
+                              (p) =>
+                                p +
+                                allDoctor?.filter((i) => i.analis)[0]
+                                  ?.analisisPrices?.biochemical_analysis
+                            )
+                      )}
                     >
                       {biochemical_analysis ? "Ha" : "Yo'q"}{" "}
                     </Checkbox>
                   </div>
                 </Form.Item>
               </Col>
-
             </div>
-              : ""
-          }
+          ) : (
+            ""
+          )}
 
           <Col className="Col-Form">
             <Form.Item
