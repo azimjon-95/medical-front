@@ -7,6 +7,11 @@ export const clientApi = api.injectEndpoints({
       providesTags: ["GetClients"],
     }),
 
+    // GET CLIENT BY ID NUMBER
+    getUserByIDNumber: builder.query({
+      query: (id) => `/client/getIdNumber/${id}`,
+    }),
+
     getSingleUser: builder.query({
       query: (id) => `client/${id}`,
     }),
@@ -44,6 +49,7 @@ export const clientApi = api.injectEndpoints({
 
 export const {
   useGetAllUsersQuery,
+  useGetUserByIDNumberQuery,
   useGetSingleUserQuery,
   useCreateClientMutation,
   useDeleteClientMutation,

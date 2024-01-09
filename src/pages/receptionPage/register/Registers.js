@@ -15,12 +15,16 @@ import { NumberFormat } from "../../../hook/NumberFormat";
 import ReactToPrint from "react-to-print";
 import CheckList from "../../../components/checkLists/checkList/CheckList";
 import { useGetAllDoctorsQuery } from "../../../redux/doctorApi";
-import { useCreateClientMutation } from "../../../redux/clientApi";
-import { useGetAllUsersQuery } from "../../../redux/clientApi";
+import {
+  useCreateClientMutation,
+  useGetUserByIDNumberQuery,
+  useGetAllUsersQuery,
+} from "../../../redux/clientApi";
 import { PiPrinterFill } from "react-icons/pi";
 
 const Register = () => {
   const componentRef = useRef();
+  const [idNumber, setIdNumber] = useState("");
   const [firstname, setFirstName] = useState("");
   const [lastname, setLastName] = useState("");
   const [address, setAddress] = useState("");
@@ -35,7 +39,6 @@ const Register = () => {
   const [list, setList] = useState(false);
   const [queueNumber, setQueueNumber] = useState(0);
 
-  const [idNumber, setIdNumber] = useState("");
   const [temperature, setTemperature] = useState("");
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
@@ -48,7 +51,21 @@ const Register = () => {
   const [urgent_analysis, setUrgent] = useState("");
   const [biochemical_analysis, setBiochemical] = useState("");
 
+  let { data: singleUser } = useGetUserByIDNumberQuery(idNumber || 0);
+
+  console.log(paySum);
+
+  useEffect(() => {
+    if (singleUser?.data) {
+      setFirstName(singleUser?.data?.firstname || "");
+      setLastName(singleUser?.data?.lastname || "");
+      setAddress(singleUser?.data?.address || "");
+      setPhone(singleUser?.data?.phone || "");
+    }
+  }, [singleUser]);
+
   let { data: users, isLoading: loading } = useGetAllUsersQuery();
+
   let { data: all_Doctor } = useGetAllDoctorsQuery();
   let allDoctor = all_Doctor?.data || [];
   const [CreateNewClient, { isLoading, isSuccess }] = useCreateClientMutation();
@@ -110,30 +127,32 @@ const Register = () => {
       height: +height,
       diagnostics,
       analysis,
-      urgent_analysis,
+      urgetnt: urgent_analysis,
+      blood_analysis,
+      biochemical_analysis,
       infoDispatch,
       payState,
-      choseDoctor: doctor_price.specialization,
-      paySumm: doctor_price.feesPerCunsaltation,
-      doctorFirstName: doctor_price.firstName,
-      doctorLastName: doctor_price.lastName,
-      doctorPhone: doctor_price.phone,
+      choseDoctor: doctor_price?.specialization,
+      paySumm: paySum,
+      doctorFirstName: doctor_price?.firstName,
+      doctorLastName: doctor_price?.lastName,
+      doctorPhone: doctor_price?.phone,
       day: todaysTime,
       month: time.toLocaleString("default", { month: "long" }),
     };
+
     console.log(AllInfo);
 
-    CreateNewClient(AllInfo)
-      .then((res) => {
-        if (res?.data?.success) {
-          setQueueNumber(res.data.data.queueNumber);
-          message.success(res?.data?.message);
-          setList(true);
-          document.querySelector(".FormApply").reset();
-        }
-        console.log("res>>", res);
-      })
-      .catch((err) => console.log(err));
+    // CreateNewClient(AllInfo)
+    //   .then((res) => {
+    //     if (res?.data?.success) {
+    //       setQueueNumber(res.data.data.queueNumber);
+    //       message.success(res?.data?.message);
+    //       setList(true);
+    //       document.querySelector(".FormApply").reset();
+    //     }
+    //   })
+    //   .catch((err) => console.log(err));
   };
   const onChange = (date, dateString) => {
     setYear(dateString);
@@ -154,12 +173,7 @@ const Register = () => {
       <Form onFinish={handleFinish} layout="vertical" className="FormApply">
         <Row className="Row">
           <Col className="Col-Form">
-            <Form.Item
-              label="Shaxsiy raqami"
-              name="ID number"
-              required
-              rules={[{ required: true }]}
-            >
+            <Form.Item label="Shaxsiy raqami" name="ID number">
               <Input
                 maxLength={9}
                 value={idNumber}
@@ -173,9 +187,9 @@ const Register = () => {
             <Form.Item
               label="Ismi"
               name="firstname"
-              required
-              rules={[{ required: true }]}
+              // rules={[{ required: true }]}
             >
+              <p style={{ display: "none" }}>{firstname}</p>
               <Input
                 value={firstname}
                 onChange={(e) => setFirstName(e.target.value)}
@@ -185,29 +199,20 @@ const Register = () => {
             </Form.Item>
           </Col>
           <Col className="Col-Form">
-            <Form.Item
-              label="Familiya"
-              name="lastname"
-              required
-              rules={[{ required: true }]}
-            >
+            <Form.Item label="Familiya" name="lastname">
               <Input
                 value={lastname}
                 onChange={(e) => setLastName(e.target.value)}
                 type="text"
                 placeholder="Last Name"
               />
+              <p style={{ display: "none" }}>{lastname}</p>
             </Form.Item>
           </Col>
         </Row>
         <Row className="Row">
           <Col className="Col-Form">
-            <Form.Item
-              label="Tel raqami"
-              name="number"
-              required
-              rules={[{ required: true }]}
-            >
+            <Form.Item label="Tel raqami" name="number">
               <Input
                 maxLength={9}
                 value={phone}
@@ -215,17 +220,12 @@ const Register = () => {
                 type="number"
                 placeholder="Phone number"
               />
+              <p style={{ display: "none" }}>{firstname}</p>
             </Form.Item>
           </Col>
 
           <Col className="Col-Form">
-            <Form.Item
-              label="Tug'ilgan sana:"
-              name="year"
-              required
-              rules={[{ required: true }]}
-              direction="vertical"
-            >
+            <Form.Item label="Tug'ilgan sana:" name="year" direction="vertical">
               <DatePicker
                 style={{ width: "100%" }}
                 value={year}
@@ -236,15 +236,10 @@ const Register = () => {
           </Col>
 
           <Col className="Col-Form">
-            <Form.Item
-              label="Doktor"
-              name="doctor"
-              required
-              rules={[{ required: true }]}
-            >
+            <Form.Item label="Doktor" name="doctor">
               <Select
                 showSearch
-                // style={{ width: 200 }}
+                value={choseDoctor}
                 placeholder="Doktorni tanlang"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
@@ -262,13 +257,8 @@ const Register = () => {
           </Col>
         </Row>
         <Row className="Row">
-          <Col className="Col-Form">
-            <Form.Item
-              label="Doimiy yashash joyi:"
-              name="Address"
-              required
-              rules={[{ required: true }]}
-            >
+          <Col gdj={address} className="Col-Form">
+            <Form.Item label="Doimiy yashash joyi:" name="Address">
               <Input
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
@@ -307,6 +297,7 @@ const Register = () => {
                   type="text"
                   placeholder="Temperature"
                 />
+                <p style={{ display: "none" }}>t{temperature}</p>
               </Form.Item>
             </Col>
           </div>
@@ -393,16 +384,16 @@ const Register = () => {
                 <div className="doctorName">
                   <Checkbox
                     className="onChecked"
-                    onChange={(e) => (
-                      setAnalysis(e.target.checked),
-                      analysis && setPaySum(0),
-                      setBlood(0),
-                      setUrgent(0),
-                      setBiochemical(0),
-                      setDiagnostics(""),
-                      changeDiagnostic(),
-                      setChoseDoctor("")
-                    )}
+                    value={"analysis"}
+                    onChange={
+                      (e) => setAnalysis(e.target.checked)
+                      // setBlood(0),
+                      // setUrgent(0),
+                      // setBiochemical(0),
+                      // setDiagnostics(""),
+                      // changeDiagnostic(),
+                      // setChoseDoctor("")
+                    }
                   >
                     {analysis ? "Ha" : "Yo'q"}{" "}
                   </Checkbox>
@@ -499,12 +490,7 @@ const Register = () => {
           )}
 
           <Col className="Col-Form">
-            <Form.Item
-              label="To'landi"
-              name="paid"
-              required
-              rules={[{ required: true }]}
-            >
+            <Form.Item label="To'landi" name="paid">
               <div onClick={() => setPaid()} className="docORrecep">
                 <label className="containerChe Che">
                   <b> {NumberFormat(paySum)} </b>
