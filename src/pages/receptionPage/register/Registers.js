@@ -47,13 +47,11 @@ const Register = () => {
   const [diagnostics, setDiagnostics] = useState("");
   const [analysis, setAnalysis] = useState("");
   const [infoDispatch, setInfoDispatch] = useState("");
-  const [blood_analysis, setBlood] = useState("");
-  const [urgent_analysis, setUrgent] = useState("");
-  const [biochemical_analysis, setBiochemical] = useState("");
+  const [blood_analysis, setBlood] = useState(false);
+  const [urgent_analysis, setUrgent] = useState(false);
+  const [biochemical_analysis, setBiochemical] = useState(false);
 
   let { data: singleUser } = useGetUserByIDNumberQuery(idNumber || 0);
-
-  console.log(paySum);
 
   useEffect(() => {
     if (singleUser?.data) {
@@ -100,7 +98,6 @@ const Register = () => {
         label: item.specialization,
       });
     }
-
     return Diagnostics;
   };
 
@@ -116,35 +113,38 @@ const Register = () => {
     let doctor_price = allDoctor?.find((d) => d._id === choseDoctor);
 
     const AllInfo = {
+      idNumber,
       firstname,
       lastname,
       phone,
       address,
       year,
-      idNumber,
-      temperature,
-      weight: +weight,
-      height: +height,
-      diagnostics,
-      analysis,
-      urgetnt: urgent_analysis,
-      blood_analysis,
-      biochemical_analysis,
-      infoDispatch,
-      payState,
-      choseDoctor: doctor_price?.specialization,
-      paySumm: paySum,
-      doctorFirstName: doctor_price?.firstName,
-      doctorLastName: doctor_price?.lastName,
-      doctorPhone: doctor_price?.phone,
-      day: todaysTime,
-      month: time.toLocaleString("default", { month: "long" }),
+      stories: {
+        choseDoctor: doctor_price?.specialization,
+        payState,
+        paySumm: paySum,
+        doctorFirstName: doctor_price?.firstName,
+        doctorLastName: doctor_price?.lastName,
+        doctorPhone: doctor_price?.phone,
+        temperature,
+        weight: +weight,
+        height: +height,
+        diagnostics,
+        analysis,
+        urgent: urgent_analysis,
+        blood_analysis,
+        biochemical_analysis,
+        infoDispatch,
+        day: todaysTime,
+        month: time.toLocaleString("default", { month: "long" }),
+      },
     };
 
     console.log(AllInfo);
 
     CreateNewClient(AllInfo)
       .then((res) => {
+        console.log(res);
         if (res?.data?.success) {
           setQueueNumber(res.data.data.queueNumber);
           message.success(res?.data?.message);
@@ -386,7 +386,7 @@ const Register = () => {
                     className="onChecked"
                     value={"analysis"}
                     onChange={
-                      (e) => setAnalysis(e.target.checked)
+                      (e) => setAnalysis(e.target.value)
                       // setBlood(0),
                       // setUrgent(0),
                       // setBiochemical(0),

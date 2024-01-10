@@ -93,7 +93,6 @@ function EnterRoom({ none, setOpenRoom, room }) {
     });
   };
 
-
   let viewCheckListOnline = {
     display: "block",
     width: "100%",
@@ -105,7 +104,7 @@ function EnterRoom({ none, setOpenRoom, room }) {
     position: "fixed",
     top: "0",
     left: "0",
-  }
+  };
 
   return (
     <div className="updateRoom">
@@ -132,6 +131,7 @@ function EnterRoom({ none, setOpenRoom, room }) {
                       firstname,
                       lastname,
                       phone,
+                      idNumber,
                       year,
                       doctorFirstName,
                       dayOfTreatment,
@@ -155,7 +155,7 @@ function EnterRoom({ none, setOpenRoom, room }) {
                       <td style={none} data-label="Chiqish">
                         <button
                           onClick={() => {
-                            OutInRoom(phone, room._id, {
+                            OutInRoom(idNumber, room._id, {
                               dayOfTreatment: CountingMoney(dayOfTreatment),
                               payForRoom: CountingDay(dayOfTreatment),
                               id: _id,
