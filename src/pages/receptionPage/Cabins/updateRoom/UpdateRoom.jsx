@@ -8,7 +8,7 @@ import { useUpdateRoomMutation } from "../../../../redux/roomApi";
 
 function UpdateRoom({ setOpenUpdate, room }) {
   let [updateRoomFunc] = useUpdateRoomMutation();
-  const [phone, setPhone] = useState("");
+  const [idNumber, setIdNumber] = useState("");
   const [dayOfTreatment, setDayOfTreatment] = useState();
   const [roomFull, setRoomFull] = useState(false);
 
@@ -21,11 +21,13 @@ function UpdateRoom({ setOpenUpdate, room }) {
   }, [room]);
 
   function updateRoom() {
-    if (phone.length < 9) return message.warning("raqamni kiriting"); // check phone number
+    if (idNumber.length < 9) return message.warning("raqamni kiriting"); // check phone number
     if (room.usersNumber === room.capacity.length)
       return message.warning("xonada joy yoq"); // check room capacity
-    let exactClient = clients?.find((client) => client.phone == phone); // find from clients
-    let exactClientInCapacity = room.capacity.find((p) => p.phone == phone); // find from room capacity
+    let exactClient = clients?.find((client) => client.idNumber == idNumber); // find from clients
+    let exactClientInCapacity = room.capacity.find(
+      (p) => p.idNumber == idNumber
+    ); // find from room capacity
     if (exactClientInCapacity)
       return message.warning("Bemor xonada avvaldan mavjud!"); // check room capacity
     if (!exactClient) return message.error("Bemor ro'yhatdan o'tmagan");
@@ -84,10 +86,10 @@ function UpdateRoom({ setOpenUpdate, room }) {
 
           <input
             className="InputForm"
-            type="number"
-            placeholder={PhoneNumberFormat("998939119572")}
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            type="string"
+            placeholder={"AA1234567"}
+            value={idNumber}
+            onChange={(e) => setIdNumber(e.target.value)}
             disabled={roomFull}
           />
           <Col>
