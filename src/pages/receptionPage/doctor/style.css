@@ -1,0 +1,10 @@
+.AnalisRes {
+    height: 40px;
+    
+}
+.AnalisRes >div{
+    font-size: 12px;
+    line-height: 14px;
+    gap: 10px;
+    display: flex;
+}

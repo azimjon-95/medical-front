@@ -42,14 +42,13 @@ export const adminMenu = [
         path: "/receptionHome",
         icon: "fa fa-address-card-o"
     },
-
     {
         name: "Bemorlar",
         path: "/patients",
         icon: "fa fa-user"
     },
     {
-        name: "Lecheniya",
+        name: "Muolajala",
         path: "/cabins",
         icon: "fa fa-home"
     },
@@ -58,7 +57,6 @@ export const adminMenu = [
         path: "/admin/doctors",
         icon: "fa fa-user-md"
     }
-
 ]
 
 export const doctorMenu = [
@@ -66,6 +64,11 @@ export const doctorMenu = [
         name: "Bemorlar",
         path: "/appointments",
         icon: "fa fa-bars"
+    },
+    {
+        name: "Davolanish",
+        path: "/doctor-patients",
+        icon: "fa fa-hospital-o"
     },
     {
         name: "Arxiv",

@@ -23,8 +23,7 @@ function Wallet() {
   let category = localStorage?.getItem('category')
   let filterDoctors = doctors?.filter(i => i.specialization === category)
 
-  let clients = client?.filter(client => client.choseDoctor
-    .toLowerCase() === category
+  let clients = client?.filter(client => client.choseDoctor?.toLowerCase() === category
       ?.toLowerCase() && client.view === true)
 
   let time = new Date()

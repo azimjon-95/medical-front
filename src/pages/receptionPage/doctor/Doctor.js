@@ -9,6 +9,7 @@ import { IoEyeOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import "../../../styles/table.css";
 import { useGetAllDoctorsQuery } from "../../../redux/doctorApi";
+import './style.css';
 
 const Doctor = () => {
   const dispatch = useDispatch();
@@ -55,9 +56,26 @@ const Doctor = () => {
                       <td data-label="Tel No">
                         {PhoneNumberFormat(item.phone)}
                       </td>
-                      <td data-label="Konsultatsiya">
-                        {NumberFormat(item.feesPerCunsaltation)} so'm
-                      </td>
+                      {
+                        item?.analis === "analis" ?
+                          <td>
+                            <div className="AnalisRes">
+                              <div>
+                                <div>Qon analizi:</div> {NumberFormat(item?.analisisPrices.blood_analysis)} So'm
+                              </div>
+                              <div>
+                                <div>Peshob analizi:</div>  {NumberFormat(item?.analisisPrices.urine_analysis)} So'm
+                              </div>
+                              <div>
+                                <div> Bioximik analizi:</div> {NumberFormat(item?.analisisPrices.biochemical_analysis)}  So'm
+                              </div>
+                            </div>
+                          </td>
+                          :
+                          <td data-label="Konsultatsiya">
+                            {NumberFormat(item.feesPerCunsaltation)} so'm
+                          </td>
+                      }
                       <td data-label="Bemorlari">
                         <Link
                           to={`/doctorSinglePageAdmin/${item.specialization}`}
@@ -82,9 +100,12 @@ const Doctor = () => {
             </table>
           </section>
         </main>
-      )}
-    </Layout>
+      )
+      }
+    </Layout >
   );
 };
 
 export default Doctor;
+
+

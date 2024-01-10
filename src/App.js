@@ -22,6 +22,7 @@ import GetPatients from "./pages/admin/singlePage/getPatients/GetPatients";
 import { useState, useEffect } from "react";
 import Wallet from "./pages/doctorPage/wallet/Wallet";
 import Home from "./components/home/Home";
+import CabindEnter from "./pages/doctorPage/cabins/CabinsRoom";
 
 
 function App() {
@@ -75,6 +76,7 @@ function App() {
           <Route path="/kashelyok" element={<Wallet />} />
           <Route path="/viewRoom" element={<Rooms />} />
           <Route path="/support" element={<Support />} />
+          <Route path="/doctor-patients" element={<CabindEnter />} />
           <Route
             path="/doctor/patients_history"
             element={<PatientsHistory />}

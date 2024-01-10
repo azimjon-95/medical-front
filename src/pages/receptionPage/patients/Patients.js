@@ -15,16 +15,21 @@ import { ExclamationCircleFilled, SearchOutlined } from "@ant-design/icons";
 import { PiPrinterFill } from "react-icons/pi";
 import ReactToPrint from "react-to-print";
 import CheckList from "../../../components/checkLists/checkList/CheckList";
+import UpdatePotients from "../editPotients/EditUser";
+import { LuClipboardEdit } from "react-icons/lu";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const Patients = () => {
   const [query, setQuery] = useState("");
   const [list, setList] = useState(false);
   const [data, setData] = useState([]);
+  const [open, setOpen] = useState(false)
   let { data: doctors = [] } = useGetAllDoctorsQuery();
 
   let { data: users, isLoading: loading } = useGetAllUsersQuery();
   let [deleteClient] = useDeleteClientMutation();
   let [uppdate] = useUpdateClientMutation();
+  const [editID, setEditID] = useState(null)
 
   const componentRef = useRef();
   const dataFalse = users?.data?.filter((i) => i.payState === false);
@@ -365,6 +370,7 @@ const Patients = () => {
                         feesPerCunsaltation={data?.feesPerCunsaltation}
                       />
                     </td>
+
                   </tbody>
                 </table>
               </section>
@@ -389,6 +395,7 @@ const Patients = () => {
                       <th>Yo'naltirildi</th>
                       <th>Doktor</th>
                       <th>To'landi</th>
+                      <th>Taxrirlash</th>
                       <th>O'chirish</th>
                     </tr>
                   </thead>
@@ -411,13 +418,27 @@ const Patients = () => {
                             <td>{NumberFormat(item?.paySumm)} so'm</td>
                             <td>
                               <button
+                                onClick={() => {
+                                  setOpen(true)
+                                  setEditID(item?._id)
+                                }}
+                                button="true"
+                                className="btn btn-primary"
+                              >
+                                <LuClipboardEdit />
+                              </button>
+                            </td>
+                            <td>
+                              <button
                                 onClick={() => showDeleteClients(item?._id)}
                                 button="true"
                                 className="btn btn-danger"
                               >
-                                Del
+
+                                <RiDeleteBin6Line />
                               </button>
                             </td>
+                            {open && <UpdatePotients user={dataTrue} editID={editID} setOpenUpdate={setOpen}/>}
                           </tr>
                         );
                       })}

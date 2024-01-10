@@ -55,7 +55,9 @@
 .box-bmi>span>div {
    font-size: 12px;
 }
-
+.Diagram{
+    transform: rotate(-89deg);
+}
 
 @media screen and (max-width: 890px) {
     .newMsg {

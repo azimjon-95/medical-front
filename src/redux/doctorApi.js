@@ -34,6 +34,15 @@ export const doctorApi = api.injectEndpoints({
       }),
       invalidatesTags: ["GetDoctors"],
     }),
+
+    updateDoctor: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `admin/update/${id}`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["GetDoctors"],
+    }),
   }),
 });
 
@@ -42,4 +51,5 @@ export const {
   useGetDoctorInfoQuery,
   useCreateDoctorMutation,
   useDeleteDoctorMutation,
+  useUpdateDoctorMutation
 } = doctorApi;

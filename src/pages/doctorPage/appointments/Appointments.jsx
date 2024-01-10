@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import Layout from "../../../components/layout/Layout";
 import "./Appointments.css";
 import { Link } from "react-router-dom";
@@ -13,14 +13,10 @@ import { BiAnalyse } from "react-icons/bi";
 import { BsDiagram3 } from "react-icons/bs";
 
 function Appointments() {
-  // const audioPlayer = useRef(null);
 
   let { data: allClients, isSuccess } = useGetAllUsersQuery();
   let data = allClients?.data;
-  // {
-  //   isSuccess &&
-  //     `${(<audio controls ref={audioPlayer} src={NotificationSound} />)}`;
-  // }
+
 
   let category = localStorage.getItem("category");
   let clients = data?.filter(
@@ -31,6 +27,14 @@ function Appointments() {
   );
   localStorage.setItem("ClientLength", clients?.length);
 
+
+  const Bmi = (weight, height) => {
+    if (weight && height) {
+      const heightInMeters = height / 100;
+      const bmiValue = (weight / (heightInMeters * heightInMeters)).toFixed(2);
+      return bmiValue;
+    }
+  }
   return (
     <Layout>
       <h3 className="text-center">Bemorlar</h3>
@@ -79,7 +83,7 @@ function Appointments() {
                       <td>
                         <div className="box-bmi">
                           <span>
-                            <div><BsDiagram3 /></div>
+                            <div><BsDiagram3 className="Diagram"/> {item?.diagnostics}</div>
                           </span>
                           <span>
                             <div><BsDiagram3 /></div>
@@ -89,12 +93,12 @@ function Appointments() {
                       <td>
                         <div className="box-bmi">
                           <span>
-                            <div><GiWeightScale /> 80 kg</div>
-                            <div><GiBodyHeight /> 180 m</div>
+                            <div><GiWeightScale /> {item?.weight} kg</div>
+                            <div><GiBodyHeight /> {item?.height} m</div>
                           </span>
                           <span>
-                            <div><LiaTemperatureHighSolid /> 30/40</div>
-                            <div> BMI 24.56</div>
+                            <div><LiaTemperatureHighSolid /> {item?.temperature}</div>
+                            <div> BMI {Bmi(+item?.weight, +item?.height)}</div>
                           </span>
 
                         </div>

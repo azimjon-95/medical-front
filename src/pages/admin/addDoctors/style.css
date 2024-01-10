@@ -9,6 +9,10 @@
     align-items: center;
 }
 
+.FormItem input {
+    margin: 7px;
+}
+
 .Col-Form {
     width: 32%;
 }

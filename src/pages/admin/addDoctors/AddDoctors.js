@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../../../components/layout/Layout";
-import { Col, Form, Checkbox, Input, message, Row, Tabs, Modal } from "antd";
+import { Col, Alert, Form, Button, Input, message, Row, Tabs, Modal } from "antd";
 import "./style.css";
 import imgNoData from "../../../assets/nodata.png";
 import { NumberFormat, PhoneNumberFormat } from "../../../hook/NumberFormat";
@@ -10,7 +10,10 @@ import {
   useGetAllDoctorsQuery,
   useCreateDoctorMutation,
   useDeleteDoctorMutation,
+
 } from "../../../redux/doctorApi";
+import { LuClipboardEdit } from "react-icons/lu";
+import EditDoctors from "../editDoctor/EditDoctors";
 
 const AddDoctors = () => {
   const [firstName, setFirstName] = useState("");
@@ -32,10 +35,17 @@ const AddDoctors = () => {
   const [urgent_analysis, setUrgent] = useState("");
   const [biochemical_analysis, setBiochemical] = useState("");
   const [salary, setSalary] = useState("");
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+
+  const [editID, setEditID] = useState("");
+
+
   let { data: allDoctor } = useGetAllDoctorsQuery();
   let doctor = allDoctor?.data;
   let [createDoctor] = useCreateDoctorMutation();
   let [deleteDoctor] = useDeleteDoctorMutation();
+
 
   const AllInfo = {
     firstName,
@@ -438,68 +448,15 @@ const AddDoctors = () => {
         </Tabs.TabPane>
 
         <Tabs.TabPane
-          tab={`${width > 450 ? "Doktorlar" : "D"} ${
-            filterData1?.length === 0 ? "" : `- ${filterData1?.length}`
-          }`}
+          tab={`${width > 450 ? "Doktorlar" : "D"} ${filterData1?.length === 0 ? "" : `- ${filterData1?.length}`
+            }`}
           key={2}
         >
-          {filterData1 == 0 ? (
-            <div className="NoData">
-              <div className="NoDataImg">
-                <img src={imgNoData} alt="No Data" />
-              </div>
-            </div>
-          ) : (
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Ismi</th>
-                  <th>Familiyasi</th>
-                  <th>Kasbi</th>
-                  <th>Tel raqam</th>
-                  <th>Qabuli</th>
-                  <th>Oylik</th>
-                  <th>O'chirish</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filterData1?.map((item, inx) => (
-                  <tr key={inx}>
-                    <td data-label="Ismi">{item.lastName} </td>
-                    <td data-label="Familiyasi">{item.firstName}</td>
-                    <td data-label="Kasbi">{item.specialization}</td>
-                    <td data-label="Tel No">{PhoneNumberFormat(item.phone)}</td>
-                    <td data-label="Qabuli">
-                      {NumberFormat(item.feesPerCunsaltation)} so'm
-                    </td>
-                    {item.percent ? (
-                      <td data-label="Oylik">{item.percent} %</td>
-                    ) : (
-                      <td data-label="Oylik">
-                        {NumberFormat(item.salary)} so'm
-                      </td>
-                    )}
-
-                    <td data-label="O'chirish">
-                      <button
-                        onClick={() => showDeleteConfirm(item?._id)}
-                        button="true"
-                        className="btn btn-danger"
-                      >
-                        Del
-                      </button>
-                      {/* <button onClick={() => showDeleteConfirm(item?._id)} button="true" className='btn btn-danger'>Del</button> */}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+          <EditDoctors doctor={doctor} filterData1={filterData1} />
         </Tabs.TabPane>
         <Tabs.TabPane
-          tab={`${width > 450 ? "Administratorlar" : "A"}  ${
-            filterData2?.length === 0 ? "" : `- ${filterData2?.length}`
-          }`}
+          tab={`${width > 450 ? "Administratorlar" : "A"}  ${filterData2?.length === 0 ? "" : `- ${filterData2?.length}`
+            }`}
           key={3}
         >
           {filterData2 == 0 ? (
@@ -548,6 +505,19 @@ const AddDoctors = () => {
 
 export default AddDoctors;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Azimov	Faxriddin	Nevrolog	934566676	100000
 // Melikulov	Alisher	Kardioxirurg	904445434	150000
 // Aminov	Sanjar	Kardiolog	905556545	200000
@@ -557,62 +527,5 @@ export default AddDoctors;
 // Umarova	Gulnora	Revmatolog	946609606	130000
 // Abdullayev	Oybek	Travmatolog	944324445	80000
 
-//                <div className="salaryBox">
-//                 <Col className="Col-Form">
-//                   <Form.Item
-//                     label="KGG"
-//                     name="login"
-//                     className="itemTextIn"
-//                   >
-//                     <Checkbox className="onChecked" > </Checkbox>
-//                   </Form.Item>
-//                 </Col><Col className="Col-Form">
-//                   <Form.Item
-//                     label="EKG"
-//                     name="login"
-//                     className="itemTextIn"
-//                   >
-//                     <Checkbox className="onChecked" > </Checkbox>
-//                   </Form.Item>
-//                 </Col>
-//                 <Col className="Col-Form">
-//                   <Form.Item
-//                     label="Rengen"
-//                     name="login"
-//                     className="itemTextIn"
-//                   >
-//                     <Checkbox className="onChecked" > </Checkbox>
 
-//                   </Form.Item>
-//                 </Col>
-//                 <Col className="Col-Form">
-//                   <Form.Item
-//                     label="UTT"
-//                     name="login"
-//                     className="itemTextIn"
-//                   >
-//                     <Checkbox className="onChecked" > </Checkbox>
 
-//                   </Form.Item>
-//                 </Col>
-//                 <Col className="Col-Form">
-//                   <Form.Item
-//                     label="EFGDS"
-//                     name="login"
-//                     className="itemTextIn"
-//                   >
-//                     <Checkbox className="onChecked" > </Checkbox>
-
-//                   </Form.Item>
-//                 </Col>
-//                 <Col className="Col-Form">
-//                   <Form.Item
-//                     label="MRT"
-//                     name="login"
-//                     className="itemTextIn"
-//                   >
-//                     <Checkbox className="onChecked" > </Checkbox>
-
-//                   </Form.Item>
-//                 </Col>
-//               </div>

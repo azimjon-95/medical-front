@@ -1,0 +1,60 @@
+.updateDoctor {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #00000088;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.updateCloseBtn {
+    position: absolute;
+    top: 23px;
+    right: 40px;
+    color: #adadad;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.updateDoctor>.editForm {
+    width: 75%;
+    /* height: 90vh; */
+    padding: 20px;
+    box-shadow: 0 0 8px rgb(233, 233, 233);
+    background-color: #fff;
+    border-radius: 15px;
+}
+
+.FormItem {
+    display: flex;
+    background: #fff;
+    width: 100%;
+    padding: 15px;
+    gap: 20px;
+    border-radius: 10px;
+}
+
+.Form_item {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-main {
+    width: 50%;
+}
+
+.taxrirlash {
+    width: 100%;
+    height: 35px;
+    border-radius: 5px;
+    background: #ababab;
+    border: .5px solid rgb(192, 192, 192);
+    font-size: 18px;
+    letter-spacing: 3px;
+    color: #fff;
+}
+

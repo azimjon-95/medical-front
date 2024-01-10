@@ -143,16 +143,16 @@ const Register = () => {
 
     console.log(AllInfo);
 
-    // CreateNewClient(AllInfo)
-    //   .then((res) => {
-    //     if (res?.data?.success) {
-    //       setQueueNumber(res.data.data.queueNumber);
-    //       message.success(res?.data?.message);
-    //       setList(true);
-    //       document.querySelector(".FormApply").reset();
-    //     }
-    //   })
-    //   .catch((err) => console.log(err));
+    CreateNewClient(AllInfo)
+      .then((res) => {
+        if (res?.data?.success) {
+          setQueueNumber(res.data.data.queueNumber);
+          message.success(res?.data?.message);
+          setList(true);
+          document.querySelector(".FormApply").reset();
+        }
+      })
+      .catch((err) => console.log(err));
   };
   const onChange = (date, dateString) => {
     setYear(dateString);
