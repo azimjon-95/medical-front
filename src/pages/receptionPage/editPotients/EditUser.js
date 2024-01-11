@@ -95,11 +95,19 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
       label: item.specialization,
     });
   }
-  const onChange = (date, dateString) => {
-    setYear(dateString);
-  };
-  // ----------ID number-------------
 
+
+  // ------------yyy-mm-dd------------
+  const handleDateChange = (event) => {
+    const inputValue = event.target.value;
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (dateRegex.test(inputValue)) {
+      console.log('Valid date!');
+    } else {
+      console.log('Invalid date!');
+    }
+    setYear(inputValue);
+  };
 
 
 
@@ -181,12 +189,10 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
                 direction="vertical"
               >
                 <input type="date"
-                  style={{ width: "100%", height: "32px" }}
                   defaultValue={update?.year}
-                  onChange={onChange}
+                  id="dateInput"
+                  onChange={handleDateChange}
                   placeholder="yil/oy/kun"
-                  format="yyy-mm-dd"
-                  pattern="\d{4}-\d{2}-\d{2}"
                   className="DatePicer"
                 />
               </Form.Item>

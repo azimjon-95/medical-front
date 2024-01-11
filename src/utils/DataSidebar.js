@@ -48,7 +48,7 @@ export const adminMenu = [
         icon: "fa fa-user"
     },
     {
-        name: "Muolajala",
+        name: "Davolanish",
         path: "/cabins",
         icon: "fa fa-home"
     },

@@ -21,7 +21,7 @@ function Appointments() {
   let category = localStorage.getItem("category");
   let clients = data?.filter(
     (client) =>
-      client.choseDoctor.toLowerCase() === category?.toLowerCase() &&
+      client.choseDoctor?.toLowerCase() === category?.toLowerCase() &&
       client.payState &&
       client.view !== true
   );

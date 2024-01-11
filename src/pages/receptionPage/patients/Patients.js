@@ -32,11 +32,11 @@ const Patients = () => {
   const [editID, setEditID] = useState(null)
 
   const componentRef = useRef();
-  const dataFalse = users?.data?.filter((i) => i.payState === false);
-  const dataTrue = users?.data?.filter(
-    (i) => i.payState === true && i.view !== true
+  const dataFalse = users?.data?.filter((i) => i.stories[0]?.payState === false);
+  const dataTrue = users?.data.filter(
+    (i) => i.stories[0].payState === true && i.stories[0].view !== true
   );
-
+  console.log(dataTrue);
   localStorage.setItem("dataFalse", dataFalse?.length);
 
   function updatePayState(e, id) {
@@ -106,6 +106,8 @@ const Patients = () => {
       },
     });
   };
+
+
 
   let viewCheckListOnline = {
     display: "block",
@@ -177,9 +179,9 @@ const Patients = () => {
                               {item?.lastname} {item?.firstname}
                             </td>
                             <td>{PhoneNumberFormat(item?.phone)}</td>
-                            <td>{item?.choseDoctor}</td>
+                            <td>{item?.stories[0].choseDoctor}</td>
                             <td>
-                              {item?.doctorLastName} {item?.doctorFirstName}
+                              {console.log(item?.stories[0].doctorLastName)} {item?.stories[0].doctorFirstName}
                             </td>
                             <td>
                               <del className="Tolanmadi lee">
@@ -187,7 +189,7 @@ const Patients = () => {
                                   doctors.data?.find(
                                     (i) =>
                                       i.specialization?.toLowerCase() ===
-                                      item.choseDoctor?.toLowerCase()
+                                      item?.stories[0].choseDoctor?.toLowerCase()
                                   )?.feesPerCunsaltation
                                 )}{" "}
                                 so'm
@@ -411,11 +413,11 @@ const Patients = () => {
                               {item?.lastname} {item?.firstname}
                             </td>
                             <td>{PhoneNumberFormat(item?.phone)}</td>
-                            <tbody>{item?.choseDoctor}</tbody>
+                            <td>{item?.stories[0].choseDoctor}</td>
                             <td>
-                              {item?.doctorLastName} {item?.doctorFirstName}
+                              {item?.stories[0].doctorLastName} {item?.stories[0].doctorFirstName}
                             </td>
-                            <td>{NumberFormat(item?.paySumm)} so'm</td>
+                            <td>{NumberFormat(item?.stories[0].paySumm)} so'm</td>
                             <td>
                               <button
                                 onClick={() => {
@@ -438,7 +440,7 @@ const Patients = () => {
                                 <RiDeleteBin6Line />
                               </button>
                             </td>
-                            {open && <UpdatePotients user={dataTrue} editID={editID} setOpenUpdate={setOpen}/>}
+                            {open && <UpdatePotients user={dataTrue} editID={editID} setOpenUpdate={setOpen} />}
                           </tr>
                         );
                       })}

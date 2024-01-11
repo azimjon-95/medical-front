@@ -8,7 +8,6 @@ import {
   message,
   Row,
   Select,
-  DatePicker,
 } from "antd";
 import "./style.css";
 import { NumberFormat } from "../../../hook/NumberFormat";
@@ -57,8 +56,9 @@ const Register = () => {
     if (singleUser?.data) {
       setFirstName(singleUser?.data?.firstname || "");
       setLastName(singleUser?.data?.lastname || "");
-      setAddress(singleUser?.data?.address || "");
       setPhone(singleUser?.data?.phone || "");
+      setAddress(singleUser?.data?.address || "");
+      setYear(singleUser?.data?.year || "");
     }
   }, [singleUser]);
 
@@ -108,10 +108,10 @@ const Register = () => {
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
 
   let Hours = time.getHours() + ":" + time.getMinutes();
-  let filterarxiv = users?.data?.filter((i) => i.day === todaysTime);
-  const handleFinish = async (e) => {
-    let doctor_price = allDoctor?.find((d) => d._id === choseDoctor);
+  let doctor_price = allDoctor?.find((d) => d._id === choseDoctor);
 
+  const handleFinish = async (e) => {
+    console.log(doctor_price);
     const AllInfo = {
       idNumber,
       firstname,
@@ -140,7 +140,7 @@ const Register = () => {
       },
     };
 
-    console.log(AllInfo);
+
 
     CreateNewClient(AllInfo)
       .then((res) => {
@@ -154,9 +154,7 @@ const Register = () => {
       })
       .catch((err) => console.log(err));
   };
-  const onChange = (date, dateString) => {
-    setYear(dateString);
-  };
+
 
   // ----------ID number-------------
   const handleInputChange = (e) => {
@@ -166,6 +164,21 @@ const Register = () => {
       setIdNumber(value);
     }
   };
+
+  // ------------yyy-mm-dd------------
+  const handleDateChange = (event) => {
+    const inputValue = event.target.value;
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (dateRegex.test(inputValue)) {
+      console.log('Valid date!');
+    } else {
+      console.log('Invalid date!');
+    }
+    setYear(inputValue);
+  };
+
+  // ------------Analises------------
+
 
   return (
     <Layout>
@@ -187,7 +200,7 @@ const Register = () => {
             <Form.Item
               label="Ismi"
               name="firstname"
-              // rules={[{ required: true }]}
+            // rules={[{ required: true }]}
             >
               <p style={{ display: "none" }}>{firstname}</p>
               <Input
@@ -226,14 +239,32 @@ const Register = () => {
 
           <Col className="Col-Form">
             <Form.Item label="Tug'ilgan sana:" name="year" direction="vertical">
-              <DatePicker
+              <input type="date"
                 style={{ width: "100%" }}
+                id="dateInput"
                 value={year}
-                onChange={onChange}
+                onChange={handleDateChange}
                 placeholder="yil/oy/kun"
+                className="DatePicer"
               />
+              <p style={{ display: "none" }}>{firstname}</p>
             </Form.Item>
           </Col>
+          <Col  className="Col-Form">
+            <Form.Item label="Doimiy yashash joyi:" name="Address">
+              <Input
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                type="text"
+                placeholder="Address"
+              />
+              <p style={{ display: "none" }}>{address}</p>
+
+            </Form.Item>
+          </Col>
+
+        </Row>
+        <Row className="Row">
 
           <Col className="Col-Form">
             <Form.Item label="Doktor" name="doctor">
@@ -255,19 +286,6 @@ const Register = () => {
               />
             </Form.Item>
           </Col>
-        </Row>
-        <Row className="Row">
-          <Col gdj={address} className="Col-Form">
-            <Form.Item label="Doimiy yashash joyi:" name="Address">
-              <Input
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                type="text"
-                placeholder="Address"
-              />
-            </Form.Item>
-          </Col>
-
           <div className="Col-Form_Box">
             <Col className="Col-Form">
               <Form.Item label="Bo'yi" name="height">
@@ -412,17 +430,17 @@ const Register = () => {
                         setBlood(e.target.checked),
                         blood_analysis
                           ? setPaySum(
-                              (p) =>
-                                p -
-                                allDoctor?.filter((i) => i.analis)[0]
-                                  ?.analisisPrices?.blood_analysis
-                            )
+                            (p) =>
+                              p -
+                              allDoctor?.filter((i) => i.analis)[0]
+                                ?.analisisPrices?.blood_analysis
+                          )
                           : setPaySum(
-                              (p) =>
-                                p +
-                                allDoctor?.filter((i) => i.analis)[0]
-                                  ?.analisisPrices?.blood_analysis
-                            )
+                            (p) =>
+                              p +
+                              allDoctor?.filter((i) => i.analis)[0]
+                                ?.analisisPrices?.blood_analysis
+                          )
                       )}
                     >
                       {blood_analysis ? "Ha" : "Yo'q"}{" "}
@@ -439,17 +457,17 @@ const Register = () => {
                         setUrgent(e.target.checked),
                         urgent_analysis
                           ? setPaySum(
-                              (p) =>
-                                p -
-                                allDoctor?.filter((i) => i.analis)[0]
-                                  ?.analisisPrices?.urine_analysis
-                            )
+                            (p) =>
+                              p -
+                              allDoctor?.filter((i) => i.analis)[0]
+                                ?.analisisPrices?.urine_analysis
+                          )
                           : setPaySum(
-                              (p) =>
-                                p +
-                                allDoctor?.filter((i) => i.analis)[0]
-                                  ?.analisisPrices?.urine_analysis
-                            )
+                            (p) =>
+                              p +
+                              allDoctor?.filter((i) => i.analis)[0]
+                                ?.analisisPrices?.urine_analysis
+                          )
                       )}
                     >
                       {urgent_analysis ? "Ha" : "Yo'q"}{" "}
@@ -466,17 +484,17 @@ const Register = () => {
                         setBiochemical(e.target.checked),
                         biochemical_analysis
                           ? setPaySum(
-                              (p) =>
-                                p -
-                                allDoctor?.filter((i) => i.analis)[0]
-                                  ?.analisisPrices?.biochemical_analysis
-                            )
+                            (p) =>
+                              p -
+                              allDoctor?.filter((i) => i.analis)[0]
+                                ?.analisisPrices?.biochemical_analysis
+                          )
                           : setPaySum(
-                              (p) =>
-                                p +
-                                allDoctor?.filter((i) => i.analis)[0]
-                                  ?.analisisPrices?.biochemical_analysis
-                            )
+                            (p) =>
+                              p +
+                              allDoctor?.filter((i) => i.analis)[0]
+                                ?.analisisPrices?.biochemical_analysis
+                          )
                       )}
                     >
                       {biochemical_analysis ? "Ha" : "Yo'q"}{" "}
@@ -515,7 +533,6 @@ const Register = () => {
             </Form.Item>
           </Col>
         </Row>
-
         <Col className="Col-Form">
           <button className="button" type="submit">
             {" "}
@@ -606,6 +623,63 @@ const Register = () => {
                     <p className="itemtext">{NumberFormat(paySum)} so'm</p>
                   </div>
                 </div>
+
+                {blood_analysis ?
+                  <div className="service">
+                    <div className="tableitem">
+                      <p className="itemtext">Qon tahlili:</p>
+                    </div>
+
+                    <div className="tableitem">
+                      <p className="itemtext">{NumberFormat(allDoctor?.filter((i) => i.analis)[0]
+                        ?.analisisPrices?.blood_analysis)} so'm</p>
+                    </div>
+                  </div>
+                  : ""
+                }
+
+                {urgent_analysis ?
+                  <div className="service">
+                    <div className="tableitem">
+                      <p className="itemtext">Peshob tahlili:</p>
+                    </div>
+
+                    <div className="tableitem">
+                      <p className="itemtext">{NumberFormat(allDoctor?.filter((i) => i.analis)[0]
+                        ?.analisisPrices?.urine_analysis)} so'm</p>
+                    </div>
+                  </div>
+                  : ""
+                }
+
+                {biochemical_analysis ?
+                  <div className="service">
+                    <div className="tableitem">
+                      <p className="itemtext">Bioximik tahlili:</p>
+                    </div>
+
+                    <div className="tableitem">
+                      <p className="itemtext">{NumberFormat(allDoctor?.filter((i) => i.analis)[0]
+                        ?.analisisPrices?.biochemical_analysis)} so'm</p>
+                    </div>
+                  </div>
+                  : ""
+                }
+                {
+                  diagnostics !== "diagnostica" ?
+                    <div className="service">
+                      <div className="tableitem">
+                        <p className="itemtext">{diagnostics}:</p>
+                      </div>
+
+                      <div className="tableitem">
+                        <p className="itemtext">{console.log(NumberFormat(allDoctor?.find((i) => i.diagnostics === diagnostics)
+                          ?.feesPerCunsaltation))} so'm</p>
+                      </div>
+                    </div>
+                    :
+                    ""
+                }
                 <div className="service">
                   <div className="tableitem">
                     <p className="itemtext">Bemor:</p>
@@ -660,6 +734,10 @@ const Register = () => {
           Hours={Hours}
           doctorPhone={doctorPhone}
           filterarxiv={queueNumber}
+          allDoctor={allDoctor}
+          blood_analysis={blood_analysis}
+          biochemical_analysis={biochemical_analysis}
+          urgent_analysis={urgent_analysis}
         />
       </div>
     </Layout>
@@ -667,3 +745,7 @@ const Register = () => {
 };
 
 export default Register;
+
+
+
+

@@ -12,12 +12,11 @@
 .viewCheckList {
     display: block;
     width: 100%;
-    height: 100vh;
+    /* height: 100vh; */
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.518);
-
     position: fixed;
     top: 0;
     left: 0;
@@ -32,7 +31,6 @@
     width: 75%;
     height: 550px;
     background: rgb(210, 210, 210);
-
     border-radius: 15px;
     position: relative;
     display: flex;
@@ -73,7 +71,7 @@
 .waveList {
     position: relative;
     width: 280px;
-    height: 420px;
+    /* height: 420px; */
     background-color: #fff;
     padding: 10px;
     display: flex;
@@ -92,7 +90,6 @@
     background-size: 40px;
     transform: rotate(180deg);
     background-image:
-
         radial-gradient(circle at 20px -10px, rgb(210, 210, 210) 24px, transparent 16px);
 }
 
