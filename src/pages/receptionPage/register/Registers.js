@@ -51,7 +51,9 @@ const Register = () => {
   const [urgent_analysis, setUrgent] = useState(false);
   const [biochemical_analysis, setBiochemical] = useState(false);
 
-  let { data: singleUser } = useGetUserByIDNumberQuery(idNumber || 0);
+  let { data: singleUser } = useGetUserByIDNumberQuery(
+    idNumber?.toLowerCase() || 0
+  );
 
   useEffect(() => {
     if (singleUser?.data) {
@@ -113,7 +115,7 @@ const Register = () => {
     let doctor_price = allDoctor?.find((d) => d._id === choseDoctor);
 
     const AllInfo = {
-      idNumber,
+      idNumber: idNumber?.toLowerCase(),
       firstname,
       lastname,
       phone,
