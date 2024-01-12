@@ -23,20 +23,21 @@ const Patients = () => {
   const [query, setQuery] = useState("");
   const [list, setList] = useState(false);
   const [data, setData] = useState([]);
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
   let { data: doctors = [] } = useGetAllDoctorsQuery();
 
   let { data: users, isLoading: loading } = useGetAllUsersQuery();
   let [deleteClient] = useDeleteClientMutation();
   let [uppdate] = useUpdateClientMutation();
-  const [editID, setEditID] = useState(null)
+  const [editID, setEditID] = useState(null);
 
   const componentRef = useRef();
-  const dataFalse = users?.data?.filter((i) => i.stories[0]?.payState === false);
+  const dataFalse = users?.data?.filter(
+    (i) => i.stories[0]?.payState === false
+  );
   const dataTrue = users?.data.filter(
     (i) => i.stories[0].payState === true && i.stories[0].view !== true
   );
-  console.log(dataTrue);
   localStorage.setItem("dataFalse", dataFalse?.length);
 
   function updatePayState(e, id) {
@@ -106,8 +107,6 @@ const Patients = () => {
       },
     });
   };
-
-
 
   let viewCheckListOnline = {
     display: "block",
@@ -181,7 +180,8 @@ const Patients = () => {
                             <td>{PhoneNumberFormat(item?.phone)}</td>
                             <td>{item?.stories[0].choseDoctor}</td>
                             <td>
-                              {console.log(item?.stories[0].doctorLastName)} {item?.stories[0].doctorFirstName}
+                              {console.log(item?.stories[0].doctorLastName)}{" "}
+                              {item?.stories[0].doctorFirstName}
                             </td>
                             <td>
                               <del className="Tolanmadi lee">
@@ -372,7 +372,6 @@ const Patients = () => {
                         feesPerCunsaltation={data?.feesPerCunsaltation}
                       />
                     </td>
-
                   </tbody>
                 </table>
               </section>
@@ -415,14 +414,17 @@ const Patients = () => {
                             <td>{PhoneNumberFormat(item?.phone)}</td>
                             <td>{item?.stories[0].choseDoctor}</td>
                             <td>
-                              {item?.stories[0].doctorLastName} {item?.stories[0].doctorFirstName}
+                              {item?.stories[0].doctorLastName}{" "}
+                              {item?.stories[0].doctorFirstName}
                             </td>
-                            <td>{NumberFormat(item?.stories[0].paySumm)} so'm</td>
+                            <td>
+                              {NumberFormat(item?.stories[0].paySumm)} so'm
+                            </td>
                             <td>
                               <button
                                 onClick={() => {
-                                  setOpen(true)
-                                  setEditID(item?._id)
+                                  setOpen(true);
+                                  setEditID(item?._id);
                                 }}
                                 button="true"
                                 className="btn btn-primary"
@@ -436,11 +438,16 @@ const Patients = () => {
                                 button="true"
                                 className="btn btn-danger"
                               >
-
                                 <RiDeleteBin6Line />
                               </button>
                             </td>
-                            {open && <UpdatePotients user={dataTrue} editID={editID} setOpenUpdate={setOpen} />}
+                            {open && (
+                              <UpdatePotients
+                                user={dataTrue}
+                                editID={editID}
+                                setOpenUpdate={setOpen}
+                              />
+                            )}
                           </tr>
                         );
                       })}
