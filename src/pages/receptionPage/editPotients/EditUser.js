@@ -1,36 +1,53 @@
-import React, { useState, useRef } from "react";
-import { Form, Checkbox, Input, message, DatePicker, Select, Row, Col } from "antd";
+import React, { useState } from "react";
+import { Form, Checkbox, Input, Select, Row, Col, message } from "antd";
 import "./style.css";
 import { FiX } from "react-icons/fi";
 import { useGetAllDoctorsQuery } from "../../../redux/doctorApi";
 import { useUpdateClientMutation } from "../../../redux/clientApi";
 import { NumberFormat } from "../../../hook/NumberFormat";
 
-
 function UpdatePotients({ user, setOpenUpdate, editID }) {
   let update = user?.find((i) => i._id === editID) || {};
 
+  const [idNumber, setIdNumber] = useState(update?.idNumber || "");
   const [firstname, setFirstName] = useState(update?.firstname || "");
   const [lastname, setLastName] = useState(update?.lastname || "");
   const [address, setAddress] = useState(update?.address || "");
   const [year, setYear] = useState(update?.year || "");
   const [phone, setPhone] = useState(update?.phone || "");
-  const [paySum, setPaySum] = useState(update?.paySum || 0);
-  const [payState, setPaid] = useState(update?.payState || "");
-  const [choseDoctor, setChoseDoctor] = useState(update?.choseDoctor || "");
-  const [doctorSpecialization, setDoctorSpecialization] = useState(update?.specialization || "");
-  const [idNumber, setIdNumber] = useState(update?.idNumber || "");
-  const [temperature, setTemperature] = useState(update?.temperature || "");
-  const [weight, setWeight] = useState(update?.firstname || "");
-  const [height, setHeight] = useState(update?.height || "");
-  const [dispatchCheck, setDispatchCheck] = useState(update?.dispatchCheck || "");
-  const [diagnostics, setDiagnostics] = useState(update?.diagnostica || "");
-  const [analysis, setAnalysis] = useState(update?.analysis || "");
-  const [infoDispatch, setInfoDispatch] = useState(update?.infoDispatch || "");
-  const [blood_analysis, setBlood] = useState(update?.blood_analysis || "");
-  const [urgent_analysis, setUrgent] = useState(update?.urine_analysis || "");
-  const [biochemical_analysis, setBiochemical] = useState(update?.biochemical_analysis || "");
 
+  const [paySum, setPaySum] = useState(update?.stories[0]?.paySumm || 0);
+  const [payState, setPaid] = useState(update?.stories[0]?.payState || "");
+  const [choseDoctor, setChoseDoctor] = useState(
+    update?.stories[0]?.choseDoctor || ""
+  );
+  const [doctorSpecialization, setDoctorSpecialization] = useState(
+    update?.stories[0]?.choseDoctor || ""
+  );
+  const [temperature, setTemperature] = useState(
+    update?.stories[0]?.temperature || ""
+  );
+  const [weight, setWeight] = useState(update?.stories[0]?.weight || "");
+  const [height, setHeight] = useState(update?.stories[0]?.height || "");
+  const [dispatchCheck, setDispatchCheck] = useState(
+    update?.stories[0]?.dispatchCheck || ""
+  );
+  const [diagnostics, setDiagnostics] = useState(
+    update?.stories[0]?.diagnostics || ""
+  );
+  const [analysis, setAnalysis] = useState(update?.stories[0]?.analysis || "");
+  const [infoDispatch, setInfoDispatch] = useState(
+    update?.stories[0]?.infoDispatch || ""
+  );
+  const [blood_analysis, setBlood] = useState(
+    update?.stories[0]?.blood_analysis || ""
+  );
+  const [urgent_analysis, setUrgent] = useState(
+    update?.stories[0]?.urgent || ""
+  );
+  const [biochemical_analysis, setBiochemical] = useState(
+    update?.stories[0]?.biochemical_analysis || ""
+  );
 
   let [updateClient] = useUpdateClientMutation();
   let { data: all_Doctor } = useGetAllDoctorsQuery();
@@ -38,36 +55,49 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
   let sortedData = allDoctor?.filter((i) => i.specialization.length > 3);
   let diagnosticDoctors = allDoctor?.filter((i) => i.diagnostica);
 
+  let time = new Date();
+  let todaysTime =
+    time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
+
+  // update?.stories?.shift();
 
   function updateDoctors(e) {
     e.preventDefault();
+    let oldStories = [...update?.stories];
+    oldStories.shift();
 
+    let doctor = allDoctor?.find((i) => i._id === choseDoctor);
 
     const AllInfo = {
-      ...update,
+      idNumber: idNumber?.toLowerCase(),
       firstname,
       lastname,
       phone,
       address,
       year,
-      idNumber,
-      temperature,
-      weight,
-      height,
-      diagnostics,
-      analysis,
-      urgent_analysis,
-      blood_analysis,
-      biochemical_analysis,
-      infoDispatch,
-      payState,
-      // choseDoctor: update?.specialization,
-      // paySumm: update?.feesPerCunsaltation,
-      // doctorFirstName: update?.firstName,
-      // doctorLastName: update?.lastName,
-      // doctorPhone: update?.phone,
+      stories: [
+        {
+          choseDoctor: doctor?.specialization,
+          payState,
+          paySumm: paySum,
+          doctorFirstName: doctor?.firstName,
+          doctorLastName: doctor?.lastName,
+          doctorPhone: doctor?.phone,
+          temperature,
+          weight: +weight,
+          height: +height,
+          diagnostics,
+          analysis,
+          urgent: urgent_analysis,
+          blood_analysis,
+          biochemical_analysis,
+          infoDispatch,
+          day: todaysTime,
+          month: time.toLocaleString("default", { month: "long" }),
+        },
+        ...oldStories,
+      ],
     };
-    console.log(AllInfo);
 
     updateClient({ id: editID, body: AllInfo })
       .then((res) => {
@@ -76,8 +106,6 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
         }
       })
       .catch((err) => console.log("err", err));
-
-
   }
   const data = [];
   for (const item of sortedData) {
@@ -87,7 +115,6 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
     });
   }
 
-
   const Diagnostics = [];
   for (const item of diagnosticDoctors) {
     Diagnostics.push({
@@ -96,39 +123,30 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
     });
   }
 
-
   // ------------yyy-mm-dd------------
   const handleDateChange = (event) => {
     const inputValue = event.target.value;
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
     if (dateRegex.test(inputValue)) {
-      console.log('Valid date!');
+      console.log("Valid date!");
     } else {
-      console.log('Invalid date!');
+      console.log("Invalid date!");
     }
     setYear(inputValue);
   };
 
-
-
   return (
     <div className="updateDoctor">
-      <div className="editForm" >
-        <FiX
-          className="updateCloseBtn"
-          onClick={() => setOpenUpdate(false)}
-        />
+      <div className="editForm">
+        <FiX className="updateCloseBtn" onClick={() => setOpenUpdate(false)} />
 
         <Form layout="vertical" className="FormApply formApplyEdit">
           <Row className="Row">
             <Col className="Col-Form">
-              <Form.Item
-                label="Shaxsiy raqami"
-                name="ID number"
-              >
+              <Form.Item label="Shaxsiy raqami" name="ID number">
                 <Input
                   maxLength={9}
-                  defaultValue={update?.idNumber}
+                  defaultValue={idNumber}
                   onChange={(e) => setIdNumber(e.target.value)}
                   type="string"
                   placeholder="AA 1234567"
@@ -137,13 +155,9 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
               </Form.Item>
             </Col>
             <Col className="Col-Form">
-              <Form.Item
-                label="Ismi"
-                name="firstname"
-
-              >
+              <Form.Item label="Ismi" name="firstname">
                 <Input
-                  defaultValue={update?.firstname}
+                  defaultValue={firstname}
                   onChange={(e) => setFirstName(e.target.value)}
                   type="text"
                   placeholder="First name"
@@ -151,13 +165,9 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
               </Form.Item>
             </Col>
             <Col className="Col-Form">
-              <Form.Item
-                label="Familiya"
-                name="lastname"
-
-              >
+              <Form.Item label="Familiya" name="lastname">
                 <Input
-                  defaultValue={update?.lastname}
+                  defaultValue={lastname}
                   onChange={(e) => setLastName(e.target.value)}
                   type="text"
                   placeholder="Last Name"
@@ -167,14 +177,10 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
           </Row>
           <Row className="Row">
             <Col className="Col-Form">
-              <Form.Item
-                label="Tel raqami"
-                name="number"
-
-              >
+              <Form.Item label="Tel raqami" name="number">
                 <Input
                   maxLength={9}
-                  defaultValue={update?.phone}
+                  defaultValue={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   type="number"
                   placeholder="Phone number"
@@ -185,11 +191,11 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
               <Form.Item
                 label="Tug'ilgan sana:"
                 name="year"
-
                 direction="vertical"
               >
-                <input type="date"
-                  defaultValue={update?.year}
+                <input
+                  type="date"
+                  defaultValue={year}
                   id="dateInput"
                   onChange={handleDateChange}
                   placeholder="yil/oy/kun"
@@ -198,13 +204,9 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
               </Form.Item>
             </Col>
             <Col className="Col-Form">
-              <Form.Item
-                label="Doimiy yashash joyi:"
-                name="Address"
-
-              >
+              <Form.Item label="Doimiy yashash joyi:" name="Address">
                 <Input
-                  defaultValue={update?.address}
+                  defaultValue={address}
                   onChange={(e) => setAddress(e.target.value)}
                   type="text"
                   placeholder="Address"
@@ -214,13 +216,10 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
           </Row>
           <Row className="Row">
             <Col className="Col-Form">
-              <Form.Item
-                label="Doktor"
-                name="doctor"
-              >
+              <Form.Item label="Doktor" name="doctor">
                 <Select
                   showSearch
-                  defaultValue={update?.choseDoctor}
+                  defaultValue={doctorSpecialization}
                   placeholder="Doktorni tanlang"
                   optionFilterProp="children"
                   filterOption={(input, option) =>
@@ -231,7 +230,17 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
                       .toLowerCase()
                       .localeCompare((optionB?.label ?? "").toLowerCase())
                   }
-                  onChange={(e) => setChoseDoctor(e)}
+                  onChange={(e) => (
+                    setChoseDoctor(e),
+                    setPaySum(
+                      (sum) =>
+                        sum +
+                        Number(
+                          allDoctor?.filter((i) => i._id === e)[0]
+                            ?.feesPerCunsaltation
+                        )
+                    )
+                  )}
                   options={data}
                 />
               </Form.Item>
@@ -240,7 +249,7 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
               <Col className="Col-Form">
                 <Form.Item label="Bo'yi" name="height">
                   <Input
-                    defaultValue={update?.height}
+                    defaultValue={height}
                     onChange={(e) => setHeight(e.target.value)}
                     type="number"
                     placeholder="Height"
@@ -250,7 +259,7 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
               <Col className="Col-Form">
                 <Form.Item label="Vazni" name="weight">
                   <Input
-                    defaultValue={update?.weight}
+                    defaultValue={weight}
                     onChange={(e) => setWeight(e.target.value)}
                     type="number"
                     placeholder="Weight"
@@ -260,7 +269,7 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
               <Col className="Col-Form">
                 <Form.Item label="Tana harorati" name="Temperature">
                   <Input
-                    defaultValue={update?.temperature}
+                    defaultValue={temperature}
                     onChange={(e) => setTemperature(e.target.value)}
                     type="text"
                     placeholder="Temperature"
@@ -273,14 +282,14 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
                 <div className="doctorName">
                   <Checkbox
                     className="onChecked"
-                    checked={update?.infoDispatch !== "" ? true : false}
+                    checked={infoDispatch !== "" ? true : false}
                     onChange={(e) => setDispatchCheck(e.target.checked)}
                   >
                     {dispatchCheck ? "Ha" : "Yo'q"}{" "}
                   </Checkbox>
-                  {update?.infoDispatch !== "" ? (
+                  {infoDispatch !== "" ? (
                     <Input
-                      defaultValue={update?.infoDispatch}
+                      defaultValue={infoDispatch}
                       onChange={(e) => setInfoDispatch(e.target.value)}
                       type="text"
                       placeholder="Malumot..."
@@ -296,11 +305,14 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
           <Row className="Row">
             <div className="Col-Form_Box">
               <Col style={{ width: "100%" }} className="Col-Form">
-                <Form.Item label="Diagnostika" name="doctor">
+                <Form.Item label="Diagnostika" name="diagnostica">
                   <Select
-                    showSearch
-                    defaultValue={update?.diagnostics}
-                    placeholder="Diagnostika"
+                    labelInValue
+                    style={{
+                      width: 200,
+                    }}
+                    placeholder="Diagnostica"
+                    // onChange={(value) => console.log(value.key)}
                     onChange={(e) => (
                       setDiagnostics(e.label),
                       setPaySum(
@@ -320,7 +332,7 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
                     <Checkbox
                       className="onChecked"
                       value="analis"
-                      checked={update?.analysis === "analis" ? true : false}
+                      checked={analysis}
                       onChange={(e) => setAnalysis(e.target.checked)}
                     >
                       {analysis ? "Ha" : "Yo'q"}{" "}
@@ -328,19 +340,31 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
                   </div>
                 </Form.Item>
               </Col>
-
             </div>
-            {
-              analysis ? <div className="Col-Form_Box">
+            {analysis ? (
+              <div className="Col-Form_Box">
                 <Col style={{ width: "100%" }} className="Col-Form">
-                  <Form.Item
-                    label="Qon taxlil"
-                    name="Qon taxlil">
+                  <Form.Item label="Qon taxlil" name="Qon taxlil">
                     <div className="doctorName">
                       <Checkbox
+                        checked={blood_analysis}
                         className="onChecked"
-                        onChange={(e) => setBlood(e.target.checked)}
-
+                        onChange={(e) => (
+                          setBlood(e.target.checked),
+                          blood_analysis
+                            ? setPaySum(
+                                (p) =>
+                                  p -
+                                  allDoctor?.filter((i) => i.analis)[0]
+                                    ?.analisisPrices?.blood_analysis
+                              )
+                            : setPaySum(
+                                (p) =>
+                                  p +
+                                  allDoctor?.filter((i) => i.analis)[0]
+                                    ?.analisisPrices?.blood_analysis
+                              )
+                        )}
                       >
                         {blood_analysis ? "Ha" : "Yo'q"}{" "}
                       </Checkbox>
@@ -351,8 +375,24 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
                   <Form.Item label="Peshob taxlil" name="Peshob taxlil">
                     <div className="doctorName">
                       <Checkbox
+                        checked={urgent_analysis}
                         className="onChecked"
-                        onChange={(e) => setUrgent(e.target.checked)}
+                        onChange={(e) => (
+                          setUrgent(e.target.checked),
+                          urgent_analysis
+                            ? setPaySum(
+                                (p) =>
+                                  p -
+                                  allDoctor?.filter((i) => i.analis)[0]
+                                    ?.analisisPrices?.urine_analysis
+                              )
+                            : setPaySum(
+                                (p) =>
+                                  p +
+                                  allDoctor?.filter((i) => i.analis)[0]
+                                    ?.analisisPrices?.urine_analysis
+                              )
+                        )}
                       >
                         {urgent_analysis ? "Ha" : "Yo'q"}{" "}
                       </Checkbox>
@@ -363,25 +403,37 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
                   <Form.Item label="Bioximik taxlil" name="Bioximik taxlil">
                     <div className="doctorName">
                       <Checkbox
+                        checked={biochemical_analysis}
                         className="onChecked"
-                        onChange={(e) => setBiochemical(e.target.checked)}
+                        onChange={(e) => (
+                          setBiochemical(e.target.checked),
+                          biochemical_analysis
+                            ? setPaySum(
+                                (p) =>
+                                  p -
+                                  allDoctor?.filter((i) => i.analis)[0]
+                                    ?.analisisPrices?.biochemical_analysis
+                              )
+                            : setPaySum(
+                                (p) =>
+                                  p +
+                                  allDoctor?.filter((i) => i.analis)[0]
+                                    ?.analisisPrices?.biochemical_analysis
+                              )
+                        )}
                       >
                         {biochemical_analysis ? "Ha" : "Yo'q"}{" "}
                       </Checkbox>
                     </div>
                   </Form.Item>
                 </Col>
-
               </div>
-                : ""
-            }
+            ) : (
+              ""
+            )}
 
             <Col className="Col-Form">
-              <Form.Item
-                label="To'landi"
-                name="paid"
-
-              >
+              <Form.Item label="To'landi" name="paid">
                 <div onClick={() => setPaid()} className="docORrecep">
                   <label className="containerChe Che">
                     <b> {NumberFormat(paySum)} </b>
@@ -406,17 +458,20 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
           </Row>
         </Form>
 
-
-        <button onClick={(e) => {
-          updateDoctors(e)
-          setTimeout(() => {
-            setOpenUpdate(false)
-          }, 1000)
-        }} className="taxrirlash">Taxrirlash</button>
+        <button
+          onClick={(e) => {
+            updateDoctors(e);
+            setTimeout(() => {
+              setOpenUpdate(false);
+            }, 1000);
+          }}
+          className="taxrirlash"
+        >
+          Taxrirlash
+        </button>
       </div>
     </div>
   );
 }
 
 export default UpdatePotients;
-
