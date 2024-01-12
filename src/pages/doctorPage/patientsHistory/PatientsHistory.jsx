@@ -1,22 +1,17 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import Layout from "../../../components/layout/Layout";
 import "./style.css";
-import NotificationSound from "../../../assets/ayfon-sms.mp3";
 import { Button, Tabs } from "antd";
 import imgNoData from "../../../assets/nodata.png";
-import { PiPrinterFill } from "react-icons/pi";
-import ReactToPrint from "react-to-print";
-import RecordList from "../../../components/checkLists/patientRecordList/RecordList";
 import { useGetAllUsersQuery } from "../../../redux/clientApi";
 import { setInfo } from "../../../redux/recordList/recordList";
 import { useDispatch } from "react-redux";
 import { FaUsers } from "react-icons/fa";
 import { SearchOutlined } from "@ant-design/icons";
 import { LuEye } from "react-icons/lu";
+import { Link } from "react-router-dom";
 
 function PatientsHistory() {
-  const componentRef = useRef();
-  const audioPlayer = useRef(null);
   const [id, setidD] = useState("No data");
   const dispatch = useDispatch();
 
@@ -31,15 +26,15 @@ function PatientsHistory() {
 
   let clients = data?.filter(
     (client) =>
-      client.choseDoctor.toLowerCase() === category?.toLowerCase() &&
-      client.view === true
+      client?.stories.choseDoctor?.toLowerCase() === category?.toLowerCase() &&
+      client?.stories.view === false
   );
 
   let time = new Date();
   let day =
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
-  let filterarxiv = clients?.filter((i) => i.day == day);
-  console.log(clients);
+  let filterarxiv = clients?.filter((i) => i?.stories.day == day);
+
   const [query, setQuery] = useState("");
   return (
     <Layout>
@@ -74,6 +69,7 @@ function PatientsHistory() {
                   <thead>
                     <tr>
                       <th>№</th>
+                      <th>Sana</th>
                       <th>Bemor</th>
                       <th>Tashxis</th>
                       <th>Tel</th>
@@ -84,100 +80,29 @@ function PatientsHistory() {
                     {filterarxiv
                       ?.filter((asd) =>
                         asd?.firstname?.toLowerCase().includes(query)
-                      )
-                      .map(
-                        (
-                          {
-                            _id,
-                            choseDoctor,
-                            day,
-                            address,
-                            doctorFirstName,
-                            doctorLastName,
-                            firstname,
-                            lastname,
-                            phone,
-                            retsept,
-                            sickname,
-                            year,
-                            doctorPhone,
-                          },
-                          inx
-                        ) => {
-                          return !lastname?.includes("Mavjud") ? (
+                      ).stories?.map(
+                        (value, inx) => {
+                          return (
                             <tr key={inx}>
                               <td>{inx + 1}</td>
+                              <td>{value?.day}</td>
+
                               <td>
                                 {" "}
-                                {lastname} {firstname}
+                                {filterarxiv?.lastname} {filterarxiv?.firstname}
                               </td>
-                              <td>{sickname}</td>
-                              <td>+998{phone}</td>
+                              <td>{value?.sickname}</td>
+                              <td>+998{filterarxiv?.phone}</td>
 
                               <td type="primary">
                                 <Button>
-                                  <ReactToPrint
-                                    trigger={() => (
-                                      <button
-                                        onFocus={() =>
-                                          checkID({
-                                            _id,
-                                            choseDoctor,
-                                            day,
-                                            address,
-                                            doctorFirstName,
-                                            doctorLastName,
-                                            firstname,
-                                            lastname,
-                                            phone,
-                                            retsept,
-                                            sickname,
-                                            year,
-                                            doctorPhone,
-                                          })
-                                        }
-                                        style={{
-                                          border: "none",
-                                          background: "transparent",
-                                          fontSize: "14px",
-                                          display: "flex",
-                                          justifyContent: "center",
-                                        }}
-                                      >
-                                        {" "}
-                                        <PiPrinterFill className="Printer" />
-                                      </button>
-                                    )}
-                                    content={() => componentRef.current}
-                                  />
+                                  <Link o={`/doctorSinglePage/${value.choseDoctor}`}>
+                                    <LuEye />
+                                  </Link>
                                 </Button>
                               </td>
-
-                              <td style={{ display: "none" }}>
-                                <RecordList
-                                  obj={{
-                                    id,
-                                    componentRef,
-                                    choseDoctor,
-                                    day,
-                                    address,
-                                    doctorFirstName,
-                                    doctorLastName,
-                                    firstname,
-                                    lastname,
-                                    phone,
-                                    retsept,
-                                    sickname,
-                                    year,
-                                    doctorPhone,
-                                  }}
-                                  componentRef={componentRef}
-                                />
-                              </td>
                             </tr>
-                          ) : (
-                            ""
-                          );
+                          )
                         }
                       )}
                   </tbody>
@@ -200,6 +125,7 @@ function PatientsHistory() {
                   <thead>
                     <tr>
                       <th>№</th>
+                      <th>Sana</th>
                       <th>Bemor</th>
                       <th>Tashxis</th>
                       <th>Tel</th>
@@ -210,100 +136,28 @@ function PatientsHistory() {
                     {clients
                       ?.filter((asd) =>
                         asd?.firstname?.toLowerCase().includes(query)
-                      )
-                      .map(
-                        (
-                          {
-                            _id,
-                            choseDoctor,
-                            day,
-                            address,
-                            doctorFirstName,
-                            doctorLastName,
-                            firstname,
-                            lastname,
-                            phone,
-                            retsept,
-                            sickname,
-                            year,
-                            doctorPhone,
-                          },
-                          inx
-                        ) => {
-                          return !lastname?.includes("Mavjud") ? (
+                      ).stories?.map(
+                        (value, inx) => {
+                          return (
                             <tr key={inx}>
                               <td>{inx + 1}</td>
+                              <td>{value?.day}</td>
                               <td>
                                 {" "}
-                                {lastname} {firstname}
+                                {clients?.lastname} {clients?.firstname}
                               </td>
-                              <td>{sickname}</td>
-                              <td>+998{phone}</td>
+                              <td>{value?.sickname}</td>
+                              <td>+998{clients?.phone}</td>
 
                               <td type="primary">
                                 <Button>
-                                  <ReactToPrint
-                                    trigger={() => (
-                                      <button
-                                        onFocus={() =>
-                                          checkID({
-                                            _id,
-                                            choseDoctor,
-                                            day,
-                                            address,
-                                            doctorFirstName,
-                                            doctorLastName,
-                                            firstname,
-                                            lastname,
-                                            phone,
-                                            retsept,
-                                            sickname,
-                                            year,
-                                            doctorPhone,
-                                          })
-                                        }
-                                        style={{
-                                          border: "none",
-                                          background: "transparent",
-                                          fontSize: "14px",
-                                          display: "flex",
-                                          justifyContent: "center",
-                                        }}
-                                      >
-                                        {" "}
-                                        <PiPrinterFill className="Printer" />
-                                      </button>
-                                    )}
-                                    content={() => componentRef.current}
-                                  />
+                                  <Link o={`/doctorSinglePage/${value.choseDoctor}`}>
+                                    <LuEye />
+                                  </Link>
                                 </Button>
                               </td>
-
-                              <td style={{ display: "none" }}>
-                                <RecordList
-                                  obj={{
-                                    id,
-                                    componentRef,
-                                    choseDoctor,
-                                    day,
-                                    address,
-                                    doctorFirstName,
-                                    doctorLastName,
-                                    firstname,
-                                    lastname,
-                                    phone,
-                                    retsept,
-                                    sickname,
-                                    year,
-                                    doctorPhone,
-                                  }}
-                                  componentRef={componentRef}
-                                />
-                              </td>
                             </tr>
-                          ) : (
-                            ""
-                          );
+                          )
                         }
                       )}
                   </tbody>
@@ -313,7 +167,6 @@ function PatientsHistory() {
           )}
         </Tabs.TabPane>
       </Tabs>
-      <audio ref={audioPlayer} src={NotificationSound} />
     </Layout>
   );
 }

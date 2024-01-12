@@ -53,10 +53,53 @@
 }
 
 .box-bmi>span>div {
-   font-size: 12px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+
 }
-.Diagram{
+
+.Diagram {
     transform: rotate(-89deg);
+}
+
+.checkMark {
+    color: green;
+    font-size: 10px;
+    margin-bottom: 3px;
+
+}
+
+.collapsedItems {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    padding: 0 10px;
+    border-radius: 3px;
+    margin: 4px 0;
+}
+
+.collapsedItems p {
+    margin-top: 16px;
+}
+.collapsedItems p > span {
+   color: rgb(165, 165, 165);
+}
+.collapsedItems:hover {
+    box-shadow: 0 0 6px dodgerblue;
+}
+
+.item-details {
+    width: 100%;
+    background: #fff;
+    transition: 1s;
+    padding: 10px;
+    border-radius: 3px;
+
 }
 
 @media screen and (max-width: 890px) {

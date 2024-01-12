@@ -1,22 +1,26 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import "./AppointmentSinglePage.css";
 import { useParams, useNavigate } from "react-router-dom";
 import Layout from "../../../components/layout/Layout";
-import { useState } from "react";
 import {
   useGetSingleUserQuery,
   useUpdateClientMutation,
 } from "../../../redux/clientApi";
 import { message } from "antd";
 import { useDispatch } from "react-redux";
-import { setInfo } from "../../../redux/recordList/recordList";
+import RecordList, { setInfo } from "../../../redux/recordList/recordList";
 import { useGetAllUsersQuery } from "../../../redux/clientApi";
 import { GiBodyHeight } from "react-icons/gi";
 import { LiaTemperatureHighSolid } from "react-icons/lia";
 import { MdOutlineBloodtype } from "react-icons/md";
+import { GiWeightScale } from "react-icons/gi";
 import { BiAnalyse } from "react-icons/bi";
 import { BsDiagram3 } from "react-icons/bs";
-import { GiWeightScale } from "react-icons/gi";
+import { MdOutlineBiotech } from "react-icons/md";
+import { FaCheck } from "react-icons/fa6";
+import { Button } from 'antd';
+import ReactToPrint from "react-to-print";
+import { PiPrinterFill } from "react-icons/pi";
 
 function AppointmentSinglePage() {
   const [updateClient] = useUpdateClientMutation();
@@ -26,6 +30,13 @@ function AppointmentSinglePage() {
   const [sickname, setSickname] = useState("");
   const [retsept, setRetsept] = useState("");
   const [patientStatus, setPatientStatus] = useState("");
+  const componentRef = useRef();  // Fix: Use useRef correctly
+  const [_id, setidD] = useState("No data");
+
+  const checkID = (_id) => {
+    setidD(_id);
+    dispatch(setInfo(_id));
+  };
 
   let { data: singleUser } = useGetSingleUserQuery(id);
   let user = singleUser?.data;
@@ -53,6 +64,31 @@ function AppointmentSinglePage() {
     dispatch(setInfo(newUser));
   }
 
+
+
+
+
+  const Bmi = (weight, height) => {
+    if (weight && height) {
+      const heightInMeters = height / 100;
+      const bmiValue = (weight / (heightInMeters * heightInMeters)).toFixed(2);
+      return bmiValue;
+    }
+  }
+
+  const [collapsedItems, setCollapsedItems] = useState([]);
+
+  const handleToggleCollapse = (itemId) => {
+    const isCollapsed = collapsedItems.includes(itemId);
+
+    if (isCollapsed) {
+      setCollapsedItems(collapsedItems.filter((id) => id !== itemId));
+    } else {
+      setCollapsedItems([...collapsedItems, itemId]);
+    }
+  };
+
+
   return (
     <Layout>
       <div className="appointmentSinglePage">
@@ -71,28 +107,54 @@ function AppointmentSinglePage() {
             <div className="box-bmi_Sing">
               <b>Tana Massa Indeksi:</b>
               <span>
-                <div><GiWeightScale /> 80 kg</div>
-                <div><GiBodyHeight /> 180 m</div>
+                <div><GiWeightScale /> {user?.stories[0].weight} kg</div>
+                <div><GiBodyHeight /> {user?.stories[0].height} m</div>
               </span>
               <span>
-                <div><LiaTemperatureHighSolid /> 30/40</div>
-                <div> BMI 24.56</div>
+                <div><LiaTemperatureHighSolid /> {user?.stories[0].temperature}</div>
+                <div> BMI {Bmi(+user?.stories[0].weight, +user?.stories[0].height)}</div>
               </span>
 
             </div>
           </div>
           <div>
             <div className="box-bmi_Sing">
-              <b>Analiz / Diagnostika</b>
-              <span>
-                <div><GiWeightScale /> 80 kg</div>
-                <div><GiBodyHeight /> 180 m</div>
-              </span>
-              <span>
-                <div><LiaTemperatureHighSolid /> 30/40</div>
-                <div> BMI 24.56</div>
-              </span>
+              <b>Analiz</b>
+              {user?.stories[0].blood_analysis || user?.stories[0].urgent || user?.stories[0].biochemical_analysis ?
+                <>
+                  {user?.stories[0].blood_analysis ?
+                    <span>
+                      <div><MdOutlineBloodtype /> Qon tahlili <FaCheck className="checkMark" /></div>
+                    </span>
+                    : ""
+                  }
+                  {user?.stories[0].urgent ?
+                    <span>
+                      <div><BiAnalyse /> Peshob tahlili <FaCheck className="checkMark" /></div>
+                    </span>
+                    : ""
+                  }
+                  {user?.stories[0].biochemical_analysis ?
+                    <span>
+                      <div><MdOutlineBiotech /> Bioximik tahlili <FaCheck className="checkMark" /></div>
+                    </span>
+                    : ""
+                  }
+                </>
+                : <span>Topshirmagan</span>
+              }
 
+            </div>
+          </div>
+          <div>
+            <div className="box-bmi_Sing">
+              <b>Diagnostika</b>
+              {user?.stories[0].diagnostics ?
+                <span>
+                  <div><BsDiagram3 className="Diagram" /> {user?.stories[0].diagnostics}</div>
+                </span>
+                : <span>O'tmagan</span>
+              }
             </div>
           </div>
         </div>
@@ -127,85 +189,89 @@ function AppointmentSinglePage() {
           </form>
         </div>
 
-        <div className="retsept_history">
-          <h3>Tarix:</h3>
-          {
-            user?.stories?.map((value, inx) => (
-              <>
-                <div class="accordion accordion-flush" id="accordionFlushExample">
-                  <div class="accordion-item">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                        <div className="retsept_history_item_caption">
-                          <p> Sana: <span>{value?.day}</span>{" "}</p>
-                          <p>
-                            Doctor: <span>{value?.doctorFirstName} {value?.doctorLastName}</span>{" "}
-                          </p>
-                        </div>
-                      </button>
-                    </h2>
-                    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                      <div class="accordion-body">
-                        <div className="retsept_history_item">
-                          <p>Tashxis : Bosh og'rigi</p>
-                          <p>Bemor holati : Bosh og'rigi</p>
-                          <ol>
-                            <li>trimol</li>
-                            <li>analgin</li>
-                            <li>analgin</li>
-                            <li>trimol</li>
-                            <li>fastungel</li>
-                          </ol>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+        {
+          user?.stories ? <div div className="retsept_history">
+            <h4>Tarix:</h4>
+
+
+            {user?.stories.map((item) => (
+              <div key={item._id} className={`map-item ${collapsedItems.includes(item._id) ? 'collapsed' : ''}`}>
+                <div className="collapsedItems" onClick={() => handleToggleCollapse(item._id)}>
+                  <p> {collapsedItems.includes(item._id) ? '🔽' : '▶️'}  Sana: <span>{item?.day}</span>{" "}</p>
+                  <p>Doktor: <span>{item?.doctorFirstName} {item?.doctorLastName}</span>{" "} </p>
                 </div>
+                {collapsedItems.includes(item._id) && (
+                  <>
+                    <div className="item-details">
 
-              </>
-            ))
-          }
+                      <Button>
+                        <ReactToPrint
+                          trigger={() => (
+                            <button
+                              onFocus={() =>
+                                checkID({
+                                  _id: _id,
+                                  choseDoctor: item?.choseDoctor,
+                                  day: item?.day,
+                                  address: user?.address,
+                                  doctorFirstName: item?.doctorFirstName,
+                                  doctorLastName: item?.doctorLastName,
+                                  firstname: user?.firstname,
+                                  lastname: user?.lastname,
+                                  phone: user?.phone,
+                                  retsept: item?.retsept,
+                                  sickname: item?.sickname,
+                                  year: user?.year,
+                                  doctorPhone: item?.doctorPhone,
+                                })
+                              }
+                              style={{
+                                border: "none",
+                                background: "transparent",
+                                fontSize: "14px",
+                                display: "flex",
+                                justifyContent: "center",
+                              }}
+                            >
+                              {" "}
+                              <PiPrinterFill className="Printer" />
+                            </button>
+                          )}
+                          content={() => componentRef.current}
+                        />
+                      </Button>
+                    </div>
 
-        </div>
+                    {/* <div style={{ display: "none" }}>
+                      <RecordList obj={{
+                        id: _id,
+                        choseDoctor: item?.choseDoctor,
+                        day: item?.day,
+                        address: user?.address,
+                        doctorFirstName: item?.doctorFirstName,
+                        doctorLastName: item?.doctorLastName,
+                        firstname: user?.firstname,
+                        lastname: user?.lastname,
+                        phone: user?.phone,
+                        retsept: item?.retsept,
+                        sickname: item?.sickname,
+                        year: user?.year,
+                        doctorPhone: item?.doctorPhone,
+                      }} componentRef={componentRef} />
+                    </div> */}
+                  </>
+                )}
+
+              </div>
+            ))}
+
+          </div> : ""
+        }
       </div>
 
-      {/* <div style={{ display: "none" }}>
-                <RecordList
-                    lastname={lastname}
-                    firstname={firstname}
-                    sickname={sickname}
-                    phone={phone}
-                    retsept={retsept}
-                    address={address}
-                    day={day}
-                    doctorFirstName={doctorFirstName}
-                    doctorLastName={doctorLastName}
-                    doctorPhone={doctorPhone}
-                    year={year}
-                    choseDoctor={choseDoctor}
-                    componentRef={componentRef}
-                />
-            </div> */}
-    </Layout>
+
+    </Layout >
   );
 }
 
 export default AppointmentSinglePage;
-// analysis
-// biochemical_analysis
-// blood_analysis
-// choseDoctor
-// day
-// diagnostics
-// doctorFirstName
-// doctorLastName
-// doctorPhone
-// height
-// month
-// payState
-// paySumm
-// room
-// temperature
-// urgent
-// view
-// weight

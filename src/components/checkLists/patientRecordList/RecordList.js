@@ -6,8 +6,7 @@ import { IoIosCall, IoIosMail } from "react-icons/io";
 import { useSelector } from "react-redux";
 
 const RecordList = (props) => {
-  console.log(props);
-  let { componentRef, year, day } = props;
+  // let { componentRef } = props;
 
   const { info } = useSelector((s) => s.recordList);
   let userInfo = info;
@@ -15,7 +14,7 @@ const RecordList = (props) => {
 
   return (
     <>
-      <div ref={componentRef} className="List_Container">
+      <div ref={props?.componentRef} className="List_Container">
         <div className="listNav">
           <div className="listNav_text">
             <h1>SALOMATLIK TANLASH KLINIKASI</h1>
@@ -46,7 +45,7 @@ const RecordList = (props) => {
             </div>
           </div>
           <div className="Tashxis"></div>
-            <h3>Dorilar ro'yxati!</h3>
+          <h3>Dorilar ro'yxati!</h3>
           <div className="listClinic-Record">
             <b>[{userInfo?.retsept}]</b>
           </div>

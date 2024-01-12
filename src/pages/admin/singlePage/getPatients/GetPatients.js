@@ -3,13 +3,13 @@ import "./style.css";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { LuEye } from "react-icons/lu";
-import { Tabs } from "antd";
 import imgNoData from "../../../../assets/nodata.png";
 import ReactToPrint from "react-to-print";
 import { SearchOutlined, LeftOutlined } from "@ant-design/icons";
 import { FaUsers } from "react-icons/fa";
 import { setInfo } from "../../../../redux/recordList/recordList";
-
+import { Button } from 'antd';
+import { PiPrinterFill } from "react-icons/pi";
 import RecordList from "../../../../components/checkLists/patientRecordList/RecordList";
 import { useGetAllUsersQuery } from "../../../../redux/clientApi";
 
@@ -38,7 +38,21 @@ const GetPatients = () => {
   let day =
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
   let filterarxiv = clients?.filter((i) => i.day == day);
-  console.log(clients);
+
+
+
+  const [collapsedItems, setCollapsedItems] = useState([]);
+
+  const handleToggleCollapse = (itemId) => {
+    const isCollapsed = collapsedItems.includes(itemId);
+
+    if (isCollapsed) {
+      setCollapsedItems(collapsedItems.filter((id) => id !== itemId));
+    } else {
+      setCollapsedItems([...collapsedItems, itemId]);
+    }
+  };
+
   return (
     <div className="Search-Box">
       <div className="searchingBox">
@@ -68,7 +82,7 @@ const GetPatients = () => {
 
 
 
-      {clients?.length === 0 ? (
+      {/* {clients?.length === 0 ? (
         <div className="NoData">
           <div className="NoDataImg">
             <img src={imgNoData} alt="No Data" />
@@ -183,6 +197,90 @@ const GetPatients = () => {
             </table>
           </section>
         </main>
+      )} */}
+
+
+      {clients?.length === 0 ? (
+        <div className="NoData">
+          <div className="NoDataImg">
+            <img src={imgNoData} alt="No Data" />
+          </div>
+        </div>
+      ) : (
+        <>
+          {clients?.filter((asd) =>
+            asd?.firstname?.toLowerCase().includes(query)
+          ).stories.map((item) => (
+            <div key={item._id} className={`map-item ${collapsedItems.includes(item._id) ? 'collapsed' : ''}`}>
+              <div className="collapsedItems" onClick={() => handleToggleCollapse(item._id)}>
+                <p> {collapsedItems.includes(item._id) ? '🔽' : '▶️'}  Sana: <span>{item?.day}</span>{" "}</p>
+                <p>Doktor: <span>{item?.doctorFirstName} {item?.doctorLastName}</span>{" "} </p>
+              </div>
+              {collapsedItems.includes(item._id) && (
+                <>
+                  <div className="item-details">
+
+                    <Button>
+                      <ReactToPrint
+                        trigger={() => (
+                          <button
+                            onFocus={() =>
+                              checkID({
+                                _id: _id,
+                                choseDoctor: item?.choseDoctor,
+                                day: item?.day,
+                                address: clients?.address,
+                                doctorFirstName: item?.doctorFirstName,
+                                doctorLastName: item?.doctorLastName,
+                                firstname: clients?.firstname,
+                                lastname: clients?.lastname,
+                                phone: clients?.phone,
+                                retsept: item?.retsept,
+                                sickname: item?.sickname,
+                                year: clients?.year,
+                                doctorPhone: item?.doctorPhone,
+                              })
+                            }
+                            style={{
+                              border: "none",
+                              background: "transparent",
+                              fontSize: "14px",
+                              display: "flex",
+                              justifyContent: "center",
+                            }}
+                          >
+                            {" "}
+                            <PiPrinterFill className="Printer" />
+                          </button>
+                        )}
+                        content={() => componentRef.current}
+                      />
+                    </Button>
+                  </div>
+
+                  {/* <div style={{ display: "none" }}>
+                      <RecordList obj={{
+                        id: _id,
+                        choseDoctor: item?.choseDoctor,
+                        day: item?.day,
+                        address: clients?.address,
+                        doctorFirstName: item?.doctorFirstName,
+                        doctorLastName: item?.doctorLastName,
+                        firstname: clients?.firstname,
+                        lastname: clients?.lastname,
+                        phone: clients?.phone,
+                        retsept: item?.retsept,
+                        sickname: item?.sickname,
+                        year: clients?.year,
+                        doctorPhone: item?.doctorPhone,
+                      }} componentRef={componentRef} />
+                    </div> */}
+                </>
+              )}
+
+            </div>
+          ))}
+        </>
       )}
 
 

@@ -11,6 +11,8 @@ import { LiaTemperatureHighSolid } from "react-icons/lia";
 import { MdOutlineBloodtype } from "react-icons/md";
 import { BiAnalyse } from "react-icons/bi";
 import { BsDiagram3 } from "react-icons/bs";
+import { MdOutlineBiotech } from "react-icons/md";
+import { FaCheck } from "react-icons/fa6";
 
 function Appointments() {
 
@@ -28,13 +30,18 @@ function Appointments() {
   localStorage.setItem("ClientLength", clients?.length);
 
 
+  // let clientLength = data?.filter(
+  //   (client) => client?.stories?.filter((i) => i.choseDoctor?.toLowerCase() === category?.toLowerCase()));
   let clientLength = data?.filter(
-    (client) => client?.stories?.filter((i) => i.choseDoctor?.toLowerCase() === category?.toLowerCase()));
+    (el) =>
+      el?.stories[0].choseDoctor === category
+  );
+
 
   console.log(clientLength);
   console.log(category);
 
-  
+
   const Bmi = (weight, height) => {
     if (weight && height) {
       const heightInMeters = height / 100;
@@ -42,6 +49,7 @@ function Appointments() {
       return bmiValue;
     }
   }
+
   return (
     <Layout>
       <h3 className="text-center">Bemorlar</h3>
@@ -79,20 +87,39 @@ function Appointments() {
                       <td>+998{PhoneNumberFormat(item.phone)}</td>
                       <td>
                         <div className="box-bmi">
-                          <span>
-                            <div><MdOutlineBloodtype /> {false ? "" : "Topshirmagan"}</div>
-                          </span>
-                          <span>
-                            <div><BiAnalyse /> {false ? "" : "Topshirmagan"}</div>
-                          </span>
-
+                          {item?.stories[0].blood_analysis || item?.stories[0].urgent || item?.stories[0].biochemical_analysis ?
+                            <>
+                              {item?.stories[0].blood_analysis ?
+                                <span>
+                                  <div><MdOutlineBloodtype /> Qon tahlili <FaCheck className="checkMark" /></div>
+                                </span>
+                                : ""
+                              }
+                              {item?.stories[0].urgent ?
+                                <span>
+                                  <div><BiAnalyse /> Peshob tahlili <FaCheck className="checkMark" /></div>
+                                </span>
+                                : ""
+                              }
+                              {item?.stories[0].biochemical_analysis ?
+                                <span>
+                                  <div><MdOutlineBiotech /> Bioximik tahlili <FaCheck className="checkMark" /></div>
+                                </span>
+                                : ""
+                              }
+                            </>
+                            : "Topshirmagan"
+                          }
                         </div>
                       </td>
                       <td>
                         <div className="box-bmi">
-                          <span>
-                            <div><BsDiagram3 className="Diagram" /> {item?.stories[0].diagnostics}</div>
-                          </span>
+                          {item?.stories[0].diagnostics ?
+                            <span>
+                              <div><BsDiagram3 className="Diagram" /> {item?.stories[0].diagnostics}</div>
+                            </span>
+                            : "O'tmagan"
+                          }
                         </div>
                       </td>
                       <td>
@@ -108,7 +135,8 @@ function Appointments() {
 
                         </div>
                       </td>
-                      <td>{clientLength?.length}</td>
+                      {/* <td>{clientLength?.length + 1}</td> */}
+                      <td>{clientLength?.find(i => i.idNumber === "aa4254040")?.stories?.reduce((a, b) => a + b.view ? b.view : 0, 0)}</td>
                       <td>
                         <Link to={`/appointments/${item._id}`}>
                           <button button="true" className="btn btn-secondary">
