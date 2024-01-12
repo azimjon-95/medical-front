@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Form, Checkbox, Input, Select, Row, Col, message } from "antd";
 import "./style.css";
 import { FiX } from "react-icons/fi";
 import { useGetAllDoctorsQuery } from "../../../redux/doctorApi";
 import { useUpdateClientMutation } from "../../../redux/clientApi";
 import { NumberFormat } from "../../../hook/NumberFormat";
+import ReactToPrint from "react-to-print";
+import CheckList from "../../../components/checkLists/checkList/CheckList";
+import { PiPrinterFill } from "react-icons/pi";
 
 function UpdatePotients({ user, setOpenUpdate, editID }) {
+  const componentRef = useRef();
+
   let update = user?.find((i) => i._id === editID) || {};
 
   const [idNumber, setIdNumber] = useState(update?.idNumber || "");
@@ -49,6 +54,8 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
     update?.stories[0]?.biochemical_analysis || ""
   );
 
+  const [list, setList] = useState(false);
+
   let [updateClient] = useUpdateClientMutation();
   let { data: all_Doctor } = useGetAllDoctorsQuery();
   let allDoctor = all_Doctor?.data || [];
@@ -59,14 +66,14 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
   let todaysTime =
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
 
+  let Hours = time.getHours() + ":" + time.getMinutes();
   // update?.stories?.shift();
 
+  let doctor = allDoctor?.find((i) => i._id === choseDoctor);
   function updateDoctors(e) {
     e.preventDefault();
     let oldStories = [...update?.stories];
     oldStories.shift();
-
-    let doctor = allDoctor?.find((i) => i._id === choseDoctor);
 
     const AllInfo = {
       idNumber: idNumber?.toLowerCase(),
@@ -103,6 +110,7 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
       .then((res) => {
         if (res?.data?.success) {
           message.success(res?.data?.message);
+          setList(true);
         }
       })
       .catch((err) => console.log("err", err));
@@ -461,14 +469,241 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
         <button
           onClick={(e) => {
             updateDoctors(e);
-            setTimeout(() => {
-              setOpenUpdate(false);
-            }, 1000);
+            // setTimeout(() => {
+            //   setOpenUpdate(false);
+            // }, 1000);
           }}
           className="taxrirlash"
         >
           Taxrirlash
         </button>
+
+        <div className={`${list ? "viewCheckList" : "ListNone"}`}>
+          <button
+            onClick={() => (setList(false), setOpenUpdate(false))}
+            className="OutCheck"
+          >
+            +
+          </button>
+          <div className="viewBox">
+            <ReactToPrint
+              trigger={() => (
+                <button className="PrintChekList" type="submit">
+                  {" "}
+                  <PiPrinterFill />
+                </button>
+              )}
+              content={() => componentRef.current}
+            ></ReactToPrint>
+            <div className="waveList">
+              <center id="top">
+                <div className="logo"></div>
+                <div className="info">
+                  <h2 className="item-h2">Har doim siz bilan!</h2>
+                </div>
+              </center>
+
+              <div id="mid">
+                <div className="info">
+                  <h2 className="item-h2">Aloqa uchun malumot</h2>
+                  <p className="text_p">
+                    Manzil : Pop Tinchlik ko'chasi 7-uy
+                    <br />
+                    Email : JohnDoe@gmail.com
+                    <br />
+                    Tel raqam : +998(94)432-44-45
+                    <br />
+                  </p>
+                </div>
+              </div>
+
+              <div id="bot">
+                <div id="table">
+                  <div className="tabletitle">
+                    <div className="item_check">
+                      <h2 className="item-h2">Element</h2>
+                    </div>
+                    <div className="Hours">
+                      <h2 className="item-h2"></h2>
+                    </div>
+                    <div className="Rate">
+                      <h2 className="item-h2"></h2>
+                    </div>
+                  </div>
+
+                  <div className="service">
+                    <div className="tableitem">
+                      <p className="itemtext">
+                        {doctorSpecialization}: Oliy toifali shifokor
+                      </p>
+                    </div>
+
+                    <div className="tableitem">
+                      <p className="itemtext">
+                        {" "}
+                        {doctor?.lastName} {doctor?.firstName}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="service">
+                    <div className="tableitem">
+                      <p className="itemtext">Doktor Tel :</p>
+                    </div>
+                    <div className="tableitem">
+                      <p className="itemtext">+998{doctor?.phone}</p>
+                    </div>
+                  </div>
+
+                  <div className="service">
+                    <div className="tableitem">
+                      <p className="itemtext">Qabul :</p>
+                    </div>
+
+                    <div className="tableitem">
+                      <p className="itemtext">{NumberFormat(paySum)} so'm</p>
+                    </div>
+                  </div>
+
+                  {blood_analysis ? (
+                    <div className="service">
+                      <div className="tableitem">
+                        <p className="itemtext">Qon tahlili:</p>
+                      </div>
+
+                      <div className="tableitem">
+                        <p className="itemtext">
+                          {NumberFormat(
+                            allDoctor?.filter((i) => i.analis)[0]
+                              ?.analisisPrices?.blood_analysis
+                          )}{" "}
+                          so'm
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+
+                  {urgent_analysis ? (
+                    <div className="service">
+                      <div className="tableitem">
+                        <p className="itemtext">Peshob tahlili:</p>
+                      </div>
+
+                      <div className="tableitem">
+                        <p className="itemtext">
+                          {NumberFormat(
+                            allDoctor?.filter((i) => i.analis)[0]
+                              ?.analisisPrices?.urine_analysis
+                          )}{" "}
+                          so'm
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+
+                  {biochemical_analysis ? (
+                    <div className="service">
+                      <div className="tableitem">
+                        <p className="itemtext">Bioximik tahlili:</p>
+                      </div>
+
+                      <div className="tableitem">
+                        <p className="itemtext">
+                          {NumberFormat(
+                            allDoctor?.filter((i) => i.analis)[0]
+                              ?.analisisPrices?.biochemical_analysis
+                          )}{" "}
+                          so'm
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  {diagnostics !== "diagnostica" ? (
+                    <div className="service">
+                      <div className="tableitem">
+                        <p className="itemtext">{diagnostics}:</p>
+                      </div>
+
+                      <div className="tableitem">
+                        <p className="itemtext">
+                          {NumberFormat(
+                            allDoctor?.find(
+                              (i) => i.specialization === diagnostics
+                            )?.feesPerCunsaltation
+                          )}{" "}
+                          so'm
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  <div className="service">
+                    <div className="tableitem">
+                      <p className="itemtext">Bemor:</p>
+                    </div>
+                    <div className="tableitem">
+                      <p className="itemtext">
+                        {firstname} {lastname}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="service">
+                    <div className="tableitem">
+                      <p className="itemtext text_p">Sana :</p>
+                    </div>
+                    <div className="tableitem">
+                      <p className="itemtext text_p">
+                        {Hours} {todaysTime}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="tabletitle">
+                    <div className="tableitem">
+                      <p>To'landi: </p>
+                    </div>
+
+                    <div className="payment">
+                      <h2 className="item-h1">{NumberFormat(paySum)} so'm</h2>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="legalcopy">
+                  <h2>{update?.stories[0]?.queueNumber}</h2>
+                  <p>Sizning navbatingiz!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style={{ display: "none" }}>
+          <CheckList
+            componentRef={componentRef}
+            firstname={firstname}
+            lastname={lastname}
+            payState={paySum}
+            doctorFirstName={doctor?.firstName}
+            doctorLastName={doctor?.lastName}
+            doctorSpecialization={doctorSpecialization}
+            todaysTime={todaysTime}
+            Hours={Hours}
+            doctorPhone={doctor?.phone}
+            filterarxiv={update?.stories[0]?.queueNumber}
+            allDoctor={allDoctor}
+            blood_analysis={blood_analysis}
+            biochemical_analysis={biochemical_analysis}
+            urgent_analysis={urgent_analysis}
+          />
+        </div>
       </div>
     </div>
   );
