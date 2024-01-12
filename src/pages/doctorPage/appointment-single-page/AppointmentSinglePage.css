@@ -6,12 +6,14 @@
   background-color: #33010123;
   padding: 20px 10px 5px 10px;
   display: flex;
- gap: 40px;
+  gap: 40px;
 }
+
 .box-bmi_Sing {
   height: 40px;
 
 }
+
 .box-bmi_Sing>span {
   width: 100%;
   height: 20px;
@@ -20,7 +22,7 @@
   gap: 15px;
 }
 
-.appointmentSinglePage_info > span > h3 {
+.appointmentSinglePage_info>span>h3 {
   font-size: 17px;
 }
 
@@ -82,8 +84,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+  height: 10px;
 }
 
-.retsept_history_item_caption p > span {
+.retsept_history_item_caption p {
+  line-height: 10px;
+  margin-top: 16px;
+}
+
+.retsept_history_item_caption p>span {
   color: grey;
+  line-height: 15px;
 }

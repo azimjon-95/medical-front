@@ -29,6 +29,7 @@ function AppointmentSinglePage() {
 
   let { data: singleUser } = useGetSingleUserQuery(id);
   let user = singleUser?.data;
+  console.log(user);
 
   function updateUserInfo(e) {
     e.preventDefault();
@@ -38,7 +39,7 @@ function AppointmentSinglePage() {
       patientStatus,
       retsept,
       view: true,
-      room: { ...user.room, dayOfTreatment: "" + user.room.dayOfTreatment },
+      room: { ...user.room, dayOfTreatment: "" + user?.room.dayOfTreatment },
     };
     updateClient({ id: id, body: newUser })
       .then((res) => {
@@ -128,25 +129,43 @@ function AppointmentSinglePage() {
 
         <div className="retsept_history">
           <h3>Tarix:</h3>
-          <div className="retsept_history_item">
-            <div className="retsept_history_item_caption">
-              <p>
-                Sana: <span>6.1.2024</span>{" "}
-              </p>
-              <p>
-                Doctor: <span>Fozilbekov Roziqul</span>{" "}
-              </p>
-            </div>
-            <p>Tashxis : Bosh og'rigi</p>
-            <p>Bemor holati : Bosh og'rigi</p>
-            <ol>
-              <li>trimol</li>
-              <li>analgin</li>
-              <li>analgin</li>
-              <li>trimol</li>
-              <li>fastungel</li>
-            </ol>
-          </div>
+          {
+            user?.stories?.map((value, inx) => (
+              <>
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                        <div className="retsept_history_item_caption">
+                          <p> Sana: <span>{value?.day}</span>{" "}</p>
+                          <p>
+                            Doctor: <span>{value?.doctorFirstName} {value?.doctorLastName}</span>{" "}
+                          </p>
+                        </div>
+                      </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                      <div class="accordion-body">
+                        <div className="retsept_history_item">
+                          <p>Tashxis : Bosh og'rigi</p>
+                          <p>Bemor holati : Bosh og'rigi</p>
+                          <ol>
+                            <li>trimol</li>
+                            <li>analgin</li>
+                            <li>analgin</li>
+                            <li>trimol</li>
+                            <li>fastungel</li>
+                          </ol>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </>
+            ))
+          }
+
         </div>
       </div>
 
@@ -172,37 +191,21 @@ function AppointmentSinglePage() {
 }
 
 export default AppointmentSinglePage;
-
-//     < RecordList
-// id = { id }
-// doctorFirstName = { doctorFirstName }
-// doctorLastName = { doctorLastName }
-// choseDoctor = { choseDoctor }
-// phone = { phone }
-// day = { day }
-// doctorPhone = { doctorPhone }
-// retsept = { retsept }
-// firstname = { firstname }
-// lastname = { lastname }
-// year = { year }
-// address = { address }
-// sickname = { sickname }
-// componentRef = { componentRef }
-//     />
-
-// {
-//     id,
-//     componentRef,
-//     sickname,
-//     phone,
-//     doctorFirstName,
-//     doctorLastName,
-//     choseDoctor,
-//     day,
-//     doctorPhone,
-//     retsept,
-//     firstname,
-//     lastname,
-//     year,
-//     address,
-// }) => {
+// analysis
+// biochemical_analysis
+// blood_analysis
+// choseDoctor
+// day
+// diagnostics
+// doctorFirstName
+// doctorLastName
+// doctorPhone
+// height
+// month
+// payState
+// paySumm
+// room
+// temperature
+// urgent
+// view
+// weight

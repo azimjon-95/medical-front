@@ -21,13 +21,20 @@ function Appointments() {
   let category = localStorage.getItem("category");
   let clients = data?.filter(
     (client) =>
-      client.choseDoctor?.toLowerCase() === category?.toLowerCase() &&
-      client.payState &&
-      client.view !== true
+      client?.stories[0].choseDoctor?.toLowerCase() === category?.toLowerCase() &&
+      client?.stories[0].payState &&
+      client?.stories[0].view !== true
   );
   localStorage.setItem("ClientLength", clients?.length);
 
 
+  let clientLength = data?.filter(
+    (client) => client?.stories?.filter((i) => i.choseDoctor?.toLowerCase() === category?.toLowerCase()));
+
+  console.log(clientLength);
+  console.log(category);
+
+  
   const Bmi = (weight, height) => {
     if (weight && height) {
       const heightInMeters = height / 100;
@@ -78,32 +85,30 @@ function Appointments() {
                           <span>
                             <div><BiAnalyse /> {false ? "" : "Topshirmagan"}</div>
                           </span>
+
                         </div>
                       </td>
                       <td>
                         <div className="box-bmi">
                           <span>
-                            <div><BsDiagram3 className="Diagram"/> {item?.diagnostics}</div>
-                          </span>
-                          <span>
-                            <div><BsDiagram3 /></div>
+                            <div><BsDiagram3 className="Diagram" /> {item?.stories[0].diagnostics}</div>
                           </span>
                         </div>
                       </td>
                       <td>
                         <div className="box-bmi">
                           <span>
-                            <div><GiWeightScale /> {item?.weight} kg</div>
-                            <div><GiBodyHeight /> {item?.height} m</div>
+                            <div><GiWeightScale /> {item?.stories[0].weight} kg</div>
+                            <div><GiBodyHeight /> {item?.stories[0].height} m</div>
                           </span>
                           <span>
-                            <div><LiaTemperatureHighSolid /> {item?.temperature}</div>
-                            <div> BMI {Bmi(+item?.weight, +item?.height)}</div>
+                            <div><LiaTemperatureHighSolid /> {item?.stories[0].temperature}</div>
+                            <div> BMI {Bmi(+item?.stories[0].weight, +item?.stories[0].height)}</div>
                           </span>
 
                         </div>
                       </td>
-                      <td>1</td>
+                      <td>{clientLength?.length}</td>
                       <td>
                         <Link to={`/appointments/${item._id}`}>
                           <button button="true" className="btn btn-secondary">

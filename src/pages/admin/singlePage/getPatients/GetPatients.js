@@ -30,8 +30,8 @@ const GetPatients = () => {
 
   let clients = client?.filter(
     (client) =>
-      client.choseDoctor.toLowerCase() === _id?.toLowerCase() &&
-      client.view === true
+      client?.stories[0].choseDoctor.toLowerCase() === _id?.toLowerCase() &&
+      client?.stories[0].view === true
   );
 
   let time = new Date();
@@ -111,7 +111,7 @@ const GetPatients = () => {
                       },
                       inx
                     ) => {
-                      return !lastname?.includes("Mavjud") ? (
+                      return (
                         <tr key={inx}>
                           <td>{inx + 1}</td>
                           <td> {lastname} {firstname}</td>
@@ -176,7 +176,7 @@ const GetPatients = () => {
                             />
                           </td>
                         </tr>
-                      ) : ""
+                      )
                     })}
 
               </tbody>
