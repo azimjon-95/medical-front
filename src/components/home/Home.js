@@ -4,17 +4,20 @@ import "./style.css";
 import logo from "../../assets/img/logo.png";
 import { Button, DatePicker, Form, Input, Modal, message } from "antd";
 import { NumberFormat } from "../../hook/NumberFormat";
-import { useCreateClientMutation } from "../../redux/clientApi";
+import { useCreateClientMutation, useGetUserByIDNumberQuery } from "../../redux/clientApi";
 import { PiPrinterFill } from "react-icons/pi";
 import CheckList from "../../components/checkLists/checkList/CheckList";
 import { useGetAllDoctorsQuery } from "../../redux/doctorApi";
 import html2canvas from 'html2canvas'
+
+
 function Home() {
     const [modal2Open, setModal2Open] = useState(false);
     const [componentSize, setComponentSize] = useState("default");
     const onFormLayoutChange = ({ size }) => {
         setComponentSize(size);
     };
+    const [idNumber, setIdNumber] = useState("");
     const [CreateNewClient] = useCreateClientMutation();
     const [paySum, setPaySum] = useState(0);
     const [firstname, setFirstName] = useState("");
@@ -29,6 +32,23 @@ function Home() {
     const [queueNumber, setQueueNumber] = useState(0);
     const [list, setList] = useState(false);
     const [choseDoctor, setChoseDoctor] = useState(null);
+
+
+    let { data: singleUser } = useGetUserByIDNumberQuery(
+        idNumber?.toLowerCase() || 0
+    );
+
+    useEffect(() => {
+        if (singleUser?.data) {
+            setFirstName(singleUser?.data?.firstname || "");
+            setLastName(singleUser?.data?.lastname || "");
+            setPhone(singleUser?.data?.phone || "");
+            setAddress(singleUser?.data?.address || "");
+            setYear(singleUser?.data?.year || "");
+        }
+    }, [singleUser]);
+
+
 
     let { data: all_Doctor } = useGetAllDoctorsQuery();
     let allDoctor = all_Doctor?.data || [];
@@ -51,28 +71,47 @@ function Home() {
 
         let doctor_price = allDoctor?.find((d) => d._id === choseDoctor);
 
+        // const AllInfo = {
+        //     firstname,
+        //     lastname,
+        //     phone,
+        //     address,
+        //     year,
+        //     paySumm: 0,
+        //     payState: false,
+        //     choseDoctor: doctor_price.specialization,
+        //     doctorFirstName: doctor_price.firstName,
+        //     doctorLastName: doctor_price.lastName,
+        //     doctorPhone: doctor_price.phone,
+        //     day: todaysTime,
+        //     month: time.toLocaleString("default", { month: "long" }),
+        // };
         const AllInfo = {
+            idNumber: idNumber?.toLowerCase(),
             firstname,
             lastname,
             phone,
             address,
             year,
-            paySumm: 0,
-            payState: false,
-            choseDoctor: doctor_price.specialization,
-            doctorFirstName: doctor_price.firstName,
-            doctorLastName: doctor_price.lastName,
-            doctorPhone: doctor_price.phone,
-            day: todaysTime,
-            month: time.toLocaleString("default", { month: "long" }),
+            stories: {
+                choseDoctor: doctor_price?.specialization,
+                paySumm: 0,
+                payState: false,
+                doctorFirstName: doctor_price?.firstName,
+                doctorLastName: doctor_price?.lastName,
+                doctorPhone: doctor_price?.phone,
+                day: todaysTime,
+                month: time.toLocaleString("default", { month: "long" }),
+            },
         };
-
         CreateNewClient(AllInfo)
             .then((res) => {
                 if (res?.data?.success) {
-                    setQueueNumber(res.data.data.queueNumber);
+                    setQueueNumber(res.data.data.stories[0].queueNumber);
                     message.success(res?.data?.message);
                     setList(true);
+                    document.querySelector(".FormApply").reset();
+
                 }
             })
             .catch((err) => console.log(err));
@@ -85,17 +124,43 @@ function Home() {
 
     // -------------------------------------
 
-    const screenshotRef = useRef(null);
+    const contentRef = useRef(null);
 
     const takeScreenshot = () => {
-        const element = screenshotRef.current;
+        html2canvas(contentRef.current).then((canvas) => {
+            // Convert canvas to image
+            const imgData = canvas.toDataURL('image/png');
 
-        if (element) {
-            html2canvas(element).then((canvas) => {
-                const screenshotUrl = canvas.toDataURL();
-                console.log(screenshotUrl);
-            });
+            // Create a download link
+            const link = document.createElement('a');
+            link.href = imgData;
+            link.download = 'screenshot.png';
+            link.click();
+        });
+    };
+
+
+
+    // ----------ID number-------------
+    const handleInputChange = (e) => {
+        const value = e.target.value;
+        const regexPattern = /^[a-zA-Z]{2}\d{7}$/;
+        if (regexPattern.test(value)) {
+            setIdNumber(value);
         }
+    };
+
+
+    // ------------yyy-mm-dd------------
+    const handleDateChange = (event) => {
+        const inputValue = event.target.value;
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        if (dateRegex.test(inputValue)) {
+            console.log("Valid date!");
+        } else {
+            console.log("Invalid date!");
+        }
+        setYear(inputValue);
     };
 
 
@@ -150,7 +215,17 @@ function Home() {
                         style={{
                             maxWidth: 700,
                         }}
+                        className="FormApply"
                     >
+                        <Form.Item label="ID raqami" name="ID number" direction="vertical">
+                            <Input
+                                maxLength={9}
+                                value={idNumber}
+                                onChange={handleInputChange}
+                                type="string"
+                                placeholder="AA 1234567"
+                            />
+                        </Form.Item>
                         <Form.Item label="Ism" name="firstname" direction="vertical">
                             <Input
                                 value={firstname}
@@ -158,6 +233,7 @@ function Home() {
                                 type="text"
                                 placeholder="Ismi"
                             />
+                            <p style={{ display: "none" }}>{firstname}</p>
                         </Form.Item>
                         <Form.Item label="Familiya" name="lastname">
                             <Input
@@ -166,6 +242,7 @@ function Home() {
                                 type="text"
                                 placeholder="Familiya"
                             />
+                            <p style={{ display: "none" }}>{firstname}</p>
                         </Form.Item>
                         <Form.Item
                             label="Yil:"
@@ -174,11 +251,16 @@ function Home() {
                             rules={[{ required: true }]}
                             direction="vertical"
                         >
-                            <DatePicker
+                            <input
+                                type="date"
                                 style={{ width: "100%" }}
+                                id="dateInput"
                                 value={year}
-                                onChange={onChange}
+                                onChange={handleDateChange}
+                                placeholder="yil/oy/kun"
+                                className="DatePicer"
                             />
+                            <p style={{ display: "none" }}>{firstname}</p>
                         </Form.Item>
                         <Form.Item label="Address" name="address" direction="vertical">
                             <Input
@@ -187,6 +269,7 @@ function Home() {
                                 type="text"
                                 placeholder="Manzili"
                             />
+                            <p style={{ display: "none" }}>{firstname}</p>
                         </Form.Item>
                         <Form.Item label="Tel:" name="phone">
                             <Input
@@ -196,6 +279,7 @@ function Home() {
                                 placeholder="Tel raqam"
                                 style={{ width: "100%" }}
                             />
+                            <p style={{ display: "none" }}>{firstname}</p>
                         </Form.Item>
                         <Form.Item
                             label="Doctor"
@@ -237,7 +321,7 @@ function Home() {
                                 <PiPrinterFill />
                             </button>
 
-                            <div className="waveList">
+                            <div ref={contentRef} className="waveList">
                                 <center id="top">
                                     <div className="logo"></div>
                                     <div className="info">
@@ -346,22 +430,7 @@ function Home() {
                             </div>
                         </div>
                     </div>
-                    <div style={{ display: "none" }}>
-                        <CheckList
-                            componentRef={screenshotRef}
-                            customersTableRef={screenshotRef}
-                            firstname={firstname}
-                            lastname={lastname}
-                            payState={paySum}
-                            doctorFirstName={doctorFirstName}
-                            doctorLastName={doctorLastName}
-                            doctorSpecialization={doctorSpecialization}
-                            todaysTime={todaysTime}
-                            Hours={Hours}
-                            doctorPhone={doctorPhone}
-                            filterarxiv={queueNumber}
-                        />
-                    </div>
+
                 </Modal>
             </div>
         </div>
@@ -369,3 +438,5 @@ function Home() {
 }
 
 export default Home;
+
+

@@ -15,6 +15,11 @@ const CheckList = ({
   doctorPhone,
   filterarxiv,
   customersTableRef,
+  allDoctor,
+  blood_analysis,
+  biochemical_analysis,
+  urgent_analysis,
+  diagnostics,
 }) => {
   return (
     <div ref={componentRef} id="invoice-POS">
@@ -135,7 +140,13 @@ const CheckList = ({
               <div className="tableitem">
                 <p className="itemtext">
                   {doctorSpecialization}: Oliy toifali shifokor
-                  <br /> {doctorLastName} {doctorFirstName}
+                </p>
+              </div>
+
+              <div className="tableitem">
+                <p className="itemtext">
+                  {" "}
+                  {doctorLastName} {doctorFirstName}
                 </p>
               </div>
             </div>
@@ -158,6 +169,85 @@ const CheckList = ({
                 <p className="itemtext">{NumberFormat(payState)} so'm</p>
               </div>
             </div>
+
+            {blood_analysis ? (
+              <div className="service">
+                <div className="tableitem">
+                  <p className="itemtext">Qon tahlili:</p>
+                </div>
+
+                <div className="tableitem">
+                  <p className="itemtext">
+                    {NumberFormat(
+                      allDoctor?.filter((i) => i.analis)[0]?.analisisPrices
+                        ?.blood_analysis
+                    )}{" "}
+                    so'm
+                  </p>
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+
+            {urgent_analysis ? (
+              <div className="service">
+                <div className="tableitem">
+                  <p className="itemtext">Peshob tahlili:</p>
+                </div>
+
+                <div className="tableitem">
+                  <p className="itemtext">
+                    {NumberFormat(
+                      allDoctor?.filter((i) => i.analis)[0]?.analisisPrices
+                        ?.urine_analysis
+                    )}{" "}
+                    so'm
+                  </p>
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+
+            {biochemical_analysis ? (
+              <div className="service">
+                <div className="tableitem">
+                  <p className="itemtext">Bioximik tahlili:</p>
+                </div>
+
+                <div className="tableitem">
+                  <p className="itemtext">
+                    {NumberFormat(
+                      allDoctor?.filter((i) => i.analis)[0]?.analisisPrices
+                        ?.biochemical_analysis
+                    )}{" "}
+                    so'm
+                  </p>
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+            {diagnostics !== "diagnostica" ? (
+              <div className="service">
+                <div className="tableitem">
+                  <p className="itemtext">{diagnostics}:</p>
+                </div>
+
+                <div className="tableitem">
+                  <p className="itemtext">
+                    {NumberFormat(
+                      allDoctor?.find((i) => i.diagnostics === diagnostics)
+                        ?.feesPerCunsaltation
+                    )}{" "}
+                    so'm
+                  </p>
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
             <div className="service">
               <div className="tableitem">
                 <p className="itemtext">Bemor:</p>
@@ -181,21 +271,13 @@ const CheckList = ({
             </div>
 
             <div className="tabletitle">
-              {customersTableRef ? (
-                <div>
-                  Do'ktor qabuliga kirishdan avval to'lovni amalga oshirin
-                </div>
-              ) : (
-                <>
-                  <div className="tableitem">
-                    <p>To'landi: </p>
-                  </div>
+              <div className="tableitem">
+                <p>To'landi: </p>
+              </div>
 
-                  <div className="payment">
-                    <h2 className="item-h1">{NumberFormat(payState)} so'm</h2>
-                  </div>
-                </>
-              )}
+              <div className="payment">
+                <h2 className="item-h1">{NumberFormat(payState)} so'm</h2>
+              </div>
             </div>
           </div>
 

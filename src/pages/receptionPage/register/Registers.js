@@ -136,9 +136,9 @@ const Register = () => {
 
     CreateNewClient(AllInfo)
       .then((res) => {
-        console.log(res);
+        
         if (res?.data?.success) {
-          setQueueNumber(res.data.data.queueNumber);
+          setQueueNumber(res.data.data.stories[0].queueNumber);
           message.success(res?.data?.message);
           setList(true);
           document.querySelector(".FormApply").reset();
@@ -748,6 +748,7 @@ const Register = () => {
           blood_analysis={blood_analysis}
           biochemical_analysis={biochemical_analysis}
           urgent_analysis={urgent_analysis}
+          diagnostics={diagnostics}
         />
       </div>
     </Layout>

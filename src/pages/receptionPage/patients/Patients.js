@@ -53,10 +53,14 @@ const Patients = () => {
 
     let newInfo = {
       ...update,
-      payState: true,
-      paySumm: doctorSum,
-      room: { ...update.room, dayOfTreatment: "0" },
-      doctorPhone: doctorInfo?.phone,
+      stories: [
+        {
+          payState: true,
+          paySumm: doctorSum,
+          doctorPhone: doctorInfo?.phone,
+          room: { ...update.room, dayOfTreatment: "0" },
+        }
+      ],
     };
 
     uppdate({ id: id, body: newInfo })
@@ -180,7 +184,7 @@ const Patients = () => {
                             <td>{PhoneNumberFormat(item?.phone)}</td>
                             <td>{item?.stories[0].choseDoctor}</td>
                             <td>
-                              {console.log(item?.stories[0].doctorLastName)}{" "}
+                              {item?.stories[0].doctorLastName}{" "}
                               {item?.stories[0].doctorFirstName}
                             </td>
                             <td>
