@@ -9,7 +9,6 @@ import { useGetAllDoctorsQuery } from "../../../redux/doctorApi";
 import {
   useCreateClientMutation,
   useGetUserByIDNumberQuery,
-  useGetAllUsersQuery,
 } from "../../../redux/clientApi";
 import { PiPrinterFill } from "react-icons/pi";
 
@@ -56,11 +55,9 @@ const Register = () => {
     }
   }, [singleUser]);
 
-  let { data: users, isLoading: loading } = useGetAllUsersQuery();
-
   let { data: all_Doctor } = useGetAllDoctorsQuery();
   let allDoctor = all_Doctor?.data || [];
-  const [CreateNewClient, { isLoading, isSuccess }] = useCreateClientMutation();
+  const [CreateNewClient] = useCreateClientMutation();
 
   let sortedData = allDoctor?.filter((i) => i.specialization.length > 3);
   let diagnosticDoctors = allDoctor?.filter(

@@ -8,8 +8,6 @@ import {
 } from "../../../redux/clientApi";
 import { message } from "antd";
 import { useDispatch } from "react-redux";
-import RecordList, { setInfo } from "../../../redux/recordList/recordList";
-import { useGetAllUsersQuery } from "../../../redux/clientApi";
 import { GiBodyHeight } from "react-icons/gi";
 import { LiaTemperatureHighSolid } from "react-icons/lia";
 import { MdOutlineBloodtype } from "react-icons/md";
@@ -18,9 +16,10 @@ import { BiAnalyse } from "react-icons/bi";
 import { BsDiagram3 } from "react-icons/bs";
 import { MdOutlineBiotech } from "react-icons/md";
 import { FaCheck } from "react-icons/fa6";
-import { Button } from 'antd';
+import { Button } from "antd";
 import ReactToPrint from "react-to-print";
 import { PiPrinterFill } from "react-icons/pi";
+import { setInfo } from "../../../redux/recordList/recordList";
 
 function AppointmentSinglePage() {
   const [updateClient] = useUpdateClientMutation();
@@ -30,7 +29,7 @@ function AppointmentSinglePage() {
   const [sickname, setSickname] = useState("");
   const [retsept, setRetsept] = useState("");
   const [patientStatus, setPatientStatus] = useState("");
-  const componentRef = useRef();  // Fix: Use useRef correctly
+  const componentRef = useRef(); // Fix: Use useRef correctly
   const [_id, setidD] = useState("No data");
 
   const checkID = (_id) => {
@@ -40,19 +39,35 @@ function AppointmentSinglePage() {
 
   let { data: singleUser } = useGetSingleUserQuery(id);
   let user = singleUser?.data;
-  console.log(user);
 
   function updateUserInfo(e) {
     e.preventDefault();
-    let newUser = {
-      ...user,
-      sickname,
-      patientStatus,
-      retsept,
+    let time = new Date();
+    let todaysTime =
+      time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
+
+    let { stories, ...userInfo } = user;
+    let last_story = {
+      ...user.stories[0],
+      retsept: {
+        writed_at: todaysTime,
+        writed_doctor:
+          user?.stories[0]?.doctorFirstName +
+          " " +
+          user?.stories[0]?.doctorLastName,
+        patientStatus,
+        sickname,
+        retseptList: retsept,
+      },
       view: true,
-      room: { ...user.room, dayOfTreatment: "" + user?.room.dayOfTreatment },
     };
-    updateClient({ id: id, body: newUser })
+    let arrStory = [...user?.stories];
+    arrStory.shift();
+    arrStory.unshift(last_story);
+
+    let changedObj = { ...userInfo, stories: arrStory };
+
+    updateClient({ id: id, body: changedObj })
       .then((res) => {
         if (res.data.success) {
           message.success("malumotlar saqlandi");
@@ -61,12 +76,8 @@ function AppointmentSinglePage() {
       })
       .catch((err) => console.log(err));
 
-    dispatch(setInfo(newUser));
+    dispatch(setInfo(changedObj));
   }
-
-
-
-
 
   const Bmi = (weight, height) => {
     if (weight && height) {
@@ -74,7 +85,7 @@ function AppointmentSinglePage() {
       const bmiValue = (weight / (heightInMeters * heightInMeters)).toFixed(2);
       return bmiValue;
     }
-  }
+  };
 
   const [collapsedItems, setCollapsedItems] = useState([]);
 
@@ -87,7 +98,6 @@ function AppointmentSinglePage() {
       setCollapsedItems([...collapsedItems, itemId]);
     }
   };
-
 
   return (
     <Layout>
@@ -107,54 +117,80 @@ function AppointmentSinglePage() {
             <div className="box-bmi_Sing">
               <b>Tana Massa Indeksi:</b>
               <span>
-                <div><GiWeightScale /> {user?.stories[0].weight} kg</div>
-                <div><GiBodyHeight /> {user?.stories[0].height} m</div>
+                <div>
+                  <GiWeightScale /> {user?.stories[0].weight} kg
+                </div>
+                <div>
+                  <GiBodyHeight /> {user?.stories[0].height} m
+                </div>
               </span>
               <span>
-                <div><LiaTemperatureHighSolid /> {user?.stories[0].temperature}</div>
-                <div> BMI {Bmi(+user?.stories[0].weight, +user?.stories[0].height)}</div>
+                <div>
+                  <LiaTemperatureHighSolid /> {user?.stories[0].temperature}
+                </div>
+                <div>
+                  {" "}
+                  BMI {Bmi(+user?.stories[0].weight, +user?.stories[0].height)}
+                </div>
               </span>
-
             </div>
           </div>
           <div>
             <div className="box-bmi_Sing">
               <b>Analiz</b>
-              {user?.stories[0].blood_analysis || user?.stories[0].urgent || user?.stories[0].biochemical_analysis ?
+              {user?.stories[0].blood_analysis ||
+              user?.stories[0].urgent ||
+              user?.stories[0].biochemical_analysis ? (
                 <>
-                  {user?.stories[0].blood_analysis ?
+                  {user?.stories[0].blood_analysis ? (
                     <span>
-                      <div><MdOutlineBloodtype /> Qon tahlili <FaCheck className="checkMark" /></div>
+                      <div>
+                        <MdOutlineBloodtype /> Qon tahlili{" "}
+                        <FaCheck className="checkMark" />
+                      </div>
                     </span>
-                    : ""
-                  }
-                  {user?.stories[0].urgent ?
+                  ) : (
+                    ""
+                  )}
+                  {user?.stories[0].urgent ? (
                     <span>
-                      <div><BiAnalyse /> Peshob tahlili <FaCheck className="checkMark" /></div>
+                      <div>
+                        <BiAnalyse /> Peshob tahlili{" "}
+                        <FaCheck className="checkMark" />
+                      </div>
                     </span>
-                    : ""
-                  }
-                  {user?.stories[0].biochemical_analysis ?
+                  ) : (
+                    ""
+                  )}
+                  {user?.stories[0].biochemical_analysis ? (
                     <span>
-                      <div><MdOutlineBiotech /> Bioximik tahlili <FaCheck className="checkMark" /></div>
+                      <div>
+                        <MdOutlineBiotech /> Bioximik tahlili{" "}
+                        <FaCheck className="checkMark" />
+                      </div>
                     </span>
-                    : ""
-                  }
+                  ) : (
+                    ""
+                  )}
                 </>
-                : <span>Topshirmagan</span>
-              }
-
+              ) : (
+                <span>Topshirmagan</span>
+              )}
             </div>
           </div>
           <div>
             <div className="box-bmi_Sing">
               <b>Diagnostika</b>
-              {user?.stories[0].diagnostics ?
+              {user?.stories[0].diagnostics ? (
                 <span>
-                  <div><BsDiagram3 className="Diagram" /> {user?.stories[0].diagnostics}</div>
+                  <div>
+                    <BsDiagram3 className="Diagram" />{" "}
+                    {user?.stories[0].diagnostics}
+                  </div>
                 </span>
-                : <span>O'tmagan</span>
-              }
+              ) : (
+                <span>O'tmagan</span>
+              )}
             </div>
           </div>
         </div>
@@ -189,21 +225,36 @@ function AppointmentSinglePage() {
           </form>
         </div>
 
-        {
-          user?.stories ? <div div className="retsept_history">
+        {user?.stories ? (
+          <div div className="retsept_history">
             <h4>Tarix:</h4>
 
-
             {user?.stories.map((item) => (
-              <div key={item._id} className={`map-item ${collapsedItems.includes(item._id) ? 'collapsed' : ''}`}>
-                <div className="collapsedItems" onClick={() => handleToggleCollapse(item._id)}>
-                  <p> {collapsedItems.includes(item._id) ? '🔽' : '▶️'}  Sana: <span>{item?.day}</span>{" "}</p>
-                  <p>Doktor: <span>{item?.doctorFirstName} {item?.doctorLastName}</span>{" "} </p>
+              <div
+                key={item._id}
+                className={`map-item ${
+                  collapsedItems.includes(item._id) ? "collapsed" : ""
+                }`}
+              >
+                <div
+                  className="collapsedItems"
+                  onClick={() => handleToggleCollapse(item._id)}
+                >
+                  <p>
+                    {" "}
+                    {collapsedItems.includes(item._id) ? "🔽" : "▶️"} Sana:{" "}
+                    <span>{item?.day}</span>{" "}
+                  </p>
+                  <p>
+                    Doktor:{" "}
+                    <span>
+                      {item?.doctorFirstName} {item?.doctorLastName}
+                    </span>{" "}
+                  </p>
                 </div>
                 {collapsedItems.includes(item._id) && (
                   <>
                     <div className="item-details">
-
                       <Button>
                         <ReactToPrint
                           trigger={() => (
@@ -261,16 +312,14 @@ function AppointmentSinglePage() {
                     </div> */}
                   </>
                 )}
-
               </div>
             ))}
-
-          </div> : ""
-        }
+          </div>
+        ) : (
+          ""
+        )}
       </div>
-
-
-    </Layout >
+    </Layout>
   );
 }
 
