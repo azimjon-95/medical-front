@@ -20,9 +20,8 @@ function DoctorsSlite() {
   let day =
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
 
+  console.log(dailyReports);
 
-
- 
   return (
     <div className="carousel">
       {doctors.length > 0 ? (
@@ -78,18 +77,15 @@ function DoctorsSlite() {
                             {NumberFormat(
                               (dailyMoney[value.specialization] *
                                 value.percent) /
-                              100
+                                100
                             )}{" "}
-
                           </>
                         )}
                       </div>
                     </div>
                   ) : (
                     <div className="CountDay-M">
-                      <GiTakeMyMoney /> {
-                        NumberFormat(value.salary)
-                      } so'm
+                      <GiTakeMyMoney /> {NumberFormat(value.salary)} so'm
                     </div>
                   )}
                 </div>
