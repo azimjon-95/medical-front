@@ -133,7 +133,6 @@ const Register = () => {
 
     CreateNewClient(AllInfo)
       .then((res) => {
-        
         if (res?.data?.success) {
           setQueueNumber(res.data.data.stories[0].queueNumber);
           message.success(res?.data?.message);
@@ -292,6 +291,7 @@ const Register = () => {
                 />
               </Form.Item>
             </Col>
+            ~
             <Col className="Col-Form">
               <Form.Item label="Tana harorati" name="Temperature">
                 <Input
@@ -605,7 +605,9 @@ const Register = () => {
                   </div>
 
                   <div className="tableitem">
-                    <p className="itemtext">{NumberFormat(paySum)} so'm</p>
+                    <p className="itemtext">
+                      {NumberFormat(doctor_price?.feesPerCunsaltation)} so'm
+                    </p>
                   </div>
                 </div>
 
@@ -677,8 +679,10 @@ const Register = () => {
                     <div className="tableitem">
                       <p className="itemtext">
                         {NumberFormat(
-                          allDoctor?.find((i) => i.diagnostics === diagnostics)
-                            ?.feesPerCunsaltation
+                          allDoctor?.find(
+                            (i) =>
+                              i.diagnostica && i.specialization === diagnostics
+                          )?.feesPerCunsaltation
                         )}{" "}
                         so'm
                       </p>

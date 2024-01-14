@@ -19,10 +19,56 @@ import UpdatePotients from "../editPotients/EditUser";
 import { LuClipboardEdit } from "react-icons/lu";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
+// fake data for data
+let fakeObj = {
+  _id: "id number",
+  idNumber: "aaaaaaaaa",
+  firstname: "aaaaaaaa",
+  lastname: "aaaaaaaa",
+  phone: "aaaaaaaa",
+  address: "sssssssss",
+  year: "0000-00-00",
+  stories: [
+    {
+      retsept: {
+        writed_at: "00.00.0000",
+        writed_doctor: "aaaaaaaa",
+        patientStatus: "aaaa",
+        sickname: "aaaaaaaa",
+        retseptList: "aaaaaaaa",
+      },
+      room: {
+        dayOfTreatment: 0,
+        payForRoom: 0,
+        outDay: "0",
+      },
+      choseDoctor: "bbbbbbbb",
+      payState: true,
+      paySumm: 0,
+      doctorFirstName: "aaa",
+      doctorLastName: "bbb",
+      doctorPhone: "123456789",
+      temperature: "0",
+      weight: 0,
+      height: 0,
+      diagnostics: "",
+      analysis: "",
+      urgent: false,
+      blood_analysis: false,
+      biochemical_analysis: false,
+      view: false,
+      day: "00.0.0000",
+      month: "dddddd",
+      queueNumber: 0,
+      _id: "idnumber",
+    },
+  ],
+};
+
 const Patients = () => {
   const [query, setQuery] = useState("");
   const [list, setList] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(fakeObj);
   const [open, setOpen] = useState(false);
   let { data: doctors = [] } = useGetAllDoctorsQuery();
 
@@ -40,30 +86,33 @@ const Patients = () => {
   );
   localStorage.setItem("dataFalse", dataFalse?.length);
 
+  dataFalse?.push({});
+
   function updatePayState(e, id) {
     e.preventDefault();
     let update = dataFalse?.find((i) => i._id === id);
     let doctorSum = doctors?.data.filter(
-      (i) => i.specialization === update.choseDoctor
-    )[0].feesPerCunsaltation;
+      (i) => i.specialization === update?.stories[0].choseDoctor
+    )[0]?.feesPerCunsaltation;
 
     let doctorInfo = doctors?.data.filter(
       (i) => i.specialization === update.choseDoctor
     )[0];
 
-    let newInfo = {
-      ...update,
-      stories: [
-        {
-          payState: true,
-          paySumm: doctorSum,
-          doctorPhone: doctorInfo?.phone,
-          room: { ...update.room, dayOfTreatment: "0" },
-        }
-      ],
-    };
+    let newInfo = { ...update };
 
-    uppdate({ id: id, body: newInfo })
+    let allStory = [...newInfo?.stories];
+    let zeroStory = { ...allStory[0] };
+    zeroStory.payState = true;
+    zeroStory.paySumm = doctorSum;
+    allStory.shift();
+    allStory?.unshift(zeroStory);
+
+    let { stories, ...userInfo } = newInfo;
+    let allInfo = { ...userInfo, stories: allStory };
+    setData({ ...allInfo });
+
+    uppdate({ id: id, body: allInfo })
       .then((res) => {
         if (res?.data?.success) {
           message.success(res?.data?.message);
@@ -71,16 +120,8 @@ const Patients = () => {
       })
       .catch((err) => console.log("err", err));
 
-    setTimeout(() => {
-      setData({
-        ...newInfo,
-        feesPerCunsaltation: doctorInfo?.feesPerCunsaltation,
-        phone: doctorInfo?.phone,
-      });
-      setList(true);
-    }, 3000);
+    setTimeout(() => setList(true), 1000);
   }
-  // console.log(data);
   let time = new Date();
   let todaysTime =
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
@@ -173,7 +214,7 @@ const Patients = () => {
                   <tbody>
                     {dataFalse
                       ?.filter((asd) =>
-                        asd?.firstname.toLowerCase().includes(query)
+                        asd?.firstname?.toLowerCase()?.includes(query)
                       )
                       .map((item, inx) => {
                         return (
@@ -282,15 +323,16 @@ const Patients = () => {
                               <div className="service">
                                 <div className="tableitem">
                                   <p className="itemtext">
-                                    {data?.choseDoctor}: Oliy toifali shifokor
+                                    {data?.stories[0]?.choseDoctor}: Oliy
+                                    toifali shifokor
                                   </p>
                                 </div>
 
                                 <div className="tableitem">
                                   <p className="itemtext">
                                     {" "}
-                                    {data?.doctorLastName}{" "}
-                                    {data?.doctorFirstName}
+                                    {data?.stories[0]?.doctorLastName}{" "}
+                                    {data?.stories[0]?.doctorFirstName}
                                   </p>
                                 </div>
                               </div>
@@ -300,7 +342,9 @@ const Patients = () => {
                                   <p className="itemtext">Doktor Tel :</p>
                                 </div>
                                 <div className="tableitem">
-                                  <p className="itemtext">+998{data?.phone}</p>
+                                  <p className="itemtext">
+                                    +998{data?.stories[0]?.doctorPhone}
+                                  </p>
                                 </div>
                               </div>
 
@@ -311,7 +355,8 @@ const Patients = () => {
 
                                 <div className="tableitem">
                                   <p className="itemtext">
-                                    {NumberFormat(data?.feesPerCunsaltation)}{" "}
+                                    {/* {NumberFormat(data?.stories[0]?.paySumm)}{" "} */}
+                                    {NumberFormat(data?.stories[0]?.paySumm)}{" "}
                                     so'm
                                   </p>
                                 </div>
@@ -345,14 +390,15 @@ const Patients = () => {
 
                                 <div className="payment">
                                   <h2 className="item-h1">
-                                    {NumberFormat(data?.paySumm)} so'm
+                                    {NumberFormat(data?.stories[0]?.paySumm)}{" "}
+                                    so'm
                                   </h2>
                                 </div>
                               </div>
                             </div>
 
                             <div id="legalcopy">
-                              <h2>{data?.queueNumber}</h2>
+                              <h2>{data?.stories[0]?.queueNumber}</h2>
                               <p>Sizning navbatingiz!</p>
                             </div>
                           </div>

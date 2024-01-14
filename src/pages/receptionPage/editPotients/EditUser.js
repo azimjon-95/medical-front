@@ -105,7 +105,6 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
         ...oldStories,
       ],
     };
-
     updateClient({ id: editID, body: AllInfo })
       .then((res) => {
         if (res?.data?.success) {
@@ -561,7 +560,9 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
                     </div>
 
                     <div className="tableitem">
-                      <p className="itemtext">{NumberFormat(paySum)} so'm</p>
+                      <p className="itemtext">
+                        {NumberFormat(doctor?.feesPerCunsaltation)} so'm
+                      </p>
                     </div>
                   </div>
 
