@@ -7,16 +7,15 @@ import imgNoData from "../../../assets/nodata.png";
 
 function CabindEnter() {
   let { data: room } = useGetAllRoomsQuery();
-  const data = room?.innerData || []
+  const data = room?.innerData || [];
   let category = localStorage?.getItem("category");
 
-
-
   let clients = data?.filter(
-    (i) => i?.capacity?.filter((i) =>
-      i?.stories[0]?.choseDoctor === category).length > 0
+    (i) =>
+      i?.capacity?.filter((i) => i?.stories[0]?.choseDoctor === category)
+        .length > 0
   );
-  let arr = []
+  let arr = [];
   for (let i = 0; i < clients?.length; i++) {
     arr.push(data[i]);
   }
@@ -57,21 +56,26 @@ function CabindEnter() {
               </tr>
             </thead>
             <tbody>
-              {arr?.map(
-                (value, inx) => (
-                  <tr key={inx}>
-                    <td>{value?.roomNumber}/{value?.floor}</td>
-                    {value?.capacity?.map((i) => (
-                      <>
-                        <td>{i.firstname} {i.lastname}</td>
-                        <td>{!(time.getFullYear() - i.year?.slice(0, 4)) && "noma'lum"}</td>
-                        <td>+998 {PhoneNumberFormat(i?.phone)}</td>
-                        <td data-label="Kun">{CountingDay(i?.dayOfTreatment)}</td>
-                      </>
-                    ))}
-                  </tr>
-                )
-              )}
+              {arr?.map((value, inx) => (
+                <tr key={inx}>
+                  <td>
+                    {value?.roomNumber}/{value?.floor}
+                  </td>
+                  {value?.capacity?.map((i) => (
+                    <>
+                      <td>
+                        {i.firstname} {i.lastname}
+                      </td>
+                      <td>
+                        {!(time.getFullYear() - i.year?.slice(0, 4)) &&
+                          "noma'lum"}
+                      </td>
+                      <td>+998 {PhoneNumberFormat(i?.phone)}</td>
+                      <td data-label="Kun">{CountingDay(i?.dayOfTreatment)}</td>
+                    </>
+                  ))}
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
