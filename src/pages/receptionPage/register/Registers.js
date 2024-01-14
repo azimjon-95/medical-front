@@ -171,6 +171,7 @@ const Register = () => {
       <h3 className="text-center">Bemorni ro'yhatga olish</h3>
       <Form onFinish={handleFinish} layout="vertical" className="FormApply">
         <Row className="Row">
+          
           <Col className="Col-Form">
             <Form.Item label="Shaxsiy raqami" name="ID number">
               <Input

@@ -35,7 +35,7 @@
 }
 
 .content {
-    width: calc(100% - 210px);
+    width: calc(100% - 250px);
     height: 98vh;
     position: relative;
 }
@@ -253,11 +253,10 @@
 .supportBtn {
     width: 97%;
     position: absolute;
-    margin: 0 4px;
+    margin: 2px 4px;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 28px;
     background-color: transparent;
     border: none;
     display: flex;
@@ -266,6 +265,10 @@
     gap: 5px;
     color: #fff;
     font-size: 12px;
+}
+
+.supportBtn:hover {
+    color: #fff;
 }
 
 @media screen and (max-width: 450px) {
@@ -328,5 +331,25 @@
 
     .OpenWindowSid {
         display: none;
+    }
+
+    .supportBtn {
+        width: 97%;
+        position: absolute;
+        margin: 0 0px;
+        bottom: 0px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        background-color: transparent;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 5px;
+        color: #fff;
+        font-size: 12px;
+        text-decoration: none;
     }
 }

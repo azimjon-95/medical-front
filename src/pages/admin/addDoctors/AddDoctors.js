@@ -37,6 +37,7 @@ const AddDoctors = () => {
   const [salary, setSalary] = useState("");
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [idNumber, setIdNumber] = useState("");
 
   const [editID, setEditID] = useState("");
 
@@ -48,6 +49,7 @@ const AddDoctors = () => {
 
 
   const AllInfo = {
+    idNumber,
     firstName,
     lastName,
     phone,
@@ -114,6 +116,19 @@ const AddDoctors = () => {
   };
   let width = window.innerWidth;
 
+
+
+
+
+  // ----------ID number-------------
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    const regexPattern = /^[a-zA-Z]{2}\d{7}$/;
+    if (regexPattern.test(value)) {
+      setIdNumber(value);
+    }
+  };
+
   return (
     <Layout>
       <h3 className="text-center">Admin qo'shish</h3>
@@ -124,6 +139,17 @@ const AddDoctors = () => {
         >
           <Form layout="vertical" onFinish={handleFinish} className="FormApply">
             <Row className="Row">
+              <Col className="Col-Form">
+                <Form.Item label="Shaxsiy raqami" name="ID number">
+                  <Input
+                    maxLength={9}
+                    value={idNumber}
+                    onChange={handleInputChange}
+                    type="string"
+                    placeholder="AA 1234567"
+                  />
+                </Form.Item>
+              </Col>
               <Col className="Col-Form">
                 <Form.Item
                   label="Ism"
@@ -154,6 +180,9 @@ const AddDoctors = () => {
                   />
                 </Form.Item>
               </Col>
+
+            </Row>
+            <Row className="Row">
               <Col className="Col-Form">
                 <Form.Item
                   label="Telefon raqami"
@@ -169,8 +198,6 @@ const AddDoctors = () => {
                   />
                 </Form.Item>
               </Col>
-            </Row>
-            <Row className="Row">
               <Col className="Col-Form">
                 <Form.Item
                   label="Elektron pochta"
@@ -201,6 +228,10 @@ const AddDoctors = () => {
                   />
                 </Form.Item>
               </Col>
+
+            </Row>
+
+            <Row className="Row">
               <div className="salaryBox">
                 <Col>
                   <Form.Item
@@ -270,9 +301,7 @@ const AddDoctors = () => {
                   </Col>
                 )}
               </div>
-            </Row>
 
-            <Row className="Row">
               <Col className="Col-Form">
                 <Form.Item
                   label="Login"
@@ -303,6 +332,9 @@ const AddDoctors = () => {
                   />
                 </Form.Item>
               </Col>
+
+            </Row>
+            <Row className="Row">
               <Col className="Col-Form">
                 <Form.Item
                   label="Konsultatsia to'lov miqdori"
@@ -317,8 +349,6 @@ const AddDoctors = () => {
                   />
                 </Form.Item>
               </Col>
-            </Row>
-            <Row className="Row">
               <Col className="Col-Form">
                 <Form.Item
                   label="Tajriba"
@@ -347,37 +377,7 @@ const AddDoctors = () => {
                   />
                 </Form.Item>
               </Col>
-              <div className="salaryBox">
-                <Col style={{ width: "100%" }}>
-                  <Form.Item label=" " name="doctor salary">
-                    <div className="docORrecep checkList">
-                      <label className="containerChe">
-                        Analiz
-                        <input
-                          value="analis"
-                          onChange={(e) => setAnalis(e.target.value)}
-                          name="anal"
-                          id="anal"
-                          type="radio"
-                        />
-                        <span className="checkmark"></span>
-                      </label>
 
-                      <label className="containerChe">
-                        Diagnostika
-                        <input
-                          value="diagnostica"
-                          onChange={(e) => setDiagnostica(e.target.value)}
-                          name="anal"
-                          id="anal"
-                          type="radio"
-                        />
-                        <span className="checkmark"></span>
-                      </label>
-                    </div>
-                  </Form.Item>
-                </Col>
-              </div>
             </Row>
             {analis ? (
               <Row className="Row RowBox_Col">
@@ -429,6 +429,37 @@ const AddDoctors = () => {
               ""
             )}
             <Row className="Row">
+              <div className="salaryBox">
+                <Col style={{ width: "100%" }}>
+                  <Form.Item >
+                    <div className="docORrecep checkList">
+                      <label className="containerChe">
+                        Analiz
+                        <input
+                          value="analis"
+                          onChange={(e) => setAnalis(e.target.value)}
+                          name="anal"
+                          id="anal"
+                          type="radio"
+                        />
+                        <span className="checkmark"></span>
+                      </label>
+
+                      <label className="containerChe">
+                        Diagnostika
+                        <input
+                          value="diagnostica"
+                          onChange={(e) => setDiagnostica(e.target.value)}
+                          name="anal"
+                          id="anal"
+                          type="radio"
+                        />
+                        <span className="checkmark"></span>
+                      </label>
+                    </div>
+                  </Form.Item>
+                </Col>
+              </div>
               <Col className="Col-Form">
                 <Form.Item>
                   <button className="btn btn-primary" type="submit">

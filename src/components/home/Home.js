@@ -5,7 +5,7 @@ import logo from "../../assets/img/logo.png";
 import { Button, DatePicker, Form, Input, Modal, message } from "antd";
 import { NumberFormat } from "../../hook/NumberFormat";
 import { useCreateClientMutation, useGetUserByIDNumberQuery } from "../../redux/clientApi";
-import { PiPrinterFill } from "react-icons/pi";
+import { RiScreenshot2Line } from "react-icons/ri";
 import CheckList from "../../components/checkLists/checkList/CheckList";
 import { useGetAllDoctorsQuery } from "../../redux/doctorApi";
 import html2canvas from 'html2canvas'
@@ -71,21 +71,7 @@ function Home() {
 
         let doctor_price = allDoctor?.find((d) => d._id === choseDoctor);
 
-        // const AllInfo = {
-        //     firstname,
-        //     lastname,
-        //     phone,
-        //     address,
-        //     year,
-        //     paySumm: 0,
-        //     payState: false,
-        //     choseDoctor: doctor_price.specialization,
-        //     doctorFirstName: doctor_price.firstName,
-        //     doctorLastName: doctor_price.lastName,
-        //     doctorPhone: doctor_price.phone,
-        //     day: todaysTime,
-        //     month: time.toLocaleString("default", { month: "long" }),
-        // };
+
         const AllInfo = {
             idNumber: idNumber?.toLowerCase(),
             firstname,
@@ -118,9 +104,6 @@ function Home() {
 
         // e.target.clear()
     }
-    const onChange = (date, dateString) => {
-        setYear(dateString);
-    };
 
     // -------------------------------------
 
@@ -154,7 +137,7 @@ function Home() {
     // ------------yyy-mm-dd------------
     const handleDateChange = (event) => {
         const inputValue = event.target.value;
-        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        const dateRegex = /^\d{4}.\d{2}.\d{2}$/;
         if (dateRegex.test(inputValue)) {
             console.log("Valid date!");
         } else {
@@ -318,8 +301,9 @@ function Home() {
                         <div className="viewBox">
                             <button onClick={takeScreenshot} className="PrintChekList" type="submit">
                                 {" "}
-                                <PiPrinterFill />
+                                <RiScreenshot2Line />
                             </button>
+
 
                             <div ref={contentRef} className="waveList">
                                 <center id="top">

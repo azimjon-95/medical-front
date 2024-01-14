@@ -190,7 +190,7 @@ const Patients = () => {
           tab="Online ro'yhatdan o'tkanlar"
           key={0}
         >
-          {loading || !dataFalse?.length ? (
+          {dataFalse?.length === 1 ? (
             <div className="NoData">
               <div className="NoDataImg">
                 <img src={imgNoData} alt="No Data" />
