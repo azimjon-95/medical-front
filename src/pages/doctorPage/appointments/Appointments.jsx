@@ -123,17 +123,20 @@ function Appointments() {
                         </div>
                       </td>
                       <td>
-                        <div className="box-bmi">
-                          <span>
-                            <div><GiWeightScale /> {item?.stories[0].weight} kg</div>
-                            <div><GiBodyHeight /> {item?.stories[0].height} m</div>
-                          </span>
-                          <span>
-                            <div><LiaTemperatureHighSolid /> {item?.stories[0].temperature}</div>
-                            <div> BMI {Bmi(+item?.stories[0].weight, +item?.stories[0].height)}</div>
-                          </span>
+                        {item?.stories[0].weight && item?.stories[0].height ?
+                          <div className="box-bmi">
+                            <span>
+                              <div><GiWeightScale /> {item?.stories[0].weight} kg</div>
+                              <div><GiBodyHeight /> {item?.stories[0].height} m</div>
+                            </span>
+                            <span>
+                              <div><LiaTemperatureHighSolid /> {item?.stories[0].temperature}</div>
+                              <div> BMI {Bmi(+item?.stories[0].weight, +item?.stories[0].height)}</div>
+                            </span>
 
-                        </div>
+                          </div> : "Topshirmagan"
+                        }
+
                       </td>
                       {/* <td>{clientLength?.length + 1}</td> */}
                       <td>{clientLength?.find(i => i.idNumber === "aa4254040")?.stories?.reduce((a, b) => a + b.view ? b.view : 0, 0)}</td>

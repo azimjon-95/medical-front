@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import { useSelector } from "react-redux";
 import Patients from "./pages/receptionPage/patients/Patients";
 import Doctor from "./pages/receptionPage/doctor/Doctor";
-import Profile from "./pages/admin/profile/Profile";
+// import Profile from "./pages/admin/profile/Profile";
 import AddDoctors from "./pages/admin/addDoctors/AddDoctors";
 import RegisterOwner from "./pages/admin/registerOwner/AddOwner";
 import Rooms from "./pages/admin/rooms/Rooms";
@@ -71,7 +71,7 @@ function App() {
           <Route path="/setting" element={<RegisterOwner />} />
           <Route path="/cabins" element={<Cabins />} />
           <Route path="/receptionHome" element={<Register />} />
-          <Route path="/doctor/profilr/:id" element={<Profile />} />
+          {/* <Route path="/doctor/profilr/:id" element={<Profile />} /> */}
           <Route path="/appointments" element={<Appointments />} />
           <Route path="/kashelyok" element={<Wallet />} />
           <Route path="/viewRoom" element={<Rooms />} />

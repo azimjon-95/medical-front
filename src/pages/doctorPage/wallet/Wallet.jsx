@@ -23,14 +23,15 @@ function Wallet() {
   let category = localStorage?.getItem('category')
   let filterDoctors = doctors?.filter(i => i.specialization === category)
 
-  let clients = client?.filter(client => client.choseDoctor?.toLowerCase() === category
-      ?.toLowerCase() && client.view === true)
+  let clients = client?.filter(client => client?.stories?.filter((i)=> i?.choseDoctor === category))
+
+      console.log(clients);
 
   let time = new Date()
   let day = (time.getDate()) + "." + (time.getMonth() + 1) + "." + time.getFullYear();
   let dayMonth = time.toLocaleString("default", { month: 'long' })
-  let filterarxiv = clients?.filter(i => i.day === day)
-  let getMonth = clients?.filter(i => i.month === dayMonth && i.view === true)
+  let filterarxiv = clients?.filter(i => i?.stories.day === day)
+  let getMonth = clients?.filter(i => i?.stories.month === dayMonth && i?.stories.view === true)
 
   const totalMoney = getMonth?.reduce((a, b) => a + b.paySumm, 0);
   

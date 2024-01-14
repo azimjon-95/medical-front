@@ -125,19 +125,16 @@ function EnterRoom({ none, setOpenRoom, room }) {
               </thead>
               <tbody>
                 {room.capacity?.map(
-                  (
-                    {
-                      _id,
-                      firstname,
-                      lastname,
-                      phone,
-                      idNumber,
-                      year,
-                      doctorFirstName,
-                      dayOfTreatment,
-                    },
-                    inx
-                  ) => (
+                  ({
+                    _id,
+                    firstname,
+                    lastname,
+                    phone,
+                    idNumber,
+                    year,
+                    doctorFirstName,
+                    dayOfTreatment,
+                  }, inx) => (
                     <tr key={inx}>
                       <td data-label="Bemor">
                         {firstname} {lastname}

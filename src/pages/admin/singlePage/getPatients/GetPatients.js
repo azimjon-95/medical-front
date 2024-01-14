@@ -3,7 +3,6 @@ import "./style.css";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { LuEye } from "react-icons/lu";
-import imgNoData from "../../../../assets/nodata.png";
 import ReactToPrint from "react-to-print";
 import { SearchOutlined, LeftOutlined } from "@ant-design/icons";
 import { FaUsers } from "react-icons/fa";
@@ -12,6 +11,9 @@ import { Button } from 'antd';
 import { PiPrinterFill } from "react-icons/pi";
 import RecordList from "../../../../components/checkLists/patientRecordList/RecordList";
 import { useGetAllUsersQuery } from "../../../../redux/clientApi";
+import imgNoData from "../../../../assets/nodata.png";
+import { PhoneNumberFormat } from "../../../../hook/NumberFormat";
+
 
 const GetPatients = () => {
   const componentRef = useRef();
@@ -24,6 +26,8 @@ const GetPatients = () => {
     setidD(id);
     dispatch(setInfo(id));
   };
+
+
   // ----------------------------------------
   let { data: allClient } = useGetAllUsersQuery();
   let client = allClient?.data || [];
@@ -50,6 +54,8 @@ const GetPatients = () => {
     }
   };
 
+
+
   return (
     <div className="Search-Box">
       <div className="searchingBox">
@@ -59,7 +65,7 @@ const GetPatients = () => {
             Medme
           </h4>
         </Link>
-        {clients?.length >= 10 ? (
+        {clients?.length >= 1 ? (
           <div className="search">
             <div>
               <FaUsers />-{clients?.length}
@@ -92,89 +98,106 @@ const GetPatients = () => {
             asd?.firstname?.toLowerCase().includes(query)
           ).map((item) => (
             <div key={item._id} className={`map-item ${collapsedItems.includes(item._id) ? 'collapsed' : ''}`}>
-              <div className="collapsedItems" onClick={() => handleToggleCollapse(item._id)}>
+              <div className="collapsedItems_p" onClick={() => handleToggleCollapse(item._id)}>
 
-                <p> {collapsedItems.includes(item._id) ? '🔽' : '▶️'}  <span>{item?.lastname} {item?.firstname}</span>{" "}</p>
-                <p> </p>
+                <p>{collapsedItems.includes(item._id) ? '🔽' : '▶️'}  <span>{item?.lastname} {item?.firstname}</span>{" "}</p>
+                <p>{item?.address}</p>
+                <p>+998 {PhoneNumberFormat(item?.phone)}</p>
+                <p>{item?.stories.view  !== true ? item?.stories?.length : ""}</p>
 
               </div>
               {collapsedItems.includes(item._id) && (
                 <>
-                  <div className="item-details">
+                  {
+                    item.stories.map((a, inx) => (
+                      <div key={inx} className="">
+                        {a?.retsept && (
+                          <div key={a?.retsept?.writed_at} className={`map-item ${collapsedItems.includes(a?.retsept?.writed_at) ? 'collapsed' : ''}`}>
+                            <div className="collapsedItems_IntoBox">
+                              <p onClick={() => handleToggleCollapse(a?.retsept?.writed_at)}>{collapsedItems.includes(a?.retsept?.writed_at) ? '🔽' : '▶️'}  <span>{a?.retsept?.writed_at}</span>{" "}</p>
+                              <p>{a?.retsept?.sickname}</p>
+                              <p>{a?.retsept?.patientStatus}</p>
+                              <p>
+                                <ReactToPrint
+                                  trigger={() => (
+                                    <button
+                                      onFocus={() =>
+                                        checkID({
+                                          _id: _id,
+                                          choseDoctor: a?.choseDoctor,
+                                          day: a?.retsept?.writed_at,
+                                          address: item?.address,
+                                          doctorFirstName: a?.doctorFirstName,
+                                          doctorLastName: a?.doctorLastName,
+                                          firstname: item?.firstname,
+                                          lastname: item?.lastname,
+                                          phone: item?.phone,
+                                          retsept: a?.retsept?.retseptList,
+                                          sickname: a?.retsept?.sickname,
+                                          year: item?.year,
+                                          doctorPhone: a?.doctorPhone,
+                                        })
+                                      }
+                                      style={{
+                                        border: "none",
+                                        background: "transparent",
+                                        fontSize: "14px",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                      }}
+                                    >
+                                      {" "}
+                                      <PiPrinterFill className="Printer" />
+                                    </button>
+                                  )}
+                                  content={() => componentRef.current}
+                                />
+                                <div style={{ display: "none" }}>
+                                  <RecordList obj={{
+                                    id: _id,
+                                    choseDoctor: item?.choseDoctor,
+                                    day: item?.day,
+                                    address: clients?.address,
+                                    doctorFirstName: item?.doctorFirstName,
+                                    doctorLastName: item?.doctorLastName,
+                                    firstname: clients?.firstname,
+                                    lastname: clients?.lastname,
+                                    phone: clients?.phone,
+                                    retsept: item?.retsept,
+                                    sickname: item?.sickname,
+                                    year: clients?.year,
+                                    doctorPhone: item?.doctorPhone,
+                                  }} componentRef={componentRef} />
+                                </div>
+                              </p>
+                            </div>
+                            {
+                              collapsedItems.includes(a?.retsept?.writed_at) && (
+                                <div className="retseptList">
+                                  <div className="texCenter">
+                                    <i>Dorilar ro'yxati</i>
+                                  </div>
+                                  <p>{a?.retsept?.retseptList}</p>
+                                </div>
+                              )
+                            }
+                          </div>
 
-                  </div>
+                        )
+                        }
+                      </div>
+                    ))
+                  }
                 </>
               )}
-
             </div>
-          ))}
+          ))
+          }
         </>
-      )}
+      )
+      }
 
-   
-
-
-
-
-
-      {/* 
-                    <Button>
-                      <ReactToPrint
-                        trigger={() => (
-                          <button
-                            onFocus={() =>
-                              checkID({
-                                _id: _id,
-                                choseDoctor: item?.choseDoctor,
-                                day: item?.day,
-                                address: clients?.address,
-                                doctorFirstName: item?.doctorFirstName,
-                                doctorLastName: item?.doctorLastName,
-                                firstname: clients?.firstname,
-                                lastname: clients?.lastname,
-                                phone: clients?.phone,
-                                retsept: item?.retsept,
-                                sickname: item?.sickname,
-                                year: clients?.year,
-                                doctorPhone: item?.doctorPhone,
-                              })
-                            }
-                            style={{
-                              border: "none",
-                              background: "transparent",
-                              fontSize: "14px",
-                              display: "flex",
-                              justifyContent: "center",
-                            }}
-                          >
-                            {" "}
-                            <PiPrinterFill className="Printer" />
-                          </button>
-                        )}
-                        content={() => componentRef.current}
-                      />
-                    </Button> */}
-
-
-      {/* <div style={{ display: "none" }}>
-                      <RecordList obj={{
-                        id: _id,
-                        choseDoctor: item?.choseDoctor,
-                        day: item?.day,
-                        address: clients?.address,
-                        doctorFirstName: item?.doctorFirstName,
-                        doctorLastName: item?.doctorLastName,
-                        firstname: clients?.firstname,
-                        lastname: clients?.lastname,
-                        phone: clients?.phone,
-                        retsept: item?.retsept,
-                        sickname: item?.sickname,
-                        year: clients?.year,
-                        doctorPhone: item?.doctorPhone,
-                      }} componentRef={componentRef} />
-                    </div> */}
-
-    </div>
+    </div >
   );
 };
 

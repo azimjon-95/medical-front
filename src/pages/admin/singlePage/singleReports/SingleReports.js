@@ -24,16 +24,16 @@ function SingleReports() {
   let filterDoctors = doctors?.filter((i) => i.specialization === _id);
   let clients = client?.filter(
     (client) =>
-      client.choseDoctor.toLowerCase() === _id?.toLowerCase() &&
-      client.view === true
+      client?.stories?.choseDoctor?.toLowerCase() === _id?.toLowerCase() &&
+      client?.stories?.view === true
   );
 
   let time = new Date();
   let day =
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
   let dayMonth = time.toLocaleString("default", { month: "long" });
-  let filterarxiv = clients?.filter((i) => i.day == day);
-  let getMonth = clients?.filter((i) => i.month == dayMonth);
+  let filterarxiv = clients?.filter((i) => i?.stories.day == day);
+  let getMonth = clients?.filter((i) => i?.stories.month == dayMonth);
   const totalMoney = getMonth?.reduce((a, b) => a + b.paySumm, 0);
 
   return (

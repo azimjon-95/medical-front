@@ -1,25 +1,25 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import "./style.css";
-import { NumberFormat } from "../../../hook/NumberFormat";
-import { message, Tabs, Modal } from "antd";
-import { FiX } from "react-icons/fi";
-import { GiEntryDoor } from "react-icons/gi";
-import { PiPrinterFill } from "react-icons/pi";
-import ReactToPrint from "react-to-print";
-import CheckList from "../../../components/checkLists/checkList/CheckList";
+import { PhoneNumberFormat } from "../../../hook/NumberFormat";
 import Layout from "../../../components/layout/Layout";
 import { useGetAllRoomsQuery } from "../../../redux/roomApi";
+import imgNoData from "../../../assets/nodata.png";
 
 function CabindEnter() {
   let { data: room } = useGetAllRoomsQuery();
+  const data = room?.innerData || []
   let category = localStorage?.getItem("category");
 
-  let clients = room?.capacity?.filter(
-    (client) =>
-      client.choseDoctor === category &&
-      client.payState &&
-      client.view !== true
+
+
+  let clients = data?.filter(
+    (i) => i?.capacity?.filter((i) =>
+      i?.stories[0]?.choseDoctor === category).length > 0
   );
+  let arr = []
+  for (let i = 0; i < clients?.length; i++) {
+    arr.push(data[i]);
+  }
 
   let time = new Date();
   const CountingDay = (value) => {
@@ -38,47 +38,44 @@ function CabindEnter() {
 
   return (
     <Layout>
-      <div className="Room_wrapperDoc">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Bemor</th>
-              <th>Yoshi</th>
-              <th>Yo'naltirildi</th>
-              <th>Kun</th>
-            </tr>
-          </thead>
-          <tbody>
-            {clients?.map(
-              (
-                {
-                  _id,
-                  firstname,
-                  lastname,
-                  phone,
-                  year,
-                  doctorFirstName,
-                  dayOfTreatment,
-                },
-                inx
-              ) => (
-                <tr key={inx}>
-                  <td data-label="Bemor">
-                    {firstname} {lastname}
-                  </td>
-                  <td data-label="Yoshi">
-                    {!(time.getFullYear() - +year?.slice(0, 4)) &&
-                      "noma'lum"}
-                  </td>
-                  <td data-label="Tel No">{phone}</td>
-                  <td data-label="Kun">{CountingDay(dayOfTreatment)}</td>
-
-                </tr>
-              )
-            )}
-          </tbody>
-        </table>
-      </div>
+      {clients == 0 ? (
+        <div className="NoData">
+          <div className="NoDataImg">
+            <img src={imgNoData} alt="No Data" />
+          </div>
+        </div>
+      ) : (
+        <div className="Room_wrapperDoc">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>№ Xona/Qavati</th>
+                <th>Bemor</th>
+                <th>Yoshi</th>
+                <th>№ Tel</th>
+                <th>Kun</th>
+              </tr>
+            </thead>
+            <tbody>
+              {arr?.map(
+                (value, inx) => (
+                  <tr key={inx}>
+                    <td>{value?.roomNumber}/{value?.floor}</td>
+                    {value?.capacity?.map((i) => (
+                      <>
+                        <td>{i.firstname} {i.lastname}</td>
+                        <td>{!(time.getFullYear() - i.year?.slice(0, 4)) && "noma'lum"}</td>
+                        <td>+998 {PhoneNumberFormat(i?.phone)}</td>
+                        <td data-label="Kun">{CountingDay(i?.dayOfTreatment)}</td>
+                      </>
+                    ))}
+                  </tr>
+                )
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
     </Layout>
   );
 }

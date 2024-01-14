@@ -120,3 +120,77 @@
     outline: none;
     font-size: 14px;
 }
+
+
+.collapsedItems_p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 3px 0;
+    border-radius: 6px;
+    background: #efefef;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+.collapsedItems_IntoBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 3px 0;
+    border-radius: 6px;
+    background: #d8d8d8;
+    padding: 0 25px;
+    cursor: pointer;
+    height: 30px;
+}
+
+.collapsedItems_IntoBox:hover {
+    box-shadow: 0 0 3px dodgerblue;
+}
+
+.collapsedItems_IntoBox>p {
+    font-size: 14px;
+    margin-top: 13px;
+}
+
+.collapsedItems_p:hover {
+    box-shadow: 0 0 3px dodgerblue;
+}
+
+.collapsedItems_p>p {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.collapsedItems_p>p:nth-child(1),
+.collapsedItems_p>p:nth-child(2),
+.collapsedItems_p>p:nth-child(3) {
+    width: 30%;
+}
+
+.retseptList {
+    width: 80%;
+    margin: auto;
+    padding: 5px; 
+    border-radius: 0 0 7px 7px;
+    background: #d1d1d1;
+}
+
+.retseptList>p {
+    font-size: 13px;
+}
+
+.texCenter {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+}
+
+.texCenter>i {
+    text-align: center;
+    font-size: 13px;
+    color: #565656;
+}

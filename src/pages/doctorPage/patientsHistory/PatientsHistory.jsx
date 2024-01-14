@@ -24,16 +24,22 @@ function PatientsHistory() {
   };
   let category = localStorage.getItem("category");
 
-  let clients = data?.filter(
-    (client) =>
-      client?.stories.choseDoctor?.toLowerCase() === category?.toLowerCase() &&
-      client?.stories.view === false
-  );
+  // let clients = data?.filter(
+  //   (client) =>
+  //     client?.stories.choseDoctor?.toLowerCase() === category?.toLowerCase() &&
+  //     client?.stories.view === false
+  // );
+  let clients = data?.map(i => i?.stories?.filter((i) => i?.choseDoctor === category))?.filter((i) => i?.length > 0)
+
+  let arr = []
+  for (let i = 0; i < clients?.length; i++) {
+    arr.push(data[i]);
+  }
 
   let time = new Date();
   let day =
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
-  let filterarxiv = clients?.filter((i) => i?.stories.day == day);
+  let filterarxiv = clients?.filter((i) => i?.stories?.day == day);
 
   const [query, setQuery] = useState("");
   return (
@@ -112,7 +118,7 @@ function PatientsHistory() {
           )}
         </Tabs.TabPane>
         <Tabs.TabPane tab="Jammi" key={1}>
-          {clients == 0 ? (
+          {arr == 0 ? (
             <div className="NoData">
               <div className="NoDataImg">
                 <img src={imgNoData} alt="No Data" />
@@ -136,7 +142,7 @@ function PatientsHistory() {
                     {clients
                       ?.filter((asd) =>
                         asd?.firstname?.toLowerCase().includes(query)
-                      ).stories?.map(
+                      )?.map(
                         (value, inx) => {
                           return (
                             <tr key={inx}>
