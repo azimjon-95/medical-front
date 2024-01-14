@@ -1,6 +1,16 @@
 import React, { useState } from "react";
 import Layout from "../../../components/layout/Layout";
-import { Col, Alert, Form, Button, Input, message, Row, Tabs, Modal } from "antd";
+import {
+  Col,
+  Alert,
+  Form,
+  Button,
+  Input,
+  message,
+  Row,
+  Tabs,
+  Modal,
+} from "antd";
 import "./style.css";
 import imgNoData from "../../../assets/nodata.png";
 import { NumberFormat, PhoneNumberFormat } from "../../../hook/NumberFormat";
@@ -10,7 +20,6 @@ import {
   useGetAllDoctorsQuery,
   useCreateDoctorMutation,
   useDeleteDoctorMutation,
-
 } from "../../../redux/doctorApi";
 import { LuClipboardEdit } from "react-icons/lu";
 import EditDoctors from "../editDoctor/EditDoctors";
@@ -41,15 +50,13 @@ const AddDoctors = () => {
 
   const [editID, setEditID] = useState("");
 
-
   let { data: allDoctor } = useGetAllDoctorsQuery();
   let doctor = allDoctor?.data;
   let [createDoctor] = useCreateDoctorMutation();
   let [deleteDoctor] = useDeleteDoctorMutation();
 
-
   const AllInfo = {
-    idNumber,
+    idNumber: idNumber.toLowerCase(),
     firstName,
     lastName,
     phone,
@@ -116,10 +123,6 @@ const AddDoctors = () => {
   };
   let width = window.innerWidth;
 
-
-
-
-
   // ----------ID number-------------
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -180,7 +183,6 @@ const AddDoctors = () => {
                   />
                 </Form.Item>
               </Col>
-
             </Row>
             <Row className="Row">
               <Col className="Col-Form">
@@ -228,7 +230,6 @@ const AddDoctors = () => {
                   />
                 </Form.Item>
               </Col>
-
             </Row>
 
             <Row className="Row">
@@ -332,7 +333,6 @@ const AddDoctors = () => {
                   />
                 </Form.Item>
               </Col>
-
             </Row>
             <Row className="Row">
               <Col className="Col-Form">
@@ -377,7 +377,6 @@ const AddDoctors = () => {
                   />
                 </Form.Item>
               </Col>
-
             </Row>
             {analis ? (
               <Row className="Row RowBox_Col">
@@ -431,7 +430,7 @@ const AddDoctors = () => {
             <Row className="Row">
               <div className="salaryBox">
                 <Col style={{ width: "100%" }}>
-                  <Form.Item >
+                  <Form.Item>
                     <div className="docORrecep checkList">
                       <label className="containerChe">
                         Analiz
@@ -479,15 +478,17 @@ const AddDoctors = () => {
         </Tabs.TabPane>
 
         <Tabs.TabPane
-          tab={`${width > 450 ? "Doktorlar" : "D"} ${filterData1?.length === 0 ? "" : `- ${filterData1?.length}`
-            }`}
+          tab={`${width > 450 ? "Doktorlar" : "D"} ${
+            filterData1?.length === 0 ? "" : `- ${filterData1?.length}`
+          }`}
           key={2}
         >
           <EditDoctors doctor={doctor} filterData1={filterData1} />
         </Tabs.TabPane>
         <Tabs.TabPane
-          tab={`${width > 450 ? "Administratorlar" : "A"}  ${filterData2?.length === 0 ? "" : `- ${filterData2?.length}`
-            }`}
+          tab={`${width > 450 ? "Administratorlar" : "A"}  ${
+            filterData2?.length === 0 ? "" : `- ${filterData2?.length}`
+          }`}
           key={3}
         >
           {filterData2 == 0 ? (
@@ -536,19 +537,6 @@ const AddDoctors = () => {
 
 export default AddDoctors;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Azimov	Faxriddin	Nevrolog	934566676	100000
 // Melikulov	Alisher	Kardioxirurg	904445434	150000
 // Aminov	Sanjar	Kardiolog	905556545	200000
@@ -557,6 +545,3 @@ export default AddDoctors;
 // Babakulov	Abduaziz	Ortoped	902344344	120000
 // Umarova	Gulnora	Revmatolog	946609606	130000
 // Abdullayev	Oybek	Travmatolog	944324445	80000
-
-
-

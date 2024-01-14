@@ -84,6 +84,7 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
       year,
       stories: [
         {
+          doctorIdNumber: doctor.idNumber,
           choseDoctor: doctor?.specialization,
           payState,
           paySumm: paySum,
