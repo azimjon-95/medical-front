@@ -7,25 +7,20 @@ import { FaUsers } from "react-icons/fa6";
 import { TbFilePercent } from "react-icons/tb";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { Link } from "react-router-dom";
-import { useGetDailyReportsQuery } from "../../../redux/dailyReportApi";
+import { useGetReportsQuery } from "../../../redux/reports";
 
 function DoctorsSlite() {
-  let { data: dailyReports } = useGetDailyReportsQuery();
-  let data = dailyReports?.innerData;
-  let doctors = data?.doctors || [];
-  let dailyMoney = data?.doctorDailyMoney || [];
-  let todaysClients = data?.todaysClient || [];
+  let { data: allReports } = useGetReportsQuery();
+  let reports = allReports?.innerData || [];
 
   let time = new Date();
   let day =
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
 
-  console.log(dailyReports);
-
   return (
     <div className="carousel">
-      {doctors.length > 0 ? (
-        doctors?.map((value, inx) => {
+      {reports?.length > 0 ? (
+        reports?.map((value, inx) => {
           return (
             <Link
               to={`/doctorSinglePage/${value.specialization}`}
@@ -35,7 +30,11 @@ function DoctorsSlite() {
               <div className="card-inner">
                 <FaUserDoctor className="card_icon" />
                 <span className="doctorname">
-                  {value.firstName}.{value.lastName[0]}
+                  {value?.doctorFullName
+                    ? value?.doctorFullName?.split(" ")[0]?.toUpperCase() +
+                      "." +
+                      value?.doctorFullName?.split(" ")[0][0]?.toUpperCase()
+                    : ""}
                 </span>
                 <b>{value.specialization}</b>
               </div>
@@ -44,21 +43,13 @@ function DoctorsSlite() {
                 <div className="CountDay-M">
                   <LiaMoneyBillWaveSolid />{" "}
                   {value.specialization !== 0 ? (
-                    <>
-                      {" " + NumberFormat(dailyMoney[value.specialization])}{" "}
-                      so'm
-                    </>
+                    <>{" " + NumberFormat(value?.stories[0]?.totalSumm)} so'm</>
                   ) : (
                     ""
                   )}
                 </div>
                 <div className="CountDay-M">
-                  <FaUsers />{" "}
-                  {value.specialization !== 0 ? (
-                    <>{todaysClients[value.specialization]}</>
-                  ) : (
-                    ""
-                  )}
+                  <FaUsers /> {value?.stories[0]?.totalClient}
                 </div>
 
                 <div className="CountDay-M">
@@ -72,14 +63,7 @@ function DoctorsSlite() {
                         {value.specialization === 0 ? (
                           ""
                         ) : (
-                          <>
-                            {" "}
-                            {NumberFormat(
-                              (dailyMoney[value.specialization] *
-                                value.percent) /
-                                100
-                            )}{" "}
-                          </>
+                          <> {NumberFormat(value?.stories[0]?.doctorTP)}</>
                         )}
                       </div>
                     </div>
