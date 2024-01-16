@@ -478,17 +478,15 @@ const AddDoctors = () => {
         </Tabs.TabPane>
 
         <Tabs.TabPane
-          tab={`${width > 450 ? "Doktorlar" : "D"} ${
-            filterData1?.length === 0 ? "" : `- ${filterData1?.length}`
-          }`}
+          tab={`${width > 450 ? "Doktorlar" : "D"} ${filterData1?.length === 0 ? "" : `- ${filterData1?.length}`
+            }`}
           key={2}
         >
           <EditDoctors doctor={doctor} filterData1={filterData1} />
         </Tabs.TabPane>
         <Tabs.TabPane
-          tab={`${width > 450 ? "Administratorlar" : "A"}  ${
-            filterData2?.length === 0 ? "" : `- ${filterData2?.length}`
-          }`}
+          tab={`${width > 450 ? "Administratorlar" : "A"}  ${filterData2?.length === 0 ? "" : `- ${filterData2?.length}`
+            }`}
           key={3}
         >
           {filterData2 == 0 ? (
@@ -510,10 +508,10 @@ const AddDoctors = () => {
               <tbody>
                 {filterData2?.map((item, inx) => (
                   <tr key={inx}>
-                    <td data-label="Ismi">{item.lastName} </td>
-                    <td data-label="Familiyasi">{item.firstName}</td>
+                    <td data-label="Ismi">{item?.firstName} </td>
+                    <td data-label="Familiyasi">{item?.lastName}</td>
 
-                    <td data-label="Tel No">{PhoneNumberFormat(item.phone)}</td>
+                    <td data-label="Tel No">{PhoneNumberFormat(item?.phone)}</td>
 
                     <td data-label="O'chirish">
                       <button

@@ -30,7 +30,7 @@
 
 .viewBox {
     width: 75%;
-    height: 550px;
+    /* height: 550px; */
     background: rgb(210, 210, 210);
     border-radius: 15px;
     position: relative;
@@ -73,7 +73,7 @@
     position: relative;
     width: 280px;
     /* height: 420px; */
-    background-color: #fff;
+    background-color: #ffffff;
     padding: 10px;
     display: flex;
     justify-content: center;

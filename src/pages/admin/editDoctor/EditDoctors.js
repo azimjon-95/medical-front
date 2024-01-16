@@ -77,8 +77,8 @@ const EditDoctors = ({ doctor, filterData1 }) => {
                     <tbody>
                         {filterData1?.map((item, inx) => (
                             <tr key={inx}>
-                                <td data-label="Ismi">{item.lastName} </td>
-                                <td data-label="Familiyasi">{item.firstName}</td>
+                                <td data-label="Ismi">{item.firstName} </td>
+                                <td data-label="Familiyasi">{item.lastName}</td>
                                 <td data-label="Kasbi">{item.specialization}</td>
                                 <td data-label="Tel No">{PhoneNumberFormat(item.phone)}</td>
                                 {
