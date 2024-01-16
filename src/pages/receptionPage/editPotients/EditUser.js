@@ -84,7 +84,7 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
       year,
       stories: [
         {
-          doctorIdNumber: doctor.idNumber,
+          doctorIdNumber: doctor?.idNumber,
           choseDoctor: doctor?.specialization,
           payState,
           paySumm: paySum,
@@ -149,7 +149,7 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
         <FiX className="updateCloseBtn" onClick={() => setOpenUpdate(false)} />
 
         <Form layout="vertical" className="FormApply formApplyEdit">
-          <Row className="Row">
+          <Row className="Row rowEdit">
             <Col className="Col-Form">
               <Form.Item label="Shaxsiy raqami" name="ID number">
                 <Input
@@ -183,7 +183,7 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
               </Form.Item>
             </Col>
           </Row>
-          <Row className="Row">
+          <Row className="Row rowEdit">
             <Col className="Col-Form">
               <Form.Item label="Tel raqami" name="number">
                 <Input
@@ -222,7 +222,7 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
               </Form.Item>
             </Col>
           </Row>
-          <Row className="Row">
+          <Row className="Row rowEdit">
             <Col className="Col-Form">
               <Form.Item label="Doktor" name="doctor">
                 <Select
@@ -310,7 +310,7 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
               </Form.Item>
             </Col>
           </Row>
-          <Row className="Row">
+          <Row className="Row rowEdit">
             <div className="Col-Form_Box">
               <Col style={{ width: "100%" }} className="Col-Form">
                 <Form.Item label="Diagnostika" name="diagnostica">
@@ -361,17 +361,17 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
                           setBlood(e.target.checked),
                           blood_analysis
                             ? setPaySum(
-                                (p) =>
-                                  p -
-                                  allDoctor?.filter((i) => i.analis)[0]
-                                    ?.analisisPrices?.blood_analysis
-                              )
+                              (p) =>
+                                p -
+                                allDoctor?.filter((i) => i.analis)[0]
+                                  ?.analisisPrices?.blood_analysis
+                            )
                             : setPaySum(
-                                (p) =>
-                                  p +
-                                  allDoctor?.filter((i) => i.analis)[0]
-                                    ?.analisisPrices?.blood_analysis
-                              )
+                              (p) =>
+                                p +
+                                allDoctor?.filter((i) => i.analis)[0]
+                                  ?.analisisPrices?.blood_analysis
+                            )
                         )}
                       >
                         {blood_analysis ? "Ha" : "Yo'q"}{" "}
@@ -389,17 +389,17 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
                           setUrgent(e.target.checked),
                           urgent_analysis
                             ? setPaySum(
-                                (p) =>
-                                  p -
-                                  allDoctor?.filter((i) => i.analis)[0]
-                                    ?.analisisPrices?.urine_analysis
-                              )
+                              (p) =>
+                                p -
+                                allDoctor?.filter((i) => i.analis)[0]
+                                  ?.analisisPrices?.urine_analysis
+                            )
                             : setPaySum(
-                                (p) =>
-                                  p +
-                                  allDoctor?.filter((i) => i.analis)[0]
-                                    ?.analisisPrices?.urine_analysis
-                              )
+                              (p) =>
+                                p +
+                                allDoctor?.filter((i) => i.analis)[0]
+                                  ?.analisisPrices?.urine_analysis
+                            )
                         )}
                       >
                         {urgent_analysis ? "Ha" : "Yo'q"}{" "}
@@ -417,17 +417,17 @@ function UpdatePotients({ user, setOpenUpdate, editID }) {
                           setBiochemical(e.target.checked),
                           biochemical_analysis
                             ? setPaySum(
-                                (p) =>
-                                  p -
-                                  allDoctor?.filter((i) => i.analis)[0]
-                                    ?.analisisPrices?.biochemical_analysis
-                              )
+                              (p) =>
+                                p -
+                                allDoctor?.filter((i) => i.analis)[0]
+                                  ?.analisisPrices?.biochemical_analysis
+                            )
                             : setPaySum(
-                                (p) =>
-                                  p +
-                                  allDoctor?.filter((i) => i.analis)[0]
-                                    ?.analisisPrices?.biochemical_analysis
-                              )
+                              (p) =>
+                                p +
+                                allDoctor?.filter((i) => i.analis)[0]
+                                  ?.analisisPrices?.biochemical_analysis
+                            )
                         )}
                       >
                         {biochemical_analysis ? "Ha" : "Yo'q"}{" "}

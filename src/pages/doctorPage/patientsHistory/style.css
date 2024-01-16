@@ -7,6 +7,12 @@
 .appointmentsTable thead {
     background-color: dodgerblue;
     color: #fff;
+    margin: 0 4px;
+
+}
+
+.appointmentsTable tbody {
+    margin: 0 4px;
 }
 
 .appointmentsTable tbody tr {

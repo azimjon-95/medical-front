@@ -163,14 +163,14 @@ import React, { useState } from "react";
 import "./style.css";
 import { NumberFormat } from "../../../hook/NumberFormat";
 import { GrBottomCorner } from "react-icons/gr";
-import CountUp from "react-countup";
 import NoMony from "../../../assets/img/nomony.png";
 import moment from "moment";
 import { GiMoneyStack } from "react-icons/gi";
 import { MdOutlineBedroomChild } from "react-icons/md";
 import { TbUsersGroup } from "react-icons/tb";
 import { useGetAllRoomsQuery } from "../../../redux/roomApi";
-
+import CountUp from 'react-countup';
+import { Col, Row, Statistic } from 'antd';
 import { useGetAllUsersQuery } from "../../../redux/clientApi";
 
 const Balans = () => {
@@ -220,6 +220,8 @@ const Balans = () => {
     return prev + cur.capacity?.length;
   }, 0);
   // ------------------------------------------------------------
+  const formatter = (value) => <CountUp end={value} separator="," />;
+
   return (
     <div className="grid-one-item grid-common grid-c1">
       <div className="grid-c1-content">
@@ -239,7 +241,10 @@ const Balans = () => {
               <div>
                 <MdOutlineBedroomChild /> - {NumberOfTreatments}{" "}
               </div>
+
             )}
+
+
           </div>
         </div>
         <div className="lg-value1">
@@ -251,13 +256,11 @@ const Balans = () => {
                 <GiMoneyStack /> Jami:
               </div>
               <div className="">
-                <CountUp
-                  className="lg-value1"
-                  // end={NumberFormat(total)}
-                  end={total}
-                  decimals="3"
-                  suffix=""
-                />
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Statistic className="lg-value1" title="Active Users" value={total} formatter={formatter} />
+                  </Col>
+                </Row>
               </div>
             </div>
           )}
@@ -271,13 +274,11 @@ const Balans = () => {
                 <GiMoneyStack /> Bemorlar:
               </div>
               <div className="">
-                <CountUp
-                  className="lg-value1"
-                  // end={NumberFormat(result)}
-                  end={result}
-                  decimals="3"
-                  suffix=""
-                />
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Statistic className="lg-value1" title="Active Users" value={result} formatter={formatter} />
+                  </Col>
+                </Row>
               </div>
             </div>
           )}
@@ -291,12 +292,11 @@ const Balans = () => {
                 <GiMoneyStack /> Xonalar:
               </div>
               <div className="">
-                <CountUp
-                  className="lg-value1"
-                  end={NumberFormat(TreatmentsFees)}
-                  decimals="3"
-                  suffix=" so'm"
-                />
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Statistic className="lg-value1" title="Active Users" value={TreatmentsFees} formatter={formatter} />
+                  </Col>
+                </Row>
               </div>
             </div>
           )}
@@ -332,3 +332,6 @@ const Balans = () => {
 };
 
 export default Balans;
+
+
+
