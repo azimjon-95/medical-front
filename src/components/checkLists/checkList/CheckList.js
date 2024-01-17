@@ -229,7 +229,7 @@ const CheckList = ({
             ) : (
               ""
             )}
-            {diagnostics !== "diagnostica" ? (
+            {!diagnostics === "diagnostica" ? (
               <div className="service">
                 <div className="tableitem">
                   <p className="itemtext">{diagnostics}:</p>
@@ -238,8 +238,10 @@ const CheckList = ({
                 <div className="tableitem">
                   <p className="itemtext">
                     {NumberFormat(
-                      allDoctor?.find((i) => i.diagnostics === diagnostics)
-                        ?.feesPerCunsaltation
+                      allDoctor?.find(
+                        (i) =>
+                          i.diagnostica && i.specialization === diagnostics
+                      )?.feesPerCunsaltation
                     )}{" "}
                     so'm
                   </p>

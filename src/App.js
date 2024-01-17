@@ -23,6 +23,8 @@ import { useState, useEffect } from "react";
 import Wallet from "./pages/doctorPage/wallet/Wallet";
 import Home from "./components/home/Home";
 import CabindEnter from "./pages/doctorPage/cabins/CabinsRoom";
+import SingleReports from "./pages/admin/singlePage/singleReports/SingleReports";
+import TableUse from "./pages/admin/singlePage/Table";
 
 
 function App() {
@@ -61,34 +63,41 @@ function App() {
       {loading ? (
         <LoadingTik />
       ) : (
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/add-doctor" element={<AddDoctors />} />
-          <Route path="/patients" element={<Patients />} />
-          <Route path="reports/" element={<HomePage />} />
-          <Route path="/admin/doctors" element={<Doctor />} />
-          <Route path="/setting" element={<RegisterOwner />} />
-          <Route path="/cabins" element={<Cabins />} />
-          <Route path="/receptionHome" element={<Register />} />
-          {/* <Route path="/doctor/profilr/:id" element={<Profile />} /> */}
-          <Route path="/appointments" element={<Appointments />} />
-          <Route path="/kashelyok" element={<Wallet />} />
-          <Route path="/viewRoom" element={<Rooms />} />
-          <Route path="/support" element={<Support />} />
-          <Route path="/doctor-patients" element={<CabindEnter />} />
-          <Route
-            path="/doctor/patients_history"
-            element={<PatientsHistory />}
-          />
-          <Route path="/appointments/:id" element={<AppointmentSinglePage />} />
-          <Route path="/AppointmentSinglePage/:id" element={<RecordList />} />
-          <Route path="/doctorSinglePage/:_id" element={<SinglePage />} />
-          <Route path="/doctorSinglePageAdmin/:_id" element={<GetPatients />} />
+        <>
 
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
+          <TableUse />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/add-doctor" element={<AddDoctors />} />
+            <Route path="/patients" element={<Patients />} />
+            <Route path="reports/" element={<HomePage />} />
+            <Route path="/admin/doctors" element={<Doctor />} />
+            <Route path="/setting" element={<RegisterOwner />} />
+            <Route path="/cabins" element={<Cabins />} />
+            <Route path="/receptionHome" element={<Register />} />
+            {/* <Route path="/doctor/profilr/:id" element={<Profile />} /> */}
+            <Route path="/appointments" element={<Appointments />} />
+            <Route path="/kashelyok" element={<Wallet />} />
+            <Route path="/viewRoom" element={<Rooms />} />
+            <Route path="/support" element={<Support />} />
+            <Route path="/doctor-patients" element={<CabindEnter />} />
+            <Route
+              path="/doctor/patients_history"
+              element={<PatientsHistory />}
+            />
+            <Route path="/appointments/:id" element={<AppointmentSinglePage />} />
+            <Route path="/AppointmentSinglePage/:id" element={<RecordList />} />
+            <Route path="/doctorSinglePage/:_id" element={<SinglePage />} />
+            <Route path="/doctorSinglePageAdmin/:_id" element={<GetPatients />} />
+
+            <Route path="*" element={<PageNotFound />} />
+
+          </Routes>
+        </>
       )}
+
+
     </div>
   );
 }

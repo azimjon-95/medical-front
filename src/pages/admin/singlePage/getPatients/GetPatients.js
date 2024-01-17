@@ -14,7 +14,6 @@ import { useGetAllUsersQuery } from "../../../../redux/clientApi";
 import imgNoData from "../../../../assets/nodata.png";
 import { PhoneNumberFormat } from "../../../../hook/NumberFormat";
 
-
 const GetPatients = () => {
   const componentRef = useRef();
   const { _id } = useParams();
