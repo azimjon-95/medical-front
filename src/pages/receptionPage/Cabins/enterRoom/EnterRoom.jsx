@@ -69,7 +69,6 @@ function EnterRoom({ none, setOpenRoom, room }) {
   // }
 
   // --------------------------------
-
   const { confirm } = Modal;
   const OutInRoom = (clientID, roomID, userRoomPay) => {
     confirm({
@@ -81,10 +80,12 @@ function EnterRoom({ none, setOpenRoom, room }) {
       onOk() {
         setList(true);
         deleteUserFromRoom({ clientID, roomID, body: userRoomPay })
-          .then(
-            (res) => res.data.success && message.success(res.data.message),
-            setOpenRoom(false)
-          )
+          .then((res) => {
+            if (res.data.success) {
+              message.success(res.data.message);
+              // setOpenRoom(false);
+            }
+          })
           .catch((err) => console.log(err));
       },
       onCancel() {
@@ -125,17 +126,20 @@ function EnterRoom({ none, setOpenRoom, room }) {
               </thead>
               <tbody>
                 {room.capacity?.map(
-                  ({
-                    _id,
-                    firstname,
-                    lastname,
-                    phone,
-                    idNumber,
-                    year,
-                    doctorFirstName,
-                    dayOfTreatment,
-                  }, inx) => (
-                    <tr key={inx}>
+                  (
+                    {
+                      _id,
+                      firstname,
+                      lastname,
+                      phone,
+                      idNumber,
+                      year,
+                      doctorFirstName,
+                      dayOfTreatment,
+                    },
+                    inx
+                  ) => (
+                    <tr key={_id}>
                       <td data-label="Bemor">
                         {firstname} {lastname}
                       </td>
