@@ -8,7 +8,7 @@ import Doctor from "./pages/receptionPage/doctor/Doctor";
 import AddDoctors from "./pages/admin/addDoctors/AddDoctors";
 import RegisterOwner from "./pages/admin/registerOwner/AddOwner";
 import Rooms from "./pages/admin/rooms/Rooms";
-import Support from "./pages/admin/support/Support"
+import Support from "./pages/admin/support/Support";
 import Cabins from "./pages/receptionPage/Cabins/Cabins";
 import Register from "./pages/receptionPage/register/Registers";
 import Appointments from "./pages/doctorPage/appointments/Appointments";
@@ -26,7 +26,6 @@ import CabindEnter from "./pages/doctorPage/cabins/CabinsRoom";
 import SingleReports from "./pages/admin/singlePage/singleReports/SingleReports";
 import TableUse from "./pages/admin/singlePage/Table";
 
-
 function App() {
   const { loading } = useSelector((state) => state.alerts);
   const [isOnline, setIsOnline] = useState("");
@@ -35,17 +34,15 @@ function App() {
 
   setTimeout(() => setIsOnline(""), [5000]);
 
-
-
   // ----The language will be added in the second update-------
-  const startLanguage = localStorage.getItem('language');
-  const [language, setLanguage] = useState(startLanguage || 'uz');
+  const startLanguage = localStorage.getItem("language");
+  const [language, setLanguage] = useState(startLanguage || "uz");
   const handleLanguageChange = (newLanguage) => {
-    setLanguage(newLanguage)
-  }
+    setLanguage(newLanguage);
+  };
   useEffect(() => {
-    localStorage.setItem('language', language)
-  }, [language])
+    localStorage.setItem("language", language);
+  }, [language]);
   // ------------------------------------------
 
   return (
@@ -63,7 +60,6 @@ function App() {
       {loading ? (
         <LoadingTik />
       ) : (
-
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
@@ -84,17 +80,20 @@ function App() {
               path="/doctor/patients_history"
               element={<PatientsHistory />}
             />
-            <Route path="/appointments/:id" element={<AppointmentSinglePage />} />
+            <Route
+              path="/appointments/:id"
+              element={<AppointmentSinglePage />}
+            />
             <Route path="/AppointmentSinglePage/:id" element={<RecordList />} />
             <Route path="/doctorSinglePage/:_id" element={<SinglePage />} />
-            <Route path="/doctorSinglePageAdmin/:_id" element={<GetPatients />} />
+            <Route
+              path="/doctorSinglePageAdmin/:_id"
+              element={<GetPatients />}
+            />
 
             <Route path="*" element={<PageNotFound />} />
-
           </Routes>
       )}
-
-
     </div>
   );
 }
