@@ -97,3 +97,23 @@
   color: grey;
   line-height: 15px;
 }
+
+
+.item-details {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+.item-details > div{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.item-details i {
+  text-align: center;
+  line-height: 20px;
+  font-size: 13px;
+  color: #cacaca;
+}

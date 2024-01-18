@@ -20,6 +20,8 @@ import { Button } from "antd";
 import ReactToPrint from "react-to-print";
 import { PiPrinterFill } from "react-icons/pi";
 import { setInfo } from "../../../redux/recordList/recordList";
+import RecordList from "../../../components/checkLists/patientRecordList/RecordList";
+
 
 function AppointmentSinglePage() {
   const [updateClient] = useUpdateClientMutation();
@@ -39,6 +41,8 @@ function AppointmentSinglePage() {
 
   let { data: singleUser } = useGetSingleUserQuery(id);
   let user = singleUser?.data;
+  let user1 = user?.stories?.filter((i) => i?.view === true);
+  console.log(user1);
 
   function updateUserInfo(e) {
     e.preventDefault();
@@ -91,7 +95,6 @@ function AppointmentSinglePage() {
 
   const handleToggleCollapse = (itemId) => {
     const isCollapsed = collapsedItems.includes(itemId);
-
     if (isCollapsed) {
       setCollapsedItems(collapsedItems.filter((id) => id !== itemId));
     } else {
@@ -139,8 +142,8 @@ function AppointmentSinglePage() {
             <div className="box-bmi_Sing">
               <b>Analiz</b>
               {user?.stories[0].blood_analysis ||
-              user?.stories[0].urgent ||
-              user?.stories[0].biochemical_analysis ? (
+                user?.stories[0].urgent ||
+                user?.stories[0].biochemical_analysis ? (
                 <>
                   {user?.stories[0].blood_analysis ? (
                     <span>
@@ -232,9 +235,8 @@ function AppointmentSinglePage() {
             {user?.stories.map((item) => (
               <div
                 key={item._id}
-                className={`map-item ${
-                  collapsedItems.includes(item._id) ? "collapsed" : ""
-                }`}
+                className={`map-item ${collapsedItems.includes(item._id) ? "collapsed" : ""
+                  }`}
               >
                 <div
                   className="collapsedItems"
@@ -254,7 +256,19 @@ function AppointmentSinglePage() {
                 </div>
                 {collapsedItems.includes(item._id) && (
                   <>
-                    <div className="item-details">
+                    <div myAttribute={true} className="item-details">
+                      <div div="true">
+                        <i>kasallik nomi</i>
+                        {item?.retsept?.sickname}
+                      </div>
+                      <div>
+                        <i>Status</i>
+                        {item?.retsept?.patientStatus}
+                      </div>
+                      <div>
+                        <i>Dorilar ro'yxati</i>
+                        {item?.retsept?.retseptList}
+                      </div>
                       <Button>
                         <ReactToPrint
                           trigger={() => (
@@ -270,8 +284,8 @@ function AppointmentSinglePage() {
                                   firstname: user?.firstname,
                                   lastname: user?.lastname,
                                   phone: user?.phone,
-                                  retsept: item?.retsept,
-                                  sickname: item?.sickname,
+                                  retsept: item?.retsept?.retseptList,
+                                  sickname: item?.retsept?.sickname,
                                   year: user?.year,
                                   doctorPhone: item?.doctorPhone,
                                 })
@@ -293,23 +307,9 @@ function AppointmentSinglePage() {
                       </Button>
                     </div>
 
-                    {/* <div style={{ display: "none" }}>
-                      <RecordList obj={{
-                        id: _id,
-                        choseDoctor: item?.choseDoctor,
-                        day: item?.day,
-                        address: user?.address,
-                        doctorFirstName: item?.doctorFirstName,
-                        doctorLastName: item?.doctorLastName,
-                        firstname: user?.firstname,
-                        lastname: user?.lastname,
-                        phone: user?.phone,
-                        retsept: item?.retsept,
-                        sickname: item?.sickname,
-                        year: user?.year,
-                        doctorPhone: item?.doctorPhone,
-                      }} componentRef={componentRef} />
-                    </div> */}
+                    <div style={{ display: "none" }}>
+                      <RecordList componentRef={componentRef} />
+                    </div>
                   </>
                 )}
               </div>

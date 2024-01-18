@@ -171,24 +171,17 @@ import { TbUsersGroup } from "react-icons/tb";
 import { useGetAllRoomsQuery } from "../../../redux/roomApi";
 import CountUp from 'react-countup';
 import { Col, Row, Statistic } from 'antd';
-import { useGetAllUsersQuery } from "../../../redux/clientApi";
+import { useGetBalanceQuery } from "../../../redux/balans";
 
 const Balans = () => {
-  let page = 0;
-  let { data: data } = useGetAllUsersQuery({
-    size: 30,
-    page: page + 1,
-  });
 
   let { data: rooms } = useGetAllRoomsQuery();
-
+  let { data: balans } = useGetBalanceQuery();
+  let data = balans?.innerData || [];
   const [selectedDate, setSelectedDate] = useState(moment().startOf("day"));
+  const [count, setCount] = useState(0);
 
-  let time = new Date();
-  let dateChane =
-    time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
   let change = selectedDate.format("DD.MM.YYYY");
-
   const back = () => {
     setSelectedDate(selectedDate.clone().subtract(1, "day"));
   };
@@ -196,43 +189,23 @@ const Balans = () => {
     setSelectedDate(selectedDate.clone().add(1, "day"));
   };
 
-  // Calculation of payments from hospitals and patients
-  let base = data?.data?.filter(
-    (user) => user.day === dateChane && user.view && user.payState
-  );
-  let result = base?.reduce((a, b) => a + b.paySumm, 0);
-
-  // let baseRoom = data?.dataTrue?.filter(
-  //   (i) => i.outDay === change && i.view === true
-  // );
-  let baseRoom = data?.data?.filter(
-    (i) => i.outDay === change && i.view === true
-  );
-
-  let TreatmentsFees = baseRoom?.reduce(function (prev, cur) {
-    return prev + cur.room.payForRoom;
-  }, 0);
-
-  let total = result + TreatmentsFees;
-
-  // Number of people treated in hospitals
   let NumberOfTreatments = rooms?.innerData?.reduce(function (prev, cur) {
     return prev + cur.capacity?.length;
   }, 0);
   // ------------------------------------------------------------
   const formatter = (value) => <CountUp end={value} separator="," />;
-
+console.log(NumberOfTreatments);
   return (
     <div className="grid-one-item grid-common grid-c1">
-      <div className="grid-c1-content">
+      {data?.map((value, inx) => <div key={inx} className="grid-c1-content">
         <div className="balansBox">
           <p>Balans</p>
           <div className="bedrom">
-            {base?.length === 0 ? (
+            {value?.totalNumPatients === 0 ? (
               ""
             ) : (
               <div>
-                <TbUsersGroup /> - {base?.length}
+                <TbUsersGroup /> - {value?.totalNumPatients}
               </div>
             )}
             {NumberOfTreatments === 0 ? (
@@ -247,8 +220,9 @@ const Balans = () => {
 
           </div>
         </div>
+
         <div className="lg-value1">
-          {total === 0 ? (
+          {value?.totalSumm === 0 ? (
             <img src={NoMony} alt="" />
           ) : (
             <div className="payCaounting">
@@ -258,7 +232,7 @@ const Balans = () => {
               <div className="">
                 <Row gutter={16}>
                   <Col span={12}>
-                    <Statistic className="lg-value1" title="Active Users" value={total} formatter={formatter} />
+                    <Statistic className="lg-value1" value={value?.totalSumm} formatter={formatter} />
                   </Col>
                 </Row>
               </div>
@@ -266,41 +240,41 @@ const Balans = () => {
           )}
         </div>
         <div className="lg-value1">
-          {result === 0 ? (
+          {value?.patientsAmountOfMoney === 0 ? (
             <img src={NoMony} alt="" />
           ) : (
             <div className="payCaounting">
               <div>
                 <GiMoneyStack /> Bemorlar:
               </div>
-              <div className="">
-                <Row gutter={16}>
-                  <Col span={12}>
-                    <Statistic className="lg-value1" title="Active Users" value={result} formatter={formatter} />
-                  </Col>
-                </Row>
-              </div>
+
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Statistic className="lg-value1" value={value?.patientsAmountOfMoney} formatter={formatter} />so'm
+                </Col>
+              </Row>
+
             </div>
           )}
         </div>{" "}
         <div className="lg-value1">
-          {TreatmentsFees === 0 ? (
+          {value?.roomsAmountOfMoney === 0 ? (
             <img src={NoMony} alt="" />
           ) : (
             <div className="payCaounting">
               <div>
                 <GiMoneyStack /> Xonalar:
               </div>
-              <div className="">
-                <Row gutter={16}>
-                  <Col span={12}>
-                    <Statistic className="lg-value1" title="Active Users" value={TreatmentsFees} formatter={formatter} />
-                  </Col>
-                </Row>
-              </div>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Statistic className="lg-value1" value={value?.roomsAmountOfMoney} formatter={formatter} />
+                </Col>
+              </Row>
+
             </div>
           )}
         </div>
+
         <div className="card-logo-wrapper">
           <div>
             <div className="changeDate">
@@ -308,11 +282,11 @@ const Balans = () => {
                 {selectedDate.format("DD.MM.YYYY")}
               </p>
               <span>
-                <button onClick={back}>
+                <button onClick={() => setCount(count + 1)}>
                   <GrBottomCorner className="BottomCorner-1" />
                 </button>
-                {change <= dateChane ? (
-                  <button onClick={forward}>
+                {count == 0 ? (
+                  <button onClick={() => setCount(count - 1)}>
                     <GrBottomCorner className="BottomCorner-2" />
                   </button>
                 ) : (
@@ -327,6 +301,7 @@ const Balans = () => {
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 };

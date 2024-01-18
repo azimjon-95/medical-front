@@ -18,6 +18,7 @@ function Appointments() {
 
   let { data: allClients, isSuccess } = useGetAllUsersQuery();
   let data = allClients?.data;
+  const [query, setQuery] = useState("");
 
 
   let category = localStorage.getItem("category");
@@ -30,16 +31,12 @@ function Appointments() {
   localStorage.setItem("ClientLength", clients?.length);
 
 
-  // let clientLength = data?.filter(
-  //   (client) => client?.stories?.filter((i) => i.choseDoctor?.toLowerCase() === category?.toLowerCase()));
   let clientLength = data?.filter(
-    (el) =>
-      el?.stories[0].choseDoctor === category
-  );
+    (client) => client?.stories?.filter((i) => i.choseDoctor?.toLowerCase() === category?.toLowerCase()));
 
 
-  console.log(clientLength);
-  console.log(category);
+  console.log(clientLength?.length);
+
 
 
   const Bmi = (weight, height) => {
@@ -49,6 +46,21 @@ function Appointments() {
       return bmiValue;
     }
   }
+
+
+
+
+  const [collapsedItems, setCollapsedItems] = useState([]);
+  const handleToggleCollapse = (itemId) => {
+    const isCollapsed = collapsedItems.includes(itemId);
+    if (isCollapsed) {
+      setCollapsedItems(collapsedItems.filter((id) => id !== itemId));
+    } else {
+      setCollapsedItems([...collapsedItems, itemId]);
+    }
+  };
+
+
 
   return (
     <Layout>
@@ -138,8 +150,8 @@ function Appointments() {
                         }
 
                       </td>
-                      {/* <td>{clientLength?.length + 1}</td> */}
-                      <td>{clientLength?.find(i => i.idNumber === "aa4254040")?.stories?.reduce((a, b) => a + b.view ? b.view : 0, 0)}</td>
+
+                      <td>{clientLength?.find(i => i.idNumber === item?.idNumber)?.stories?.reduce((a, b) => a + b.view ? b.view : 0, 0)}</td>
                       <td>
                         <Link to={`/appointments/${item._id}`}>
                           <button button="true" className="btn btn-secondary">
@@ -155,6 +167,10 @@ function Appointments() {
           </section>
         </main>
       )}
+
+
+
+
     </Layout>
   );
 }

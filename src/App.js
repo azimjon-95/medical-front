@@ -63,9 +63,7 @@ function App() {
       {loading ? (
         <LoadingTik />
       ) : (
-        <>
 
-          <TableUse />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
@@ -94,7 +92,6 @@ function App() {
             <Route path="*" element={<PageNotFound />} />
 
           </Routes>
-        </>
       )}
 
 

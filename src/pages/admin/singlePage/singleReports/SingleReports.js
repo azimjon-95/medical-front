@@ -18,9 +18,9 @@ function SingleReports() {
   let time = new Date();
   let day =
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
-  let filterDoctors = data?.filter((i) => i.specialization === _id && i?.stories[0]?.day === day);
+  let filterDoctors = data?.filter((i) => i?.specialization === _id);
 
-
+  console.log(data);
   let dayMonth = time.toLocaleString("default", { month: "long" });
 
   const CountMoney = (money) => {
@@ -32,7 +32,7 @@ function SingleReports() {
     const getUsers = users?.stories?.filter((i) => i?.month === dayMonth)
     return getUsers?.reduce((a, b) => a + b?.totalClient, 0)
   }
-
+  console.log(filterDoctors);
   return (
     <div className="Search-Box">
       {
@@ -67,7 +67,7 @@ function SingleReports() {
 
                 <div className="imgBoxProfile">
                   {
-                    value.lastName?.endsWith("a") ?
+                    value?.doctorFullName?.endsWith("a") ?
                       <div className="user-profile">
                         <img src={img2} alt="" />
                       </div>
