@@ -22,7 +22,7 @@ export const onerMenu = [
         dsb: "desabled"
     },
     {
-        name: "Lecheniya",
+        name: "Davolanish",
         path: "/viewRoom",
         icon: "fa fa-home"
     },

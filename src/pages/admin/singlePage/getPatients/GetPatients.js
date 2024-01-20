@@ -32,7 +32,8 @@ const GetPatients = () => {
   let client = allClient?.data || [];
 
   // let clients = client?.map(i => i?.stories?.filter((i) => i?.choseDoctor === _id && i?.view))?.filter((i) => i?.length > 0)
-  let clients = client?.map(i => i?.stories?.filter((i) => i?.choseDoctor === _id))?.filter((i) => i?.length > 0)
+  let clients = client?.map(i =>
+    i?.stories?.filter((i) => i?.choseDoctor === _id))?.filter((i) => i?.length > 0)
 
   let arr = []
   for (let i = 0; i < clients?.length; i++) {
@@ -102,7 +103,7 @@ const GetPatients = () => {
                 <p>{collapsedItems.includes(item._id) ? '🔽' : '▶️'}  <span>{item?.lastname} {item?.firstname}</span>{" "}</p>
                 <p>{item?.address}</p>
                 <p>+998 {PhoneNumberFormat(item?.phone)}</p>
-                <p>{item?.stories.view  !== true ? item?.stories?.length : ""}</p>
+                <p>{item?.stories.view !== true ? item?.stories?.length : ""}</p>
 
               </div>
               {collapsedItems.includes(item._id) && (

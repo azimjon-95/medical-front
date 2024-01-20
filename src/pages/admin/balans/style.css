@@ -19,12 +19,14 @@
   flex: 1;
   border-radius: 10px;
   padding: 16px;
+  min-height: 250px;
+  position: relative;
 }
 
 .grid-c1-content .lg-value1 {
   margin-top: 5px;
   margin-bottom: 8px;
-  font-size: 21px;
+  font-size: 18px;
   color: #ffffff;
 
   width: 100%;
@@ -32,12 +34,25 @@
 
 .grid-c1-content .lg-value1 .payCaounting {
   width: 280px;
-  height: 35.7px;
+  height: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+.lg-bl {
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 280px;
+  border-top: .3px solid #fff;
+}
+.lg-Bal{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 .lg-value1>img {
   width: 8%;
   height: 100%;
@@ -58,10 +73,12 @@
 }
 
 .grid-c1 .card-logo-wrapper {
+  width: 93%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 13px;
+  position: absolute;
+  bottom: 10px;
 }
 
 .grid-c1 .card-logo {
@@ -161,6 +178,30 @@
   font-size: 18px;
 }
 
+.lg-value1 {
+  font-size: 16px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.balansBox {
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.balansTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 30px;
+  width: 100%;
+}
+
+.balansTitle>p {
+  margin-top: 15px;
+}
 
 @media screen and (max-width: 768px) {
   .grid-c1 {
