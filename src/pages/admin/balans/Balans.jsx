@@ -9,8 +9,8 @@ import { GiMoneyStack } from "react-icons/gi";
 import { MdOutlineBedroomChild } from "react-icons/md";
 import { TbUsersGroup } from "react-icons/tb";
 import { useGetAllRoomsQuery } from "../../../redux/roomApi";
-import CountUp from 'react-countup';
-import { Col, Row, Statistic } from 'antd';
+import CountUp from "react-countup";
+import { Col, Row, Statistic } from "antd";
 import { useGetBalanceQuery } from "../../../redux/balans";
 
 const Balans = () => {
@@ -169,10 +169,6 @@ const Balans = () => {
               </span>
             </div>
           </div>
-          <div className="card-logo">
-            <div className="logo-shape1"></div>
-            <div className="logo-shape2"></div>
-          </div>
         </div>
       </div>
 
@@ -181,4 +177,3 @@ const Balans = () => {
 };
 
 export default Balans;
-

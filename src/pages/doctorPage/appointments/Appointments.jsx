@@ -15,29 +15,32 @@ import { MdOutlineBiotech } from "react-icons/md";
 import { FaCheck } from "react-icons/fa6";
 
 function Appointments() {
-
   let { data: allClients, isSuccess } = useGetAllUsersQuery();
-  let data = allClients?.data;
+  let data = allClients?.data || [];
   const [query, setQuery] = useState("");
 
-
   let category = localStorage.getItem("category");
+
+  // tashriflar soni
+  let visited = [];
+  for (const item of data) {
+    item.stories.forEach((s) => s.choseDoctor === category && visited.push(s));
+  }
+
   let clients = data?.filter(
     (client) =>
-      client?.stories[0].choseDoctor?.toLowerCase() === category?.toLowerCase() &&
+      client?.stories[0].choseDoctor?.toLowerCase() ===
+        category?.toLowerCase() &&
       client?.stories[0].payState &&
       client?.stories[0].view !== true
   );
   localStorage.setItem("ClientLength", clients?.length);
 
-
-  let clientLength = data?.filter(
-    (client) => client?.stories?.filter((i) => i.choseDoctor?.toLowerCase() === category?.toLowerCase()));
-
-
-  console.log(clientLength?.length);
-
-
+  let clientLength = data?.filter((client) =>
+    client?.stories?.filter(
+      (i) => i.choseDoctor?.toLowerCase() === category?.toLowerCase()
+    )
+  );
 
   const Bmi = (weight, height) => {
     if (weight && height) {
@@ -45,10 +48,7 @@ function Appointments() {
       const bmiValue = (weight / (heightInMeters * heightInMeters)).toFixed(2);
       return bmiValue;
     }
-  }
-
-
-
+  };
 
   const [collapsedItems, setCollapsedItems] = useState([]);
   const handleToggleCollapse = (itemId) => {
@@ -59,8 +59,6 @@ function Appointments() {
       setCollapsedItems([...collapsedItems, itemId]);
     }
   };
-
-
 
   return (
     <Layout>
@@ -80,10 +78,10 @@ function Appointments() {
                   <th>№</th>
                   <th>Bemor</th>
                   <th>Tel No</th>
-                  <th>Analiz</th>
+                  {category !== "Analiz" && <th>Analiz</th>}
                   <th>diagnostika</th>
                   <th>Tana massa indeksi</th>
-                  <th>Tashrifi</th>
+                  {/* <th>Tashrifi</th> */}
                   <th>Ko'rish</th>
                 </tr>
               </thead>
@@ -97,61 +95,103 @@ function Appointments() {
                         {item.lastname} {item.firstname}
                       </td>
                       <td>+998{PhoneNumberFormat(item.phone)}</td>
+                      {category !== "Analiz" && (
+                        <td>
+                          <div className="box-bmi">
+                            {item?.stories[0].blood_analysis ||
+                            item?.stories[0].urgent ||
+                            item?.stories[0].biochemical_analysis ? (
+                              <>
+                                {item?.stories[0].blood_analysis ? (
+                                  <span>
+                                    <div>
+                                      <MdOutlineBloodtype /> Qon tahlili{" "}
+                                      <FaCheck className="checkMark" />
+                                    </div>
+                                  </span>
+                                ) : (
+                                  ""
+                                )}
+                                {item?.stories[0].urgent ? (
+                                  <span>
+                                    <div>
+                                      <BiAnalyse /> Peshob tahlili{" "}
+                                      <FaCheck className="checkMark" />
+                                    </div>
+                                  </span>
+                                ) : (
+                                  ""
+                                )}
+                                {item?.stories[0].biochemical_analysis ? (
+                                  <span>
+                                    <div>
+                                      <MdOutlineBiotech /> Bioximik tahlili{" "}
+                                      <FaCheck className="checkMark" />
+                                    </div>
+                                  </span>
+                                ) : (
+                                  ""
+                                )}
+                              </>
+                            ) : (
+                              "Topshirmagan"
+                            )}
+                          </div>
+                        </td>
+                      )}
                       <td>
                         <div className="box-bmi">
-                          {item?.stories[0].blood_analysis || item?.stories[0].urgent || item?.stories[0].biochemical_analysis ?
-                            <>
-                              {item?.stories[0].blood_analysis ?
-                                <span>
-                                  <div><MdOutlineBloodtype /> Qon tahlili <FaCheck className="checkMark" /></div>
-                                </span>
-                                : ""
-                              }
-                              {item?.stories[0].urgent ?
-                                <span>
-                                  <div><BiAnalyse /> Peshob tahlili <FaCheck className="checkMark" /></div>
-                                </span>
-                                : ""
-                              }
-                              {item?.stories[0].biochemical_analysis ?
-                                <span>
-                                  <div><MdOutlineBiotech /> Bioximik tahlili <FaCheck className="checkMark" /></div>
-                                </span>
-                                : ""
-                              }
-                            </>
-                            : "Topshirmagan"
-                          }
-                        </div>
-                      </td>
-                      <td>
-                        <div className="box-bmi">
-                          {item?.stories[0].diagnostics ?
+                          {item?.stories[0].diagnostics ? (
                             <span>
-                              <div><BsDiagram3 className="Diagram" /> {item?.stories[0].diagnostics}</div>
+                              <div>
+                                <BsDiagram3 className="Diagram" />{" "}
+                                {item?.stories[0].diagnostics}
+                              </div>
                             </span>
-                            : "O'tmagan"
-                          }
+                          ) : (
+                            "O'tmagan"
+                          )}
                         </div>
                       </td>
                       <td>
-                        {item?.stories[0].weight && item?.stories[0].height ?
+                        {item?.stories[0].weight && item?.stories[0].height ? (
                           <div className="box-bmi">
                             <span>
-                              <div><GiWeightScale /> {item?.stories[0].weight} kg</div>
-                              <div><GiBodyHeight /> {item?.stories[0].height} m</div>
+                              <div>
+                                <GiWeightScale /> {item?.stories[0].weight} kg
+                              </div>
+                              <div>
+                                <GiBodyHeight /> {item?.stories[0].height} m
+                              </div>
                             </span>
                             <span>
-                              <div><LiaTemperatureHighSolid /> {item?.stories[0].temperature}</div>
-                              <div> BMI {Bmi(+item?.stories[0].weight, +item?.stories[0].height)}</div>
+                              <div>
+                                <LiaTemperatureHighSolid />{" "}
+                                {item?.stories[0].temperature}
+                              </div>
+                              <div>
+                                {" "}
+                                BMI{" "}
+                                {Bmi(
+                                  +item?.stories[0].weight,
+                                  +item?.stories[0].height
+                                )}
+                              </div>
                             </span>
-
-                          </div> : "Topshirmagan"
-                        }
-
+                          </div>
+                        ) : (
+                          "Topshirmagan"
+                        )}
                       </td>
 
-                      <td>{clientLength?.find(i => i.idNumber === item?.idNumber)?.stories?.reduce((a, b) => a + b.view ? b.view : 0, 0)}</td>
+                      {/* <td>
+                         {clientLength
+                          ?.find((i) => i.idNumber === item?.idNumber)
+                          ?.stories?.reduce(
+                            (a, b) => (a + b.view ? b.view : 0),
+                            0
+                          )}
+                      </td> */}
                       <td>
                         <Link to={`/appointments/${item._id}`}>
                           <button button="true" className="btn btn-secondary">
@@ -167,14 +207,8 @@ function Appointments() {
           </section>
         </main>
       )}
-
-
-
-
     </Layout>
   );
 }
 
 export default Appointments;
-
-
