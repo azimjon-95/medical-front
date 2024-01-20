@@ -169,12 +169,11 @@ import { GiMoneyStack } from "react-icons/gi";
 import { MdOutlineBedroomChild } from "react-icons/md";
 import { TbUsersGroup } from "react-icons/tb";
 import { useGetAllRoomsQuery } from "../../../redux/roomApi";
-import CountUp from 'react-countup';
-import { Col, Row, Statistic } from 'antd';
+import CountUp from "react-countup";
+import { Col, Row, Statistic } from "antd";
 import { useGetBalanceQuery } from "../../../redux/balans";
 
 const Balans = () => {
-
   let { data: rooms } = useGetAllRoomsQuery();
   let { data: balans } = useGetBalanceQuery();
   let data = balans?.innerData || [];
@@ -194,119 +193,122 @@ const Balans = () => {
   }, 0);
   // ------------------------------------------------------------
   const formatter = (value) => <CountUp end={value} separator="," />;
-console.log(NumberOfTreatments);
   return (
     <div className="grid-one-item grid-common grid-c1">
-      {data?.map((value, inx) => <div key={inx} className="grid-c1-content">
-        <div className="balansBox">
-          <p>Balans</p>
-          <div className="bedrom">
-            {value?.totalNumPatients === 0 ? (
-              ""
-            ) : (
-              <div>
-                <TbUsersGroup /> - {value?.totalNumPatients}
-              </div>
-            )}
-            {NumberOfTreatments === 0 ? (
-              ""
-            ) : (
-              <div>
-                <MdOutlineBedroomChild /> - {NumberOfTreatments}{" "}
-              </div>
-
-            )}
-
-
+      {data?.map((value, inx) => (
+        <div key={inx} className="grid-c1-content">
+          <div className="balansBox">
+            <p>Balans</p>
+            <div className="bedrom">
+              {value?.totalNumPatients === 0 ? (
+                ""
+              ) : (
+                <div>
+                  <TbUsersGroup /> - {value?.totalNumPatients}
+                </div>
+              )}
+              {NumberOfTreatments === 0 ? (
+                ""
+              ) : (
+                <div>
+                  <MdOutlineBedroomChild /> - {NumberOfTreatments}{" "}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-
-        <div className="lg-value1">
-          {value?.totalSumm === 0 ? (
-            <img src={NoMony} alt="" />
-          ) : (
-            <div className="payCaounting">
-              <div>
-                <GiMoneyStack /> Jami:
+          <div className="lg-value1">
+            {value?.totalSumm === 0 ? (
+              <img src={NoMony} alt="" />
+            ) : (
+              <div className="payCaounting">
+                <div>
+                  <GiMoneyStack /> Jami:
+                </div>
+                <div className="">
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <Statistic
+                        className="lg-value1"
+                        value={value?.totalSumm}
+                        formatter={formatter}
+                      />
+                    </Col>
+                  </Row>
+                </div>
               </div>
-              <div className="">
+            )}
+          </div>
+          <div className="lg-value1">
+            {value?.patientsAmountOfMoney === 0 ? (
+              <img src={NoMony} alt="" />
+            ) : (
+              <div className="payCaounting">
+                <div>
+                  <GiMoneyStack /> Bemorlar:
+                </div>
+
                 <Row gutter={16}>
                   <Col span={12}>
-                    <Statistic className="lg-value1" value={value?.totalSumm} formatter={formatter} />
+                    <Statistic
+                      className="lg-value1"
+                      value={value?.patientsAmountOfMoney}
+                      formatter={formatter}
+                    />
+                    so'm
                   </Col>
                 </Row>
               </div>
-            </div>
-          )}
-        </div>
-        <div className="lg-value1">
-          {value?.patientsAmountOfMoney === 0 ? (
-            <img src={NoMony} alt="" />
-          ) : (
-            <div className="payCaounting">
-              <div>
-                <GiMoneyStack /> Bemorlar:
+            )}
+          </div>{" "}
+          <div className="lg-value1">
+            {value?.roomsAmountOfMoney === 0 ? (
+              <img src={NoMony} alt="" />
+            ) : (
+              <div className="payCaounting">
+                <div>
+                  <GiMoneyStack /> Xonalar:
+                </div>
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Statistic
+                      className="lg-value1"
+                      value={value?.roomsAmountOfMoney}
+                      formatter={formatter}
+                    />
+                  </Col>
+                </Row>
               </div>
-
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Statistic className="lg-value1" value={value?.patientsAmountOfMoney} formatter={formatter} />so'm
-                </Col>
-              </Row>
-
-            </div>
-          )}
-        </div>{" "}
-        <div className="lg-value1">
-          {value?.roomsAmountOfMoney === 0 ? (
-            <img src={NoMony} alt="" />
-          ) : (
-            <div className="payCaounting">
-              <div>
-                <GiMoneyStack /> Xonalar:
-              </div>
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Statistic className="lg-value1" value={value?.roomsAmountOfMoney} formatter={formatter} />
-                </Col>
-              </Row>
-
-            </div>
-          )}
-        </div>
-
-        <div className="card-logo-wrapper">
-          <div>
-            <div className="changeDate">
-              <p className="text text-sm text-white  text-date">
-                {selectedDate.format("DD.MM.YYYY")}
-              </p>
-              <span>
-                <button onClick={() => setCount(count + 1)}>
-                  <GrBottomCorner className="BottomCorner-1" />
-                </button>
-                {count == 0 ? (
-                  <button onClick={() => setCount(count - 1)}>
-                    <GrBottomCorner className="BottomCorner-2" />
+            )}
+          </div>
+          <div className="card-logo-wrapper">
+            <div>
+              <div className="changeDate">
+                <p className="text text-sm text-white  text-date">
+                  {selectedDate.format("DD.MM.YYYY")}
+                </p>
+                <span>
+                  <button onClick={() => setCount(count + 1)}>
+                    <GrBottomCorner className="BottomCorner-1" />
                   </button>
-                ) : (
-                  ""
-                )}
-              </span>
+                  {count == 0 ? (
+                    <button onClick={() => setCount(count - 1)}>
+                      <GrBottomCorner className="BottomCorner-2" />
+                    </button>
+                  ) : (
+                    ""
+                  )}
+                </span>
+              </div>
+            </div>
+            <div className="card-logo">
+              <div className="logo-shape1"></div>
+              <div className="logo-shape2"></div>
             </div>
           </div>
-          <div className="card-logo">
-            <div className="logo-shape1"></div>
-            <div className="logo-shape2"></div>
-          </div>
         </div>
-      </div>
-      )}
+      ))}
     </div>
   );
 };
 
 export default Balans;
-
-
-

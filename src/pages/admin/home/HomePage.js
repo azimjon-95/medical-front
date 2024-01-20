@@ -13,51 +13,41 @@ import {
 import "./App.css";
 import Balans from "../balans/Balans";
 import DoctorsSlite from "../swiper/Carousel";
-import { useGetAllDoctorsQuery } from "../../../redux/doctorApi";
 import { useGetAllUsersQuery } from "../../../redux/clientApi";
 
 const HomePage = () => {
-  let { data: allDoctor } = useGetAllDoctorsQuery();
-  let doctor = allDoctor?.data;
   let { data: allUser } = useGetAllUsersQuery();
-  let users = allUser?.data;
+  let users = allUser?.data || [];
 
-  // const findData = users.filter(i => i.choseDoctor == doctor.specialization)
   let currentMonth = new Date().getMonth() + 1;
-  let allUserForChart = users
-    ?.filter((i) => i.view)
+
+  let alluser = [];
+  for (const item of users) {
+    item.stories.forEach((i) => (i.view === true ? alluser.push(i) : i));
+  }
+
+  let allUserForChart = alluser
     ?.filter((i) => i?.day?.split(".")[1] == currentMonth)
     ?.sort((a, b) => a?.day?.split(".")[2] < b?.day?.split(".")[2]);
 
-  let week1 = allUserForChart
-    ?.filter((i) => i.day.split(".")[0] >= 1 && i.day.split(".")[0] <= 7)
-    ?.reduce((a, b) => a + b.paySumm, 0);
-  let week2 = allUserForChart
-    ?.filter((i) => i.day.split(".")[0] >= 8 && i.day.split(".")[0] <= 14)
-    ?.reduce((a, b) => a + b.paySumm, 0);
-  let week3 = allUserForChart
-    ?.filter((i) => i.day.split(".")[0] >= 15 && i.day.split(".")[0] <= 21)
-    ?.reduce((a, b) => a + b.paySumm, 0);
-  let week4 = allUserForChart
-    ?.filter((i) => i.day.split(".")[0] >= 22 && i.day.split(".")[0] <= 31)
-    ?.reduce((a, b) => a + b.paySumm, 0);
+  // pastdagi commentdagi kodlar bir oylik summa ni kodi
 
-  // let totalPriceSort = [week1, week2, week3, week4].sort()
-
-  // const monthNames = [
-  //   'Yanvar',
-  //   'Fevral',
-  //   'Mart',
-  //   'Aprel',
-  //   'May',
-  //   'Iyun',
-  //   'Iyul',
-  //   'Avgust',
-  //   'Sentabr',
-  //   'Oktabr',
-  //   'Noyabr',
-  //   'Dekabr',
-  // ];
+  let week1 = allUserForChart?.filter(
+    (i) => i.day.split(".")[0] >= 1 && i.day.split(".")[0] <= 7
+  )?.length;
+  // ?.reduce((a, b) => a + b.paySumm, 0);
+  let week2 = allUserForChart?.filter(
+    (i) => i.day.split(".")[0] >= 8 && i.day.split(".")[0] <= 14
+  )?.length;
+  // ?.reduce((a, b) => a + b.paySumm, 0);
+  let week3 = allUserForChart?.filter(
+    (i) => i.day.split(".")[0] >= 15 && i.day.split(".")[0] <= 21
+  )?.length;
+  // ?.reduce((a, b) => a + b.paySumm, 0);
+  let week4 = allUserForChart?.filter(
+    (i) => i.day.split(".")[0] >= 22 && i.day.split(".")[0] <= 31
+  )?.length;
+  // ?.reduce((a, b) => a + b.paySumm, 0);
 
   const data = [
     {
@@ -83,7 +73,7 @@ const HomePage = () => {
   return (
     <Layout>
       <div className="HomeOwner">
-        <DoctorsSlite doctor={doctor} users={users} />
+        <DoctorsSlite />
       </div>
       <div className="charts">
         <ResponsiveContainer width="100%" height="100%">

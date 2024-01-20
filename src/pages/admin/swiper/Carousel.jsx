@@ -33,7 +33,7 @@ function DoctorsSlite() {
                   {value?.doctorFullName
                     ? value?.doctorFullName?.split(" ")[0]?.toUpperCase() +
                       "." +
-                      value?.doctorFullName?.split(" ")[0][0]?.toUpperCase()
+                      value?.doctorFullName?.split(" ")[1][0]?.toUpperCase()
                     : ""}
                 </span>
                 <b>{value.specialization}</b>
