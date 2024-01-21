@@ -1,7 +1,3 @@
-
-
-
-
 import React from "react";
 import "./style.css";
 import { PhoneNumberFormat } from "../../../hook/NumberFormat";
@@ -16,7 +12,7 @@ function CabindEnter() {
 
   let clients = data?.filter(
     (i) =>
-      i?.capacity?.filter((i) => i?.stories[0]?.choseDoctor === category)
+      i?.capacity?.filter((i) => i?.stories[0]?.doctorID === category)
         .length > 0
   );
   let arr = [];

@@ -24,12 +24,12 @@ function Appointments() {
   // tashriflar soni
   let visited = [];
   for (const item of data) {
-    item.stories.forEach((s) => s.choseDoctor === category && visited.push(s));
+    item.stories.forEach((s) => s?.doctorID === category && visited.push(s));
   }
 
   let clients = data?.filter(
     (client) =>
-      client?.stories[0].choseDoctor?.toLowerCase() ===
+      client?.stories[0]?.doctorID?.toLowerCase() ===
         category?.toLowerCase() &&
       client?.stories[0].payState &&
       client?.stories[0].view !== true
@@ -38,7 +38,7 @@ function Appointments() {
 
   let clientLength = data?.filter((client) =>
     client?.stories?.filter(
-      (i) => i.choseDoctor?.toLowerCase() === category?.toLowerCase()
+      (i) => i?.doctorID?.toLowerCase() === category?.toLowerCase()
     )
   );
 

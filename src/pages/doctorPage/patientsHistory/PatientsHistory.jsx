@@ -22,7 +22,6 @@ const GetPatients = () => {
 
 
   const checkID = (id) => {
-
     dispatch(setInfo(id));
   };
 
@@ -32,17 +31,13 @@ const GetPatients = () => {
 
   let category = localStorage.getItem("category");
 
-  let clients = client?.map(i => i?.stories?.filter((i) => i?.choseDoctor === category && i?.view))?.filter((i) => i?.length > 0)
+  let clients = client?.map(i => i?.stories?.filter((i) => i?.doctorID === category && i?.view))?.filter((i) => i?.length > 0)
 
 
   let arr = [];
   for (let i = 0; i < clients?.length; i++) {
     arr.push(client[i]);
   }
-
-  let time = new Date();
-  let day =
-    time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
 
   const [collapsedItems, setCollapsedItems] = useState([]);
   const handleToggleCollapse = (itemId) => {
@@ -53,9 +48,6 @@ const GetPatients = () => {
       setCollapsedItems([...collapsedItems, itemId]);
     }
   };
-
-  console.log(arr?.filter((i) => i?.stories?.filter((i) => i?.day === day)));
-  console.log("18.1.2024", day);
 
   return (
     <Layout>

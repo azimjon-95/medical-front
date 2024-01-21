@@ -180,7 +180,7 @@ const Register = () => {
       setPhone(value);
     }
   };
-  console.log(secondary);
+
   return (
     <Layout>
       <h3 className="text-center">Bemorni ro'yhatga olish</h3>

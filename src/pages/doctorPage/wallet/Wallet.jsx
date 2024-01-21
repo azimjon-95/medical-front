@@ -14,8 +14,7 @@ function Wallet() {
   let data = allReports?.innerData || [];
 
   let time = new Date();
-  console.log(_id);
-  let filterDoctors = data?.filter((i) => i.specialization === _id);
+  let filterDoctors = data?.filter((i) => i?.idNumber === _id);
 
   let dayMonth = time.toLocaleString("en-US", { month: "long" });
 
@@ -73,7 +72,6 @@ function Wallet() {
                   <div className="upper-row">
                     <div className="card-item">
                       <span>Bugungi balans</span>
-
                       <span>
                         {" "}
                         {" " + NumberFormat(value?.stories[0]?.totalSumm)} so'm
