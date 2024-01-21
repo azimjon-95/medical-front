@@ -172,11 +172,6 @@ const Register = () => {
 
   // ------------Analises------------
 
-
-
-  const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
-  };
   return (
     <Layout>
       <h3 className="text-center">Bemorni ro'yhatga olish</h3>
@@ -283,13 +278,13 @@ const Register = () => {
               </Form.Item>
             </Col>
 
-            <Form.Item label={true ? "Ikkilamchi" : "Birlamchi"} name="analiz">
+            <Form.Item label={secondary ? "Ikkilamchi" : "Birlamchi"} name="analiz">
               <div className="doctorName">
                 <Checkbox
                   className="onChecked"
-                  onChange={onChange}
+                  onChange={(e) => setSecondary(e.target.checked)}
                 >
-                  {analysis ? "Yo'q" : "Ha"}{" "}
+                  {secondary ? "Yo'q" : "Ha"}{" "}
                 </Checkbox>
               </div>
             </Form.Item>
