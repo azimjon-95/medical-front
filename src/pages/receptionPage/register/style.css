@@ -85,6 +85,18 @@
     padding: 0 10px;
 }
 
+.PriceBox_doctor {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 30px;
+    /* border: 1px solid rgb(209, 209, 209); */
+    border-radius: 5px;
+    gap: 10px;
+    width: 32%;
+
+}
+
 .doctorName {
     display: flex;
     align-items: center;

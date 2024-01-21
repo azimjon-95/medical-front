@@ -66,13 +66,13 @@ const Register = () => {
     (i) => i.diagnostica === "diagnostica"
   );
 
+  let doctor_info = allDoctor?.find((d) => d._id === choseDoctor);
+  // setPaySum(
+    // secondary
+    //   ? doctor_info?.feesPerCunsaltation
+    //   : doctor_info?.secondPrice || 0
+  // );
   useEffect(() => {
-    let doctor_info = allDoctor?.find((d) => d._id === choseDoctor);
-    setPaySum(
-      secondary
-        ? doctor_info?.feesPerCunsaltation
-        : doctor_info?.secondPrice || 0
-    );
     setDoctorFirstName(doctor_info?.firstName);
     setDoctorLastName(doctor_info?.lastName);
     setDoctorSpecialization(doctor_info?.specialization);
@@ -120,6 +120,7 @@ const Register = () => {
         choseDoctor: doctor_price?.specialization,
         payState,
         paySumm: paySum,
+        secondary,
         doctorFirstName: doctor_price?.firstName,
         doctorLastName: doctor_price?.lastName,
         doctorPhone: doctor_price?.phone,
@@ -171,7 +172,7 @@ const Register = () => {
   };
 
   // ------------Analises------------
-
+  console.log(secondary);
   return (
     <Layout>
       <h3 className="text-center">Bemorni ro'yhatga olish</h3>
@@ -277,17 +278,19 @@ const Register = () => {
                 />
               </Form.Item>
             </Col>
+            {!doctor_info?.secondPrice ? "" :
+              <Form.Item label={secondary ? "Ikkilamchi" : "Birlamchi"} name="analiz">
+                <div className="doctorName">
+                  <Checkbox
+                    className="onChecked"
+                    onChange={(e) => setSecondary(e.target.checked)}
+                  >
+                    {secondary ? "Yo'q" : "Ha"}{" "}
+                  </Checkbox>
+                </div>
+              </Form.Item>
+            }
 
-            <Form.Item label={secondary ? "Ikkilamchi" : "Birlamchi"} name="analiz">
-              <div className="doctorName">
-                <Checkbox
-                  className="onChecked"
-                  onChange={(e) => setSecondary(e.target.checked)}
-                >
-                  {secondary ? "Yo'q" : "Ha"}{" "}
-                </Checkbox>
-              </div>
-            </Form.Item>
           </div>
           <div className="Col-Form_Box">
             <Col className="Col-Form">

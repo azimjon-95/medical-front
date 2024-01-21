@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import Layout from "../../../components/layout/Layout";
 import {
   Col,
-  Alert,
   Form,
-  Button,
   Input,
   message,
   Row,
@@ -13,7 +11,7 @@ import {
 } from "antd";
 import "./style.css";
 import imgNoData from "../../../assets/nodata.png";
-import { NumberFormat, PhoneNumberFormat } from "../../../hook/NumberFormat";
+import { PhoneNumberFormat } from "../../../hook/NumberFormat";
 import Reception from "./Reception";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import {
@@ -21,7 +19,6 @@ import {
   useCreateDoctorMutation,
   useDeleteDoctorMutation,
 } from "../../../redux/doctorApi";
-import { LuClipboardEdit } from "react-icons/lu";
 import EditDoctors from "../editDoctor/EditDoctors";
 
 const AddDoctors = () => {
@@ -44,11 +41,8 @@ const AddDoctors = () => {
   const [urgent_analysis, setUrgent] = useState("");
   const [biochemical_analysis, setBiochemical] = useState("");
   const [salary, setSalary] = useState("");
-  const [open, setOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
   const [idNumber, setIdNumber] = useState("");
-
-  const [editID, setEditID] = useState("");
+  const [secondPrice, setSecondPrice] = useState("");
 
   let { data: allDoctor } = useGetAllDoctorsQuery();
   let doctor = allDoctor?.data;
@@ -67,6 +61,7 @@ const AddDoctors = () => {
     specialization,
     experience,
     feesPerCunsaltation: +feesPerCunsaltation,
+    secondPrice: +secondPrice,
     docORrecep,
     checkList,
     diagnostica,
@@ -86,6 +81,7 @@ const AddDoctors = () => {
       .then((res) => {
         if (res?.data?.success) {
           message.success("Register Successfully!");
+          document.querySelector(".FormApply").reset();
         } else {
           message.error(res?.data?.message);
         }
@@ -335,9 +331,9 @@ const AddDoctors = () => {
               </Col>
             </Row>
             <Row className="Row">
-              <Col className="Col-Form">
+              <div className="PriceBox_doctor">
                 <Form.Item
-                  label="Konsultatsia to'lov miqdori"
+                  label="Birlamchi"
                   name="feesPerCunsaltation"
                 >
                   <Input
@@ -348,7 +344,20 @@ const AddDoctors = () => {
                     disabled={analis ? "disabled" : ""}
                   />
                 </Form.Item>
-              </Col>
+                <Form.Item
+                  label="Ikkilamchi"
+                  name="secondPrice"
+                >
+                  <Input
+                    value={secondPrice}
+                    onChange={(e) => setSecondPrice(e.target.value)}
+                    type="number"
+                    placeholder="Qabul uchun to'lov miqdori"
+                    disabled={analis ? "disabled" : ""}
+                  />
+                </Form.Item>
+
+              </div>
               <Col className="Col-Form">
                 <Form.Item
                   label="Tajriba"
@@ -529,7 +538,7 @@ const AddDoctors = () => {
           )}
         </Tabs.TabPane>
       </Tabs>
-    </Layout>
+    </Layout >
   );
 };
 
