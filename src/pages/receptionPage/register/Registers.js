@@ -67,12 +67,12 @@ const Register = () => {
   );
 
   let doctor_info = allDoctor?.find((d) => d._id === choseDoctor);
-  // setPaySum(
-    // secondary
-    //   ? doctor_info?.feesPerCunsaltation
-    //   : doctor_info?.secondPrice || 0
-  // );
   useEffect(() => {
+    setPaySum(
+      !secondary
+        ? doctor_info?.feesPerCunsaltation
+        : doctor_info?.secondPrice || 0
+    );
     setDoctorFirstName(doctor_info?.firstName);
     setDoctorLastName(doctor_info?.lastName);
     setDoctorSpecialization(doctor_info?.specialization);
@@ -193,7 +193,7 @@ const Register = () => {
             <Form.Item
               label="Ismi"
               name="firstname"
-            // rules={[{ required: true }]}
+              // rules={[{ required: true }]}
             >
               <p style={{ display: "none" }}>{firstname}</p>
               <Input
@@ -278,19 +278,30 @@ const Register = () => {
                 />
               </Form.Item>
             </Col>
-            {!doctor_info?.secondPrice ? "" :
-              <Form.Item label={secondary ? "Ikkilamchi" : "Birlamchi"} name="analiz">
+            {!doctor_info?.secondPrice ? (
+              ""
+            ) : (
+              <Form.Item
+                label={!secondary ? "Ikkilamchi" : "Birlamchi"}
+                name="analiz"
+              >
                 <div className="doctorName">
                   <Checkbox
                     className="onChecked"
-                    onChange={(e) => setSecondary(e.target.checked)}
+                    onChange={(e) => {
+                      setSecondary(e.target.checked);
+                      setPaySum(
+                        secondary
+                          ? doctor_info?.feesPerCunsaltation
+                          : doctor_info?.secondPrice || 0
+                      );
+                    }}
                   >
                     {secondary ? "Yo'q" : "Ha"}{" "}
                   </Checkbox>
                 </div>
               </Form.Item>
-            }
-
+            )}
           </div>
           <div className="Col-Form_Box">
             <Col className="Col-Form">
@@ -353,7 +364,6 @@ const Register = () => {
           <div className="Col-Form_Box">
             <Col style={{ width: "100%" }} className="Col-Form">
               <Form.Item label="Diagnostika" name="docto">
-
                 {/* ---------------------------- */}
 
                 <Select
@@ -385,9 +395,7 @@ const Register = () => {
                   <Checkbox
                     className="onChecked"
                     value={"analysis"}
-                    onChange={
-                      (e) => setAnalysis(e.target.value)
-                    }
+                    onChange={(e) => setAnalysis(e.target.value)}
                   >
                     {analysis ? "Ha" : "Yo'q"}{" "}
                   </Checkbox>
@@ -406,17 +414,17 @@ const Register = () => {
                         setBlood(e.target.checked),
                         blood_analysis
                           ? setPaySum(
-                            (p) =>
-                              p -
-                              allDoctor?.filter((i) => i.analis)[0]
-                                ?.analisisPrices?.blood_analysis
-                          )
+                              (p) =>
+                                p -
+                                allDoctor?.filter((i) => i.analis)[0]
+                                  ?.analisisPrices?.blood_analysis
+                            )
                           : setPaySum(
-                            (p) =>
-                              p +
-                              allDoctor?.filter((i) => i.analis)[0]
-                                ?.analisisPrices?.blood_analysis
-                          )
+                              (p) =>
+                                p +
+                                allDoctor?.filter((i) => i.analis)[0]
+                                  ?.analisisPrices?.blood_analysis
+                            )
                       )}
                     >
                       {blood_analysis ? "Ha" : "Yo'q"}{" "}
@@ -433,17 +441,17 @@ const Register = () => {
                         setUrgent(e.target.checked),
                         urgent_analysis
                           ? setPaySum(
-                            (p) =>
-                              p -
-                              allDoctor?.filter((i) => i.analis)[0]
-                                ?.analisisPrices?.urine_analysis
-                          )
+                              (p) =>
+                                p -
+                                allDoctor?.filter((i) => i.analis)[0]
+                                  ?.analisisPrices?.urine_analysis
+                            )
                           : setPaySum(
-                            (p) =>
-                              p +
-                              allDoctor?.filter((i) => i.analis)[0]
-                                ?.analisisPrices?.urine_analysis
-                          )
+                              (p) =>
+                                p +
+                                allDoctor?.filter((i) => i.analis)[0]
+                                  ?.analisisPrices?.urine_analysis
+                            )
                       )}
                     >
                       {urgent_analysis ? "Ha" : "Yo'q"}{" "}
@@ -460,17 +468,17 @@ const Register = () => {
                         setBiochemical(e.target.checked),
                         biochemical_analysis
                           ? setPaySum(
-                            (p) =>
-                              p -
-                              allDoctor?.filter((i) => i.analis)[0]
-                                ?.analisisPrices?.biochemical_analysis
-                          )
+                              (p) =>
+                                p -
+                                allDoctor?.filter((i) => i.analis)[0]
+                                  ?.analisisPrices?.biochemical_analysis
+                            )
                           : setPaySum(
-                            (p) =>
-                              p +
-                              allDoctor?.filter((i) => i.analis)[0]
-                                ?.analisisPrices?.biochemical_analysis
-                          )
+                              (p) =>
+                                p +
+                                allDoctor?.filter((i) => i.analis)[0]
+                                  ?.analisisPrices?.biochemical_analysis
+                            )
                       )}
                     >
                       {biochemical_analysis ? "Ha" : "Yo'q"}{" "}
@@ -750,4 +758,3 @@ const Register = () => {
 };
 
 export default Register;
-
