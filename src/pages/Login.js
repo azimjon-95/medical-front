@@ -23,7 +23,7 @@ const Login = () => {
     e.preventDefault();
     if (!login || !password)
       return message.warning(
-        "Marhamat, Foydalanuvchinomingiz va parolingizni kiriting!"
+        "Marhamat, Foydalanuvchi nomingiz va parolingizni kiriting!"
       );
     try {
       dispatch(showLoading());
