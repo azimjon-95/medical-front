@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../../../components/layout/Layout";
-import {
-  Col,
-  Form,
-  Input,
-  message,
-  Row,
-  Tabs,
-  Modal,
-} from "antd";
+import { Col, Form, Input, message, Row, Tabs, Modal } from "antd";
 import "./style.css";
 import imgNoData from "../../../assets/nodata.png";
 import { PhoneNumberFormat } from "../../../hook/NumberFormat";
@@ -76,12 +68,10 @@ const AddDoctors = () => {
   };
 
   const handleFinish = () => {
-    console.log(AllInfo);
     createDoctor(AllInfo)
       .then((res) => {
         if (res?.data?.success) {
           message.success("Register Successfully!");
-          document.querySelector(".FormApply").reset();
         } else {
           message.error(res?.data?.message);
         }
@@ -340,10 +330,7 @@ const AddDoctors = () => {
             </Row>
             <Row className="Row">
               <div className="PriceBox_doctor">
-                <Form.Item
-                  label="Birlamchi"
-                  name="feesPerCunsaltation"
-                >
+                <Form.Item label="Birlamchi" name="feesPerCunsaltation">
                   <Input
                     value={feesPerCunsaltation}
                     onChange={(e) => setFeesPerCunsaltation(e.target.value)}
@@ -352,10 +339,7 @@ const AddDoctors = () => {
                     disabled={analis ? "disabled" : ""}
                   />
                 </Form.Item>
-                <Form.Item
-                  label="Ikkilamchi"
-                  name="secondPrice"
-                >
+                <Form.Item label="Ikkilamchi" name="secondPrice">
                   <Input
                     value={secondPrice}
                     onChange={(e) => setSecondPrice(e.target.value)}
@@ -364,7 +348,6 @@ const AddDoctors = () => {
                     disabled={analis ? "disabled" : ""}
                   />
                 </Form.Item>
-
               </div>
               <Col className="Col-Form">
                 <Form.Item
@@ -495,15 +478,17 @@ const AddDoctors = () => {
         </Tabs.TabPane>
 
         <Tabs.TabPane
-          tab={`${width > 450 ? "Doktorlar" : "D"} ${filterData1?.length === 0 ? "" : `- ${filterData1?.length}`
-            }`}
+          tab={`${width > 450 ? "Doktorlar" : "D"} ${
+            filterData1?.length === 0 ? "" : `- ${filterData1?.length}`
+          }`}
           key={2}
         >
           <EditDoctors doctor={doctor} filterData1={filterData1} />
         </Tabs.TabPane>
         <Tabs.TabPane
-          tab={`${width > 450 ? "Administratorlar" : "A"}  ${filterData2?.length === 0 ? "" : `- ${filterData2?.length}`
-            }`}
+          tab={`${width > 450 ? "Administratorlar" : "A"}  ${
+            filterData2?.length === 0 ? "" : `- ${filterData2?.length}`
+          }`}
           key={3}
         >
           {filterData2 == 0 ? (
@@ -528,7 +513,9 @@ const AddDoctors = () => {
                     <td data-label="Ismi">{item?.firstName} </td>
                     <td data-label="Familiyasi">{item?.lastName}</td>
 
-                    <td data-label="Tel No">{PhoneNumberFormat(item?.phone)}</td>
+                    <td data-label="Tel No">
+                      {PhoneNumberFormat(item?.phone)}
+                    </td>
 
                     <td data-label="O'chirish">
                       <button
@@ -546,7 +533,7 @@ const AddDoctors = () => {
           )}
         </Tabs.TabPane>
       </Tabs>
-    </Layout >
+    </Layout>
   );
 };
 
