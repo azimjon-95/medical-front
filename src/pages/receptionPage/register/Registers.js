@@ -116,7 +116,7 @@ const Register = () => {
       address,
       year,
       stories: {
-        doctorIdNumber: doctor_price?.idNumber,
+        doctorID: doctor_price?.idNumber,
         choseDoctor: doctor_price?.specialization,
         payState,
         paySumm: paySum,
