@@ -45,7 +45,7 @@ const Layout = ({ children }) => {
     }
   }
 
-  // --------------------Log out--------------
+  // ----------------Log out--------------
 
   const { confirm } = Modal;
   const showDeleteConfirm = () => {
@@ -77,6 +77,7 @@ const Layout = ({ children }) => {
         <div className="SidCont">
           <div className={`Sidebar ${sideOpen ? "sideOpen" : "Sidebar"}`}>
             <div className="SidebarHeader">
+              
               <h6 className={` ${sideOpen ? "LinkNone" : "noneText"}`}>
                 MedMe
               </h6>
@@ -124,8 +125,6 @@ const Layout = ({ children }) => {
             <Link
               to="/support"
               className='supportBtn'
-
-
             ><MdOutlineContactSupport /> Qo'llab quvvatlash</Link>
           </div>
         </div>

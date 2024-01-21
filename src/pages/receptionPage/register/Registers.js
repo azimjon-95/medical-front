@@ -68,9 +68,9 @@ const Register = () => {
 
   let doctor_info = allDoctor?.find((d) => d._id === choseDoctor);
   // setPaySum(
-    // secondary
-    //   ? doctor_info?.feesPerCunsaltation
-    //   : doctor_info?.secondPrice || 0
+  // secondary
+  //   ? doctor_info?.feesPerCunsaltation
+  //   : doctor_info?.secondPrice || 0
   // );
   useEffect(() => {
     setDoctorFirstName(doctor_info?.firstName);
@@ -172,6 +172,14 @@ const Register = () => {
   };
 
   // ------------Analises------------
+
+  const handleInputPhone = (e) => {
+    const value = e.target.value;
+    const regexPattern = /^[0-9]{9}$/;
+    if (regexPattern.test(value)) {
+      setPhone(value);
+    }
+  };
   console.log(secondary);
   return (
     <Layout>
@@ -222,7 +230,7 @@ const Register = () => {
               <Input
                 maxLength={9}
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={handleInputPhone}
                 type="number"
                 placeholder="Phone number"
               />

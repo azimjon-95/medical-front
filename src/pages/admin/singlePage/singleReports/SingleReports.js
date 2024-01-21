@@ -16,12 +16,11 @@ function SingleReports() {
   let data = allReports?.innerData || [];
 
   let time = new Date();
-  let day =
-    time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
-  let filterDoctors = data?.filter((i) => i?.specialization === _id);
+
+  let filterDoctors = data?.filter((i) => i?.idNumber === _id);
 
   console.log(data);
-  let dayMonth = time.toLocaleString("en-Us", { month: "long" });
+  let dayMonth = time?.toLocaleString("en-Us", { month: "long" });
 
   const CountMoney = (money) => {
     const getMoney = money?.stories?.filter((i) => i?.month === dayMonth);
@@ -32,7 +31,7 @@ function SingleReports() {
     const getUsers = users?.stories?.filter((i) => i?.month === dayMonth);
     return getUsers?.reduce((a, b) => a + b?.totalClient, 0);
   };
-  console.log(filterDoctors);
+
   return (
     <div className="Search-Box">
       {filterDoctors?.map((value, inx) => {
@@ -106,7 +105,7 @@ function SingleReports() {
                     </div>
                   </div>
                   <div className="icon-item">
-                    <div className="icon">{CountMoney(value)} so'm</div>
+                    <div className="icon">{NumberFormat(CountMoney(value))} so'm</div>
                     <div className="icon-text">
                       <GiMoneyStack /> Bir oylik tushim
                     </div>
@@ -117,6 +116,14 @@ function SingleReports() {
                     </div>
                     <div className="icon-text">
                       <GiMoneyStack /> Qabul
+                    </div>
+                  </div>
+                  <div className="icon-item">
+                    <div className="icon">
+                      {NumberFormat(value?.secondPrice)} so'm
+                    </div>
+                    <div className="icon-text">
+                      <GiMoneyStack /> Ikkilamchi
                     </div>
                   </div>
                 </div>

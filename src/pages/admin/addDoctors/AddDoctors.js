@@ -127,7 +127,13 @@ const AddDoctors = () => {
       setIdNumber(value);
     }
   };
-
+  const handleInputPhone = (e) => {
+    const value = e.target.value;
+    const regexPattern = /^[0-9]{9}$/;
+    if (regexPattern.test(value)) {
+      setPhone(value);
+    }
+  };
   return (
     <Layout>
       <h3 className="text-center">Admin qo'shish</h3>
@@ -189,8 +195,10 @@ const AddDoctors = () => {
                   rules={[{ required: true }]}
                 >
                   <Input
+                    maxLength={9}
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    // onChange={(e) => setPhone(e.target.value)}
+                    onChange={handleInputPhone}
                     type="text"
                     placeholder="Tel: raqamingiz"
                   />

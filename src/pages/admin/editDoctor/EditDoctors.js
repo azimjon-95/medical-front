@@ -69,6 +69,7 @@ const EditDoctors = ({ doctor, filterData1 }) => {
                             <th>Kasbi</th>
                             <th>Tel raqam</th>
                             <th>Qabuli</th>
+                            <th>Ikkilamchi qabul</th>
                             <th>Oylik</th>
                             <th>Taxrirlash</th>
                             <th>O'chirish</th>
@@ -92,14 +93,23 @@ const EditDoctors = ({ doctor, filterData1 }) => {
                                                     <div>Peshob analizi:</div>  {NumberFormat(item?.analisisPrices.urine_analysis)} So'm
                                                 </div>
                                                 <div>
-                                                    <div> Bioximik analizi:</div> {NumberFormat(item?.analisisPrices.biochemical_analysis)}  So'm
+                                                    <div>Bioximik analizi:</div> {NumberFormat(item?.analisisPrices.biochemical_analysis)}  So'm
                                                 </div>
                                             </div>
                                         </td>
                                         :
-                                        <td data-label="Konsultatsiya">
-                                            {NumberFormat(item.feesPerCunsaltation)} so'm
-                                        </td>
+                                        <>
+                                            <td data-label="Konsultatsiya">
+                                                {NumberFormat(item.feesPerCunsaltation)} so'm
+                                            </td>
+                                            {
+                                                item.secondPrice === 0 ? "Ikkilamchi yo'q" :
+                                                    <td data-label="Ikkilamchi">
+                                                        {NumberFormat(item.secondPrice)} so'm
+                                                    </td>
+                                            }
+                                        </>
+
                                 }
                                 {item.percent ? (
                                     <td data-label="Oylik">{item.percent} %</td>
@@ -135,10 +145,6 @@ const EditDoctors = ({ doctor, filterData1 }) => {
                 </table >
             )}
         </>
-
-
-
-
     );
 };
 

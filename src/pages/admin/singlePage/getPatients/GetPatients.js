@@ -33,7 +33,7 @@ const GetPatients = () => {
 
   // let clients = client?.map(i => i?.stories?.filter((i) => i?.choseDoctor === _id && i?.view))?.filter((i) => i?.length > 0)
   let clients = client?.map(i =>
-    i?.stories?.filter((i) => i?.choseDoctor === _id))?.filter((i) => i?.length > 0)
+    i?.stories?.filter((i) => i?.doctorID === _id))?.filter((i) => i?.length > 0)
 
   let arr = []
   for (let i = 0; i < clients?.length; i++) {
@@ -41,8 +41,6 @@ const GetPatients = () => {
   }
 
 
-  let time = new Date();
-  let day = time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
 
   const [collapsedItems, setCollapsedItems] = useState([]);
   const handleToggleCollapse = (itemId) => {

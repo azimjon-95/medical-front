@@ -23,7 +23,7 @@ function DoctorsSlite() {
         reports?.map((value, inx) => {
           return (
             <Link
-              to={`/doctorSinglePage/${value.specialization}`}
+              to={`/doctorSinglePage/${value.idNumber}`}
               key={inx}
               className="card"
             >

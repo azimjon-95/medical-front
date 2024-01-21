@@ -14,8 +14,7 @@ function Wallet() {
   let data = allReports?.innerData || [];
 
   let time = new Date();
-  let day =
-    time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
+  console.log(_id);
   let filterDoctors = data?.filter((i) => i.specialization === _id);
 
   let dayMonth = time.toLocaleString("en-US", { month: "long" });
