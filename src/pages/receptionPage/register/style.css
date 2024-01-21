@@ -44,6 +44,10 @@
     box-shadow: none;
 }
 
+.Col-FormCheck {
+    width: 100%;
+}
+
 @media screen and (max-width: 750px) {
     .Row {
         gap: 5px;
@@ -59,7 +63,8 @@
     }
 
     .Col-Form_Box {
-        width: 100%;;
+        width: 100%;
+        ;
         display: flex;
         gap: 7px;
     }
