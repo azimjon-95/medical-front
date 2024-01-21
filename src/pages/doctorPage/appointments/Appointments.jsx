@@ -19,7 +19,7 @@ function Appointments() {
   let data = allClients?.data || [];
   const [query, setQuery] = useState("");
 
-  let category = localStorage.getItem("category");
+  let category = localStorage.getItem("doctorID");
 
   // tashriflar soni
   let visited = [];

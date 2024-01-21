@@ -29,7 +29,7 @@ const GetPatients = () => {
   let { data: allClient } = useGetAllUsersQuery();
   let client = allClient?.data || [];
 
-  let category = localStorage.getItem("category");
+  let category = localStorage.getItem("doctorID");
 
   let clients = client?.map(i => i?.stories?.filter((i) => i?.doctorID === category && i?.view))?.filter((i) => i?.length > 0)
 

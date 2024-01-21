@@ -8,7 +8,7 @@ import imgNoData from "../../../assets/nodata.png";
 function CabindEnter() {
   let { data: room } = useGetAllRoomsQuery();
   const data = room?.innerData || [];
-  let category = localStorage?.getItem("category");
+  let category = localStorage?.getItem("doctorID");
 
   let clients = data?.filter(
     (i) =>

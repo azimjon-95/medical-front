@@ -8,7 +8,7 @@ import LogoMedme from "../../../assets/img/logo.png";
 import { useGetReportsQuery } from "../../../redux/reports";
 
 function Wallet() {
-  let _id = localStorage?.getItem("category");
+  let _id = localStorage?.getItem("doctorID");
 
   let { data: allReports } = useGetReportsQuery();
   let data = allReports?.innerData || [];

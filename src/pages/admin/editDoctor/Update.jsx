@@ -28,8 +28,6 @@ function Update({ doctor, setOpenUpdate, editID }) {
   const [biochemical_analysis, setBiochemical] = useState(update?.biochemical_analysis || "");
   const [salary, setSalary] = useState(update?.salary || "");
 
-  console.log(update?.firstName);
-
 
   let [updateDoctor] = useUpdateDoctorMutation();
   let [deleteDoctor] = useDeleteDoctorMutation();
