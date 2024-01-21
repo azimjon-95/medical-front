@@ -109,6 +109,12 @@ function Wallet() {
                       </div>
                       <div className="icon-text">Qabul</div>
                     </div>
+                    <div className="icon-item">
+                      <div className="icon">
+                        {NumberFormat(value?.secondPrice)} so'm
+                      </div>
+                      <div className="icon-text">Ikkilamchi</div>
+                    </div>
                   </div>
                 </div>
               </div>
