@@ -33,6 +33,7 @@ const Login = () => {
       if (res.data.success) {
         let exactAdmin = res?.data?.exactAdmin;
 
+        localStorage.setItem("doctorID", exactAdmin.idNumber);
         localStorage.setItem("token", res?.data?.token);
         localStorage.setItem("admin", exactAdmin?.docORrecep);
         localStorage.setItem("category", exactAdmin?.specialization);
