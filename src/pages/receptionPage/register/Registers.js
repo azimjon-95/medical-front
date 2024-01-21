@@ -41,6 +41,8 @@ const Register = () => {
   const [urgent_analysis, setUrgent] = useState(false);
   const [biochemical_analysis, setBiochemical] = useState(false);
 
+  const [secondary, setSecondary] = useState(false);
+
   let { data: singleUser } = useGetUserByIDNumberQuery(
     idNumber?.toLowerCase() || 0
   );
@@ -66,7 +68,11 @@ const Register = () => {
 
   useEffect(() => {
     let doctor_info = allDoctor?.find((d) => d._id === choseDoctor);
-    setPaySum(doctor_info?.feesPerCunsaltation || 0);
+    setPaySum(
+      secondary
+        ? doctor_info?.feesPerCunsaltation
+        : doctor_info?.secondPrice || 0
+    );
     setDoctorFirstName(doctor_info?.firstName);
     setDoctorLastName(doctor_info?.lastName);
     setDoctorSpecialization(doctor_info?.specialization);
@@ -77,7 +83,7 @@ const Register = () => {
   for (const item of sortedData) {
     data.push({
       value: item._id,
-      label: item.specialization,
+      label: item.specialization + ` (${item.firstName + " " + item.lastName})`,
     });
   }
 
@@ -102,7 +108,6 @@ const Register = () => {
   let doctor_price = allDoctor?.find((d) => d._id === choseDoctor);
 
   const handleFinish = async (e) => {
-    console.log(doctor_price);
     const AllInfo = {
       idNumber: idNumber?.toLowerCase(),
       firstname,

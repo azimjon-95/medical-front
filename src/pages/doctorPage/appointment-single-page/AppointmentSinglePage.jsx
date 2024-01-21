@@ -22,7 +22,6 @@ import { PiPrinterFill } from "react-icons/pi";
 import { setInfo } from "../../../redux/recordList/recordList";
 import RecordList from "../../../components/checkLists/patientRecordList/RecordList";
 
-
 function AppointmentSinglePage() {
   const [updateClient] = useUpdateClientMutation();
   const dispatch = useDispatch();
@@ -43,6 +42,8 @@ function AppointmentSinglePage() {
   let user = singleUser?.data;
   let user1 = user?.stories?.filter((i) => i?.view === true);
   console.log(user1);
+
+  // user?.stories = user?.stories?.shift();
 
   function updateUserInfo(e) {
     e.preventDefault();
@@ -66,7 +67,7 @@ function AppointmentSinglePage() {
       view: true,
     };
     let arrStory = [...user?.stories];
-    arrStory.shift();
+    arrStory?.shift();
     arrStory.unshift(last_story);
 
     let changedObj = { ...userInfo, stories: arrStory };
@@ -142,8 +143,8 @@ function AppointmentSinglePage() {
             <div className="box-bmi_Sing">
               <b>Analiz</b>
               {user?.stories[0].blood_analysis ||
-                user?.stories[0].urgent ||
-                user?.stories[0].biochemical_analysis ? (
+              user?.stories[0].urgent ||
+              user?.stories[0].biochemical_analysis ? (
                 <>
                   {user?.stories[0].blood_analysis ? (
                     <span>
@@ -232,11 +233,12 @@ function AppointmentSinglePage() {
           <div div className="retsept_history">
             <h4>Tarix:</h4>
 
-            {user?.stories.map((item) => (
+            {user?.stories?.map((item) => (
               <div
                 key={item._id}
-                className={`map-item ${collapsedItems.includes(item._id) ? "collapsed" : ""
-                  }`}
+                className={`map-item ${
+                  collapsedItems.includes(item._id) ? "collapsed" : ""
+                }`}
               >
                 <div
                   className="collapsedItems"
