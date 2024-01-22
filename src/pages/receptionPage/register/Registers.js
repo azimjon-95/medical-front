@@ -175,9 +175,9 @@ const Register = () => {
 
   const handleInputPhone = (e) => {
     const value = e.target.value;
-    const regexPattern = /^[0-9]{9}$/;
+    const regexPattern = /^\[0-9]{9}$/;
     if (regexPattern.test(value)) {
-      setPhone(value);
+      // setPhone(value);
     }
   };
 
@@ -201,7 +201,7 @@ const Register = () => {
             <Form.Item
               label="Ismi"
               name="firstname"
-              // rules={[{ required: true }]}
+            // rules={[{ required: true }]}
             >
               <p style={{ display: "none" }}>{firstname}</p>
               <Input
@@ -230,7 +230,7 @@ const Register = () => {
               <Input
                 maxLength={9}
                 value={phone}
-                onChange={handleInputPhone}
+                onChange={(e) => setPhone(e.target.value)}
                 type="number"
                 placeholder="Phone number"
               />
@@ -422,17 +422,17 @@ const Register = () => {
                         setBlood(e.target.checked),
                         blood_analysis
                           ? setPaySum(
-                              (p) =>
-                                p -
-                                allDoctor?.filter((i) => i.analis)[0]
-                                  ?.analisisPrices?.blood_analysis
-                            )
+                            (p) =>
+                              p -
+                              allDoctor?.filter((i) => i.analis)[0]
+                                ?.analisisPrices?.blood_analysis
+                          )
                           : setPaySum(
-                              (p) =>
-                                p +
-                                allDoctor?.filter((i) => i.analis)[0]
-                                  ?.analisisPrices?.blood_analysis
-                            )
+                            (p) =>
+                              p +
+                              allDoctor?.filter((i) => i.analis)[0]
+                                ?.analisisPrices?.blood_analysis
+                          )
                       )}
                     >
                       {blood_analysis ? "Ha" : "Yo'q"}{" "}
@@ -449,17 +449,17 @@ const Register = () => {
                         setUrgent(e.target.checked),
                         urgent_analysis
                           ? setPaySum(
-                              (p) =>
-                                p -
-                                allDoctor?.filter((i) => i.analis)[0]
-                                  ?.analisisPrices?.urine_analysis
-                            )
+                            (p) =>
+                              p -
+                              allDoctor?.filter((i) => i.analis)[0]
+                                ?.analisisPrices?.urine_analysis
+                          )
                           : setPaySum(
-                              (p) =>
-                                p +
-                                allDoctor?.filter((i) => i.analis)[0]
-                                  ?.analisisPrices?.urine_analysis
-                            )
+                            (p) =>
+                              p +
+                              allDoctor?.filter((i) => i.analis)[0]
+                                ?.analisisPrices?.urine_analysis
+                          )
                       )}
                     >
                       {urgent_analysis ? "Ha" : "Yo'q"}{" "}
@@ -476,17 +476,17 @@ const Register = () => {
                         setBiochemical(e.target.checked),
                         biochemical_analysis
                           ? setPaySum(
-                              (p) =>
-                                p -
-                                allDoctor?.filter((i) => i.analis)[0]
-                                  ?.analisisPrices?.biochemical_analysis
-                            )
+                            (p) =>
+                              p -
+                              allDoctor?.filter((i) => i.analis)[0]
+                                ?.analisisPrices?.biochemical_analysis
+                          )
                           : setPaySum(
-                              (p) =>
-                                p +
-                                allDoctor?.filter((i) => i.analis)[0]
-                                  ?.analisisPrices?.biochemical_analysis
-                            )
+                            (p) =>
+                              p +
+                              allDoctor?.filter((i) => i.analis)[0]
+                                ?.analisisPrices?.biochemical_analysis
+                          )
                       )}
                     >
                       {biochemical_analysis ? "Ha" : "Yo'q"}{" "}
