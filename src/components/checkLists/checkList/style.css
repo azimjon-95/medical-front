@@ -1,14 +1,16 @@
 #invoice-POS {
     box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5);
     padding: 2mm;
-    margin: 0 auto;
-    width: 44mm;
+    margin: 2mm auto;
+    width: 58mm;
     background: #FFF;
+    color: #000000;
+
 }
 
 .item-h1 {
     font-size: 1.5em;
-    color: #222;
+    color: #000000;
 }
 
 .item-h2 {
@@ -16,17 +18,12 @@
 }
 
 
-.text_p {
-    font-size: .6em;
-    color: #666;
-    line-height: 1.2em;
-}
 
 #top,
 #mid,
 #bot {
     /* Targets all id with 'col-' */
-    border-bottom: 1px solid #EEE;
+    border-bottom: 1px solid #7c7c7c;
 }
 
 #top {
@@ -45,10 +42,16 @@
 #top .logo {
     height: 35px;
     width: 120px;
-    background: url(../../../assets/img/logo.png) no-repeat;
-    background-size: cover;
+    width: 100%;
 }
 
+#top .logo>h1 {
+    line-height: 8px;
+}
+
+#top .logo>p {
+    line-height: 5px;
+}
 
 .info {
     display: block;
@@ -66,7 +69,7 @@
 
 #table {
     width: 100%;
-    
+
 }
 
 table {
@@ -85,13 +88,16 @@ table {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-right: 12px;
 }
 
+
 .service {
-    border-bottom: 1px solid #EEE;
+    border-bottom: 1px solid #6e6e6e;
     display: flex;
     justify-content: space-between;
     width: 100%;
+    padding-right: 12px;
 }
 
 .item_check {
@@ -99,7 +105,17 @@ table {
 }
 
 .itemtext {
-    font-size: .5em;
+    font-size: .7em;
+    font-weight: bold;
+    color: #000000;
+
+}
+
+.text_p {
+    font-size: .7em;
+    font-weight: bold;
+    color: #000000;
+    line-height: 1.2em;
 }
 
 #legalcopy {
@@ -107,13 +123,18 @@ table {
     height: 70px;
     display: flex;
     justify-content: center;
-    align-items:center;
+    align-items: center;
     flex-direction: column;
 }
-#legalcopy >h2{
-    line-height: 15px;
+
+#legalcopy>h1 {
+    line-height: 0px;
+    font-size: 55px;
+    font-weight: 900;
 }
-#legalcopy >p{
-    line-height: 15px;
+
+#legalcopy>p {
+    line-height: 0px;
     font-size: 12px;
+    margin-bottom: 20px;
 }

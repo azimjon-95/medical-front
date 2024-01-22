@@ -24,7 +24,10 @@ const CheckList = ({
   return (
     <div ref={componentRef} id="invoice-POS">
       <center id="top">
-        <div className="logo"></div>
+        <div className="logo">
+          <h1>Yasmina </h1>
+          <p>medical servis</p>
+        </div>
         <div className="info">
           <h2 className="item-h2">Har doim siz bilan!</h2>
         </div>
@@ -252,10 +255,10 @@ const CheckList = ({
             )}
             <div className="service">
               <div className="tableitem">
-                <p className="itemtext">Bemor:</p>
+                <p className="itemtext  text_p">Bemor:</p>
               </div>
               <div className="tableitem">
-                <p className="itemtext">
+                <p className="itemtext  text_p">
                   {firstname} {lastname}
                 </p>
               </div>
@@ -271,20 +274,20 @@ const CheckList = ({
                 </p>
               </div>
             </div>
-
-            <div className="tabletitle">
+            <div className="service">
               <div className="tableitem">
-                <p>To'landi: </p>
+                <p className="itemtext text_p">To'landi:</p>
               </div>
-
-              <div className="payment">
-                <h2 className="item-h1">{NumberFormat(payState)} so'm</h2>
+              <div className="tableitem">
+                <p className="itemtext text_p">
+                  {NumberFormat(payState)} so'm
+                </p>
               </div>
             </div>
           </div>
 
           <div id="legalcopy">
-            <h2>{filterarxiv}</h2>
+            <h1>{filterarxiv}</h1>
             <p>Sizning navbatingiz!</p>
           </div>
         </div>
