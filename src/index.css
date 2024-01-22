@@ -30,5 +30,6 @@ a {
   padding: 2px 0;
   color: #fff;
   text-align: center;
-
+  position: fixed;
+  top: 0;
 }
