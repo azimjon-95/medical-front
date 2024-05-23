@@ -94,7 +94,7 @@ function App() {
       //       <Route path="*" element={<PageNotFound />} />
       //     </Routes>
       // )}
- <marquee> <h1>Welcome</h1> </marquee>
+         <marquee> <h1>Welcome</h1> </marquee>
     </div>
   );
 }
