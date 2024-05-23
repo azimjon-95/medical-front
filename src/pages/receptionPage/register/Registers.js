@@ -173,13 +173,18 @@ const Register = () => {
 
   // ------------Analises------------
 
-  const handleInputPhone = (e) => {
-    const value = e.target.value;
-    const regexPattern = /^\[0-9]{9}$/;
-    if (regexPattern.test(value)) {
-      // setPhone(value);
+
+  const regex = /^\\d{9}$/;
+
+  function handleInputPhone(event) {
+    const newValue = event.target.value;
+    if (regex.test(newValue)) {
+      setPhone(newValue);
+    } else {
+
     }
-  };
+  }
+
 
   return (
     <Layout>
@@ -230,7 +235,7 @@ const Register = () => {
               <Input
                 maxLength={9}
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={handleInputPhone}
                 type="number"
                 placeholder="Phone number"
               />
@@ -766,3 +771,6 @@ const Register = () => {
 };
 
 export default Register;
+
+
+
