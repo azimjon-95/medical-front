@@ -17,7 +17,7 @@ root.render(
       {/* <ApiProvider api={allInfoApi}> */}
       {/* <App /> */}
       {/* </ApiProvider> */}
-      <h1>Hello world</h1>
+      <h1>Megme</h1>
     </Provider>
   </BrowserRouter>
 );
