@@ -1,0 +1,153 @@
+.ContenierNav {
+    width: 100%;
+    height: 130px;
+    background: rgba(0, 0, 47, 0.648);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.Navbar {
+    width: 100%;
+    height: 80px;
+    background: transparent;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.NavbarMedme {
+    width: 200px;
+    height: 100px;
+    background: transparent;
+    display: flex;
+    color: white;
+    font-size: 28px;
+    flex-direction: column;
+    margin: 0px 110px;
+}
+
+
+/* .NavbarMedeB {
+    color: gold;
+} */
+
+
+.NavbarMedme>p {
+    font-size: 10px;
+}
+
+
+
+.NavbarIcon {
+    width: 550px;
+    height: 100%;
+    background: transparent;
+    display: flex;
+    align-items: "center";
+}
+
+
+
+.NavbarManzil {
+    width: 250px;
+    height: 100%;
+    background: transparent;
+    font-size: 21px;
+    color: white;
+    padding: 0 10px;
+}
+
+.NavbarManzil>p {}
+
+
+
+.NavIcon {
+    width: 200px;
+    height: 100%;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    gap: 15px;
+}
+
+
+
+.NavbarInsta {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 40px;
+    padding: 9px;
+    font-size: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000;
+}
+
+.NavbarInsta a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.NavbarInsta a {
+    color: #000;
+}
+
+
+
+.NavbarTelgram {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 40px;
+    padding: 9px;
+    font-size: 22px;
+}
+
+
+.NavbarTelgram a {
+    color: #000;
+}
+
+
+.NavbarYoutobe {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 40px;
+    padding: 9px;
+    font-size: 22px;
+}
+
+
+
+.NavbarYoutobe a {
+    color: #000;
+}
+
+
+
+.NavUZRS {
+    width: 80px;
+    height: 80px;
+    background: transparent;
+    font-size: 25px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
+
+
+
+@media screen and (max-width:325px) {
+
+    .Navbar {
+        display: none;
+    }
+}

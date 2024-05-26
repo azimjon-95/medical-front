@@ -1,0 +1,98 @@
+.ContenierMedmeImgs {
+    width: 100%;
+    background: rgb(0, 25, 51);
+    display: flex;
+    gap: 50px;
+    flex-direction: column;
+    padding: 15px 0;
+}
+
+
+.MedmeImgNav {
+    width: 100%;
+    height: 20vh;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+
+.MedmeImgNavh1 {
+    width: 65%;
+    height: 20vh;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 17px;
+}
+
+
+.MedmeImgBanner {
+    width: 100%;
+    height: 90vh;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.MedmeImgBannerImg {
+    width: 87%;
+    height: 100vh;
+    background: none;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.MedmeImgBannerDomla1 {
+    width: 48%;
+    height: 100vh;
+    background-color: black;
+}
+
+
+.MedmeImgBannerDomla1>img {
+    width: 100%;
+    height: 100%;
+}
+
+
+.MedmeImgBannerDomla2 {
+    width: 48%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+.MedmeImgBannerBox1 {
+    width: 100%;
+    height: 48vh;
+    background: black;
+}
+
+
+.MedmeImgBannerBox1>img {
+    width: 100%;
+    height: 100%;
+}
+
+
+.MedmeImgBannerBox2 {
+    width: 100%;
+    height: 48vh;
+    background: rgb(0, 0, 0);
+}
+
+
+.MedmeImgBannerBox2>img {
+    width: 100%;
+    height: 100%;
+}

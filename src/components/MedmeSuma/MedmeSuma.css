@@ -1,0 +1,256 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+
+
+.ContenierMedmeSuma {
+    width: 100%;
+    height: 87vh;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.MedmeSuma {
+    width: 80%;
+    height: 70vh;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    gap: 15px;  
+}
+
+
+.MedmeMarketing {
+    width: 25%;
+    height: 100%;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.MedmeMarketing>h2 {
+    color: rgb(0, 0, 0);
+}
+
+
+
+.MedmeMarketing>p {
+    font-size: 20px;
+    color: rgb(0, 0, 0);
+    text-align: center;
+}
+
+
+
+.MedmeMoliya {
+    width: 25%;
+    height: 100%;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.MedmeMoliya>h2 {
+    color: rgb(0, 0, 0);
+}
+
+
+
+.MedmeMoliya>p {
+    font-size: 20px;
+    color: rgb(0, 0, 0);
+    text-align: center;
+}
+
+
+.MedmeSotuv {
+    width: 25%;
+    height: 100%;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.MedmeSotuv>h2 {
+    color: rgb(0, 0, 0);
+}
+
+
+
+.MedmeSotuv>p {
+    font-size: 20px;
+    color: rgb(0, 0, 0);
+    text-align: center;
+}
+
+
+
+.MedmeXizmatKorsatish {
+    width: 25%;
+    height: 100%;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.MedmeXizmatKorsatish>h2 {
+    font-size: 25px;
+    color: rgb(0, 0, 0);
+}
+
+
+
+.MedmeXizmatKorsatish {
+    font-size: 20px;
+    color: rgb(0, 0, 0);
+    text-align: center;
+}
+
+
+.MedemBtn {
+    width: 100%;
+    height: 100px;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+
+.MedemBtn>button{
+    width: 360px;
+    height: 58px;
+    border-radius: 15px;
+    background: gold;
+    border: none;
+    border: 2px solid black;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+
+
+@media screen and (max-width:1016px) {
+    .ContenierMedmeSuma>h1 {
+        font-size: 29px;
+    }
+
+    .BannerMalumot {
+        margin-top: -70px;
+    }
+
+    .BannerInputBtn {
+        margin-top: -50px;
+    }
+}
+
+
+
+@media screen and (max-width:847px) {
+    .ContenierBanner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 120vh;
+        gap: 80px;
+    }
+
+    .BannerInputBtn {
+        margin-top: 10px;
+    }
+
+    .BannerMalumot {
+        margin-top: -50px;
+    }
+}
+
+@media screen and (max-width:478px) {
+    .BannerMalumot>h1 {
+        font-size: 21px;
+        letter-spacing: 0;
+        line-height: 28px;
+    }
+
+    .BannerMalumot>p {
+        font-size: 19px;
+        font-weight: normal;
+    }
+}
+
+
+
+@media screen and (max-width:350px) {
+    .BannerMalumot>p {
+        text-align: center;
+        font-size: 16px;
+    }
+
+    .BannerMalumot>h1 {
+        line-height: 35px;
+
+    }
+}
+
+@media screen and (max-width:325px) {
+    .BannerInputBtn>input {
+        width: 100px;
+    }
+
+    .BannerMalumot>button {
+        width: 220px;
+        height: 40px;
+    }
+    .BannerMalumot>p{
+        margin-top: 40px;
+    }
+
+    .BannerMalumot>h1 {
+        font-size: 18px;
+    }
+
+    .BannerMalumot>p {
+        font-size: 14px;
+    }
+
+    .BannerInputBtn>h1 {
+        font-size: 22px;
+    }
+
+    .ContenierBanner {
+        width: 326px;
+    }
+    .MedmeSuma{
+        width: 300px;
+        height: 400vh;
+        margin-top: -40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,159 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+
+.ContainerMedme {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.MedmeNavBox {
+    width: 100%;
+    height: 200px;
+    background: rgb(255, 255, 255);
+    font-size: 40px;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.MedmeSababBox {
+    width: 100%;
+    height: 100vh;
+    background: rgb(178, 132, 34);
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+.SababBox1 {
+    width: 50%;
+    height: 50vh;
+    background: none;
+    display: flex;
+}
+
+
+.SababYozuv {
+    width: 450px;
+    height: 50vh;
+    background: none;
+    display: flex;
+    align-items: end;
+    flex-direction: column;
+}
+
+
+.SababYozuvBox {
+    width: 340px;
+    height: 50vh;
+    background: none;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.SababYozuvBox>p {
+    font-size: 20px;
+}
+
+
+.SababYozuvBox>h3 {
+    font-size: 23px;
+}
+
+
+.SababImg1 {
+    width: 250px;
+    height: 50vh;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.SababImg2 {
+    width: 250px;
+    height: 50vh;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: -321px;
+    left: 421px;
+}
+
+
+.SababImg3 {
+    width: 250px;
+    height: 50vh;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: -321px;
+    left: 460px;
+}
+
+
+.SababImg4 {
+    width: 250px;
+    height: 50vh;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: -321px;
+    left: 421px;
+}
+
+
+.SababBox2 {
+    width: 50%;
+    height: 50vh;
+    background: none;
+}
+
+
+.SababBox3 {
+    width: 50%;
+    height: 50vh;
+    background: none;
+}
+
+
+.SababBox4 {
+    width: 50%;
+    height: 50vh;
+    background: none;
+}
+
+
+
+@media screen and (max-width:300px) {
+
+
+    .MedmeSababBox {
+        height: 200vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+}

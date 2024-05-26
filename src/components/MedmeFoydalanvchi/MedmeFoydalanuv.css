@@ -1,0 +1,124 @@
+.ContenierMedmeFoydalanuv {
+    width: 100%;
+    height: 370px;
+    background: rgba(0, 0, 47, 0.648);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.MedmeFoydalanuv {
+    width: 57%;
+    height: 100%;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.MedmeFoydalanuvNomi {
+    width: 80%;
+    height: 100px;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+
+.MedmeFoydalanuvNomi>h1 {
+    font-size: 27px;
+}
+
+
+
+.MedmeFoydalanuvSoni1 {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+
+
+
+.MedmeFoydalanuvSoniBox1 {
+    width: 25%;
+    height: 100%;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+    color: white;
+    font-size: 28px;
+    text-align: center;
+}
+
+.MedmeFoydalanuvSoniBox1>p {
+    height: 110px;
+}
+
+
+
+.MedmeFoydalanuvBox {
+    width: 150px;
+    height: 120px;
+    border-radius: 15px;
+    background-color: gold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000;
+    font-size: 30px;
+}
+
+
+
+@media screen and (max-width:325px) {
+    .BannerInputBtn>input {
+        width: 100px;
+    }
+
+    .BannerMalumot>button {
+        width: 220px;
+        height: 40px;
+    }
+
+    .BannerMalumot>p {
+        margin-top: 40px;
+    }
+
+    .BannerMalumot>h1 {
+        font-size: 18px;
+    }
+
+    .BannerMalumot>p {
+        font-size: 14px;
+    }
+
+    .BannerInputBtn>h1 {
+        font-size: 22px;
+    }
+
+    .ContenierBanner {
+        width: 326px;
+    }
+
+    .ContenierMedmeFoydalanuv {
+        width: 300px;
+        height: 400vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+}
